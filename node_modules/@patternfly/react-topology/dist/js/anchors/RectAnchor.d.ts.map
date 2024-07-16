@@ -1,0 +1,1 @@
+{"version":3,"file":"RectAnchor.d.ts","sourceRoot":"","sources":["../../../src/anchors/RectAnchor.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,eAAe,CAAC;AAElC,OAAO,cAAc,MAAM,kBAAkB,CAAC;AAE9C,MAAM,CAAC,OAAO,OAAO,UAAW,SAAQ,cAAc;IACpD,WAAW,CAAC,SAAS,EAAE,KAAK,GAAG,KAAK;CAUrC"}

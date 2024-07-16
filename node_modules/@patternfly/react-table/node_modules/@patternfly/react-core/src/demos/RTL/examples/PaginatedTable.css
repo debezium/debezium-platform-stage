@@ -1,0 +1,7 @@
+.brand-language {
+  font-weight: var(--pf-v6-global--FontWeight--bold);
+  font-family: var(--pf-v6-global--FontFamily--heading);
+  font-size: var(--pf-v6-global--FontSize--xl);
+  align-self: center;
+  margin-inline-start: var(--pf-v6-global--spacer--md);
+}

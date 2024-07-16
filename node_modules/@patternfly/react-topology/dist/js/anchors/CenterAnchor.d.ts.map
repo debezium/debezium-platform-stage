@@ -1,0 +1,1 @@
+{"version":3,"file":"CenterAnchor.d.ts","sourceRoot":"","sources":["../../../src/anchors/CenterAnchor.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,eAAe,CAAC;AAClC,OAAO,cAAc,MAAM,kBAAkB,CAAC;AAG9C,MAAM,CAAC,OAAO,OAAO,YAAa,SAAQ,cAAc;IACtD,WAAW,CAAC,SAAS,EAAE,KAAK,GAAG,KAAK;CAQrC"}

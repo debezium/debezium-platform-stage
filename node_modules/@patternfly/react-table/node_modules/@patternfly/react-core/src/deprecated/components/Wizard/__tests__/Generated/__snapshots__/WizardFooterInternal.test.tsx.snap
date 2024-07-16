@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WizardFooterInternal should match snapshot (auto-generated) 1`] = `
+<DocumentFragment>
+  <footer
+    class="pf-v6-c-wizard__footer"
+  >
+    <div
+      class="pf-v6-c-action-list"
+    >
+      <div
+        class="pf-v6-c-action-list__group"
+      >
+        <div
+          class="pf-v6-c-action-list__item"
+        >
+          <button
+            aria-disabled="false"
+            class="pf-v6-c-button pf-m-secondary"
+            data-ouia-component-id="OUIA-Generated-Button-secondary-1"
+            data-ouia-component-type="PF6/Button"
+            data-ouia-safe="true"
+            disabled=""
+            type="button"
+          >
+            <span
+              class="pf-v6-c-button__text"
+            >
+              <div>
+                ReactNode
+              </div>
+            </span>
+          </button>
+        </div>
+        <div
+          class="pf-v6-c-action-list__item"
+        >
+          <button
+            aria-disabled="false"
+            class="pf-v6-c-button pf-m-primary"
+            data-ouia-component-id="OUIA-Generated-Button-primary-1"
+            data-ouia-component-type="PF6/Button"
+            data-ouia-safe="true"
+            type="submit"
+          >
+            <span
+              class="pf-v6-c-button__text"
+            >
+              <div>
+                ReactNode
+              </div>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="pf-v6-c-action-list__group"
+      >
+        <div
+          class="pf-v6-c-action-list__item"
+        >
+          <button
+            aria-disabled="false"
+            class="pf-v6-c-button pf-m-link"
+            data-ouia-component-id="OUIA-Generated-Button-link-1"
+            data-ouia-component-type="PF6/Button"
+            data-ouia-safe="true"
+            type="button"
+          >
+            <span
+              class="pf-v6-c-button__text"
+            >
+              <div>
+                ReactNode
+              </div>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</DocumentFragment>
+`;

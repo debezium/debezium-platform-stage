@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SidedShape = exports.Trapezoid = exports.Stadium = exports.Rhombus = exports.Rectangle = exports.Octagon = exports.Hexagon = exports.Ellipse = void 0;
+const tslib_1 = require("tslib");
+var Ellipse_1 = require("./Ellipse");
+Object.defineProperty(exports, "Ellipse", { enumerable: true, get: function () { return tslib_1.__importDefault(Ellipse_1).default; } });
+var Hexagon_1 = require("./Hexagon");
+Object.defineProperty(exports, "Hexagon", { enumerable: true, get: function () { return tslib_1.__importDefault(Hexagon_1).default; } });
+var Octagon_1 = require("./Octagon");
+Object.defineProperty(exports, "Octagon", { enumerable: true, get: function () { return tslib_1.__importDefault(Octagon_1).default; } });
+var Rectangle_1 = require("./Rectangle");
+Object.defineProperty(exports, "Rectangle", { enumerable: true, get: function () { return tslib_1.__importDefault(Rectangle_1).default; } });
+var Rhombus_1 = require("./Rhombus");
+Object.defineProperty(exports, "Rhombus", { enumerable: true, get: function () { return tslib_1.__importDefault(Rhombus_1).default; } });
+var Stadium_1 = require("./Stadium");
+Object.defineProperty(exports, "Stadium", { enumerable: true, get: function () { return tslib_1.__importDefault(Stadium_1).default; } });
+var Trapezoid_1 = require("./Trapezoid");
+Object.defineProperty(exports, "Trapezoid", { enumerable: true, get: function () { return tslib_1.__importDefault(Trapezoid_1).default; } });
+var SidedShape_1 = require("./SidedShape");
+Object.defineProperty(exports, "SidedShape", { enumerable: true, get: function () { return tslib_1.__importDefault(SidedShape_1).default; } });
+tslib_1.__exportStar(require("./shapeUtils"), exports);
+//# sourceMappingURL=index.js.map

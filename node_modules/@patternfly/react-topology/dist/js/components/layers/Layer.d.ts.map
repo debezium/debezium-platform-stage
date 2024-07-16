@@ -1,0 +1,1 @@
+{"version":3,"file":"Layer.d.ts","sourceRoot":"","sources":["../../../../src/components/layers/Layer.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAO/B,UAAU,UAAU;IAClB,EAAE,CAAC,EAAE,MAAM,CAAC;IACZ,QAAQ,EAAE,KAAK,CAAC,SAAS,CAAC;IAC1B,QAAQ,CAAC,EAAE,MAAM,CAAC;CACnB;AAmED,QAAA,MAAM,KAAK,EAAE,KAAK,CAAC,iBAAiB,CAAC,UAAU,CAO5C,CAAC;AAEJ,eAAe,KAAK,CAAC"}

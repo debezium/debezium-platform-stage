@@ -1,0 +1,1 @@
+{"version":3,"file":"Rectangle.d.ts","sourceRoot":"","sources":["../../../../../src/components/nodes/shapes/Rectangle.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAK/B,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAE1C,aAAK,cAAc,GAAG,UAAU,GAAG;IACjC,YAAY,CAAC,EAAE,MAAM,CAAC;CACvB,CAAC;AAEF,QAAA,MAAM,SAAS,EAAE,KAAK,CAAC,iBAAiB,CAAC,cAAc,CAsBtD,CAAC;AAEF,eAAe,SAAS,CAAC"}

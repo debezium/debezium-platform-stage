@@ -1,0 +1,1 @@
+{"version":3,"file":"GridNode.d.ts","sourceRoot":"","sources":["../../../src/layouts/GridNode.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAC1C,OAAO,EAAE,IAAI,EAAE,MAAM,UAAU,CAAC;AAEhC,qBAAa,QAAS,SAAQ,UAAU;gBAC1B,IAAI,EAAE,IAAI,EAAE,QAAQ,EAAE,MAAM,EAAE,KAAK,GAAE,MAAW;CAG7D"}

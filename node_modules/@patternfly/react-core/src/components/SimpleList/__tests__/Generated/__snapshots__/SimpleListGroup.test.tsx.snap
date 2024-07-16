@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimpleListGroup should match snapshot (auto-generated) 1`] = `
+<DocumentFragment>
+  <section
+    class="pf-v6-c-simple-list__section"
+  >
+    <h2
+      aria-hidden="true"
+      class="pf-v6-c-simple-list__title ''"
+      id="''"
+    />
+    <ul
+      aria-labelledby="''"
+      class="pf-v6-c-simple-list__list ''"
+      role="list"
+    >
+      ReactNode
+    </ul>
+  </section>
+</DocumentFragment>
+`;

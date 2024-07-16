@@ -1,0 +1,6 @@
+export const c_menu_toggle_TransitionProperty: {
+  "name": "--pf-v6-c-menu-toggle--TransitionProperty",
+  "value": "color, background-color, border-width, border-color",
+  "var": "var(--pf-v6-c-menu-toggle--TransitionProperty)"
+};
+export default c_menu_toggle_TransitionProperty;

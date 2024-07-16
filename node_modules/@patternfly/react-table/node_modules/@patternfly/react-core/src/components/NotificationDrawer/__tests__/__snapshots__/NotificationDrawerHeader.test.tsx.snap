@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotificationDrawerHeader drawer header with count applied 1`] = `
+<DocumentFragment>
+  <div
+    class="pf-v6-c-notification-drawer__header"
+  >
+    <h1
+      class="pf-v6-c-notification-drawer__header-title"
+    >
+      Notifications
+    </h1>
+    <span
+      aria-live="polite"
+      class="pf-v6-c-notification-drawer__header-status"
+    >
+      2 unread
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`NotificationDrawerHeader drawer header with custom unread text applied 1`] = `
+<DocumentFragment>
+  <div
+    class="pf-v6-c-notification-drawer__header"
+  >
+    <h1
+      class="pf-v6-c-notification-drawer__header-title"
+    >
+      Notifications
+    </h1>
+    <span
+      aria-live="polite"
+      class="pf-v6-c-notification-drawer__header-status"
+    >
+      2 unread alerts
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`NotificationDrawerHeader drawer header with title applied 1`] = `
+<DocumentFragment>
+  <div
+    class="pf-v6-c-notification-drawer__header"
+  >
+    <h1
+      class="pf-v6-c-notification-drawer__header-title"
+    >
+      Some Title
+    </h1>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`NotificationDrawerHeader renders with PatternFly Core styles 1`] = `
+<DocumentFragment>
+  <div
+    class="pf-v6-c-notification-drawer__header"
+  >
+    <h1
+      class="pf-v6-c-notification-drawer__header-title"
+    >
+      Notifications
+    </h1>
+  </div>
+</DocumentFragment>
+`;

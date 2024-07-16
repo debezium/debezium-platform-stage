@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`chip group renders to match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="pf-v6-c-label-group"
+  >
+    <div
+      class="pf-v6-c-label-group__main"
+    >
+      <ul
+        aria-label="Chip group category"
+        class="pf-v6-c-label-group__list"
+        data-ouia-component-type="PF6/ChipGroup"
+        data-ouia-safe="true"
+        role="list"
+      >
+        <li
+          class="pf-v6-c-label-group__list-item"
+        >
+          chips
+        </li>
+      </ul>
+    </div>
+  </div>
+</DocumentFragment>
+`;

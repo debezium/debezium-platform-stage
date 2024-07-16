@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check form section example against snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="pf-v6-c-form__section"
+    role="group"
+  />
+</DocumentFragment>
+`;
+
+exports[`Check form section example with title 1`] = `
+<DocumentFragment>
+  <section
+    aria-labelledby="generated-id"
+    class="pf-v6-c-form__section"
+    role="group"
+  >
+    <h4
+      class="pf-v6-c-form__section-title"
+      id="generated-id"
+    >
+      Title
+    </h4>
+  </section>
+</DocumentFragment>
+`;

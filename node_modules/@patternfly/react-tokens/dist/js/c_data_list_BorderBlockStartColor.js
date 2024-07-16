@@ -1,0 +1,8 @@
+"use strict";
+exports.__esModule = true;
+exports.c_data_list_BorderBlockStartColor = {
+  "name": "--pf-v6-c-data-list--BorderBlockStartColor",
+  "value": "#c7c7c7",
+  "var": "var(--pf-v6-c-data-list--BorderBlockStartColor)"
+};
+exports["default"] = exports.c_data_list_BorderBlockStartColor;

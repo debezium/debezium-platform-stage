@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Matches snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="pf-v6-c-progress-stepper__step"
+    role="listitem"
+  >
+    <div
+      class="pf-v6-c-progress-stepper__step-connector"
+    >
+      <span
+        class="pf-v6-c-progress-stepper__step-icon"
+      />
+    </div>
+    <div
+      class="pf-v6-c-progress-stepper__step-main"
+    >
+      <div
+        class="pf-v6-c-progress-stepper__step-title"
+      >
+        Test
+      </div>
+    </div>
+  </li>
+</DocumentFragment>
+`;

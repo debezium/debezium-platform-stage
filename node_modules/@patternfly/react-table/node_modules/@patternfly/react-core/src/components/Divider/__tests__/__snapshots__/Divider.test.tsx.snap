@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Matches the snapshot 1`] = `
+<DocumentFragment>
+  <hr
+    class="pf-v6-c-divider"
+  />
+</DocumentFragment>
+`;

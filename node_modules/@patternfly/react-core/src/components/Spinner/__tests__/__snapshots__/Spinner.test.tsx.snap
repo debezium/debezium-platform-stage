@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`extra large spinner 1`] = `
+<DocumentFragment>
+  <svg
+    aria-label="Contents"
+    aria-valuetext="Loading..."
+    class="pf-v6-c-spinner pf-m-xl"
+    role="progressbar"
+    viewBox="0 0 100 100"
+  >
+    <circle
+      class="pf-v6-c-spinner__path"
+      cx="50"
+      cy="50"
+      fill="none"
+      r="45"
+    />
+  </svg>
+</DocumentFragment>
+`;
+
+exports[`large spinner 1`] = `
+<DocumentFragment>
+  <svg
+    aria-label="Contents"
+    aria-valuetext="Loading..."
+    class="pf-v6-c-spinner pf-m-lg"
+    role="progressbar"
+    viewBox="0 0 100 100"
+  >
+    <circle
+      class="pf-v6-c-spinner__path"
+      cx="50"
+      cy="50"
+      fill="none"
+      r="45"
+    />
+  </svg>
+</DocumentFragment>
+`;
+
+exports[`medium spinner 1`] = `
+<DocumentFragment>
+  <svg
+    aria-label="Contents"
+    aria-valuetext="Loading..."
+    class="pf-v6-c-spinner pf-m-md"
+    role="progressbar"
+    viewBox="0 0 100 100"
+  >
+    <circle
+      class="pf-v6-c-spinner__path"
+      cx="50"
+      cy="50"
+      fill="none"
+      r="45"
+    />
+  </svg>
+</DocumentFragment>
+`;
+
+exports[`simple spinner 1`] = `
+<DocumentFragment>
+  <svg
+    aria-label="Contents"
+    aria-valuetext="Loading..."
+    class="pf-v6-c-spinner pf-m-xl"
+    role="progressbar"
+    viewBox="0 0 100 100"
+  >
+    <circle
+      class="pf-v6-c-spinner__path"
+      cx="50"
+      cy="50"
+      fill="none"
+      r="45"
+    />
+  </svg>
+</DocumentFragment>
+`;
+
+exports[`small spinner 1`] = `
+<DocumentFragment>
+  <svg
+    aria-label="Contents"
+    aria-valuetext="Loading..."
+    class="pf-v6-c-spinner pf-m-sm"
+    role="progressbar"
+    viewBox="0 0 100 100"
+  >
+    <circle
+      class="pf-v6-c-spinner__path"
+      cx="50"
+      cy="50"
+      fill="none"
+      r="45"
+    />
+  </svg>
+</DocumentFragment>
+`;

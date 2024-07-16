@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="mock-wrapper"
+  >
+    <div
+      data-testid="popper"
+    >
+      <div
+        class="customClass"
+        data-ouia-component-id="dropdown"
+        data-ouia-component-type="PF6/Dropdown"
+        data-ouia-safe="true"
+        data-testid="menu-mock"
+      >
+        <div>
+          <div>
+            Dropdown children
+          </div>
+        </div>
+      </div>
+      <div>
+        Mock item
+      </div>
+      <p>
+        isPlain: true
+      </p>
+      <p>
+        isScrollable: true
+      </p>
+      <p>
+        minWidth: undefined
+      </p>
+    </div>
+    <p>
+      zIndex: 9999
+    </p>
+    <p>
+      isVisible: true
+    </p>
+    <p>
+      enableFlip: undefined
+    </p>
+    <p>
+      placement: undefined
+    </p>
+    <p>
+      appendTo: undefined
+    </p>
+    <p>
+      distance: undefined
+    </p>
+    <p>
+      flipBehavior: undefined
+    </p>
+    <p>
+      minWidth: undefined
+    </p>
+    <button>
+      Dropdown
+    </button>
+  </div>
+</DocumentFragment>
+`;

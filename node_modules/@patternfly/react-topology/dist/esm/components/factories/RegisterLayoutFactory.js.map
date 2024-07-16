@@ -1,0 +1,1 @@
+{"version":3,"file":"RegisterLayoutFactory.js","sourceRoot":"","sources":["../../../../src/components/factories/RegisterLayoutFactory.tsx"],"names":[],"mappings":"AACA,OAAO,gBAAgB,MAAM,8BAA8B,CAAC;AAO5D,MAAM,qBAAqB,GAAmC,CAAC,EAAE,OAAO,EAAE,EAAE,EAAE;IAC5E,gBAAgB,CAAC,OAAO,CAAC,CAAC;IAC1B,OAAO,IAAI,CAAC;AACd,CAAC,CAAC;AAEF,eAAe,qBAAqB,CAAC"}

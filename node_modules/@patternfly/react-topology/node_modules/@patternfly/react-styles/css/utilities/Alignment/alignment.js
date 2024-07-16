@@ -1,0 +1,29 @@
+"use strict";
+exports.__esModule = true;
+require('./alignment.css');
+exports.default = {
+  "textAlignCenter": "pf-v6-u-text-align-center",
+  "textAlignCenterOnLg": "pf-v6-u-text-align-center-on-lg",
+  "textAlignCenterOnMd": "pf-v6-u-text-align-center-on-md",
+  "textAlignCenterOnSm": "pf-v6-u-text-align-center-on-sm",
+  "textAlignCenterOnXl": "pf-v6-u-text-align-center-on-xl",
+  "textAlignCenterOn_2xl": "pf-v6-u-text-align-center-on-2xl",
+  "textAlignEnd": "pf-v6-u-text-align-end",
+  "textAlignEndOnLg": "pf-v6-u-text-align-end-on-lg",
+  "textAlignEndOnMd": "pf-v6-u-text-align-end-on-md",
+  "textAlignEndOnSm": "pf-v6-u-text-align-end-on-sm",
+  "textAlignEndOnXl": "pf-v6-u-text-align-end-on-xl",
+  "textAlignEndOn_2xl": "pf-v6-u-text-align-end-on-2xl",
+  "textAlignJustify": "pf-v6-u-text-align-justify",
+  "textAlignJustifyOnLg": "pf-v6-u-text-align-justify-on-lg",
+  "textAlignJustifyOnMd": "pf-v6-u-text-align-justify-on-md",
+  "textAlignJustifyOnSm": "pf-v6-u-text-align-justify-on-sm",
+  "textAlignJustifyOnXl": "pf-v6-u-text-align-justify-on-xl",
+  "textAlignJustifyOn_2xl": "pf-v6-u-text-align-justify-on-2xl",
+  "textAlignStart": "pf-v6-u-text-align-start",
+  "textAlignStartOnLg": "pf-v6-u-text-align-start-on-lg",
+  "textAlignStartOnMd": "pf-v6-u-text-align-start-on-md",
+  "textAlignStartOnSm": "pf-v6-u-text-align-start-on-sm",
+  "textAlignStartOnXl": "pf-v6-u-text-align-start-on-xl",
+  "textAlignStartOn_2xl": "pf-v6-u-text-align-start-on-2xl"
+};

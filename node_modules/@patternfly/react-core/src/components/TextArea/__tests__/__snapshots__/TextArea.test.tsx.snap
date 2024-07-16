@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Matches the snapshot 1`] = `
+<DocumentFragment>
+  <span
+    class="pf-v6-c-form-control pf-m-resize-both pf-m-disabled custom class"
+    style="height: 6px;"
+  >
+    <textarea
+      aria-invalid="false"
+      aria-label="test textarea"
+      disabled=""
+      required=""
+    />
+  </span>
+</DocumentFragment>
+`;

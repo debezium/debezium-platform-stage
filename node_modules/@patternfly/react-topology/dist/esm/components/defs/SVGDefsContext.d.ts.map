@@ -1,0 +1,1 @@
+{"version":3,"file":"SVGDefsContext.d.ts","sourceRoot":"","sources":["../../../../src/components/defs/SVGDefsContext.ts"],"names":[],"mappings":"AAAA,OAAO,EAAiB,SAAS,EAAE,MAAM,OAAO,CAAC;AAEjD,MAAM,WAAW,mBAAmB;IAClC,MAAM,CAAC,EAAE,EAAE,MAAM,EAAE,IAAI,EAAE,SAAS,GAAG,IAAI,CAAC;IAC1C,SAAS,CAAC,EAAE,EAAE,MAAM,GAAG,IAAI,CAAC;CAC7B;AAED,QAAA,MAAM,cAAc,8CAAuD,CAAC;AAE5E,eAAe,cAAc,CAAC"}

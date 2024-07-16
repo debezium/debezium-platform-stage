@@ -1,0 +1,1 @@
+{"version":3,"file":"RegisterElementFactory.js","sourceRoot":"","sources":["../../../../src/components/factories/RegisterElementFactory.tsx"],"names":[],"mappings":"AACA,OAAO,iBAAiB,MAAM,+BAA+B,CAAC;AAO9D,MAAM,qBAAqB,GAAmC,CAAC,EAAE,OAAO,EAAE,EAAE,EAAE;IAC5E,iBAAiB,CAAC,OAAO,CAAC,CAAC;IAC3B,OAAO,IAAI,CAAC;AACd,CAAC,CAAC;AAEF,eAAe,qBAAqB,CAAC"}

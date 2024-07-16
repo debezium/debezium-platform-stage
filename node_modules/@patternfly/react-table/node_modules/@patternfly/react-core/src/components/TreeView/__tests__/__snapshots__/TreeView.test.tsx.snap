@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    data-testid="TreeViewRoot-mock"
+  >
+    <p>
+      TreeViewRoot hasCheckboxes: false
+    </p>
+    <p>
+      TreeViewRoot hasGuides: false
+    </p>
+    <p>
+      TreeViewRoot hasSelectableNodes: false
+    </p>
+    <p>
+      TreeViewRoot variant: default
+    </p>
+    <p>
+      TreeViewRoot className: undefined
+    </p>
+    <div
+      data-testid="TreeViewRoot-children"
+    >
+      <div
+        data-testid="TreeViewList-mock"
+      >
+        <p>
+          TreeViewList isNested: false
+        </p>
+        <p>
+          TreeViewList toolbar: undefined
+        </p>
+        <div
+          data-testid="TreeViewList-children"
+        >
+          <div
+            data-testid="TreeViewListItem-mock"
+          >
+            <p>
+              TreeViewListItem action: undefined
+            </p>
+            <div
+              data-testid="TreeViewListItem-activeItems"
+            />
+            <p>
+              TreeViewListItem badgeProps: undefined
+            </p>
+            <p>
+              TreeViewListItem checkProps: undefined
+            </p>
+            <p>
+              TreeViewListItem customBadgeContent: undefined
+            </p>
+            <p>
+              TreeViewListItem defaultExpanded: false
+            </p>
+            <p>
+              TreeViewListItem expandedIcon: undefined
+            </p>
+            <p>
+              TreeViewListItem hasBadge: false
+            </p>
+            <p>
+              TreeViewListItem hasCheckbox: false
+            </p>
+            <p>
+              TreeViewListItem icon: undefined
+            </p>
+            <p>
+              TreeViewListItem id: undefined
+            </p>
+            <p>
+              TreeViewListItem isCompact: false
+            </p>
+            <p>
+              TreeViewListItem isExpanded: undefined
+            </p>
+            <p>
+              TreeViewListItem isSelectable: false
+            </p>
+            <p>
+              TreeViewListItem itemData: Basic data name
+            </p>
+            <p>
+              TreeViewListItem name: Basic data name
+            </p>
+            <p>
+              TreeViewListItem parentItem: undefined
+            </p>
+            <p>
+              TreeViewListItem title: undefined
+            </p>
+            <p>
+              TreeViewListItem useMemo: undefined
+            </p>
+            <button>
+              compareItems clicker
+            </button>
+            <button>
+              onCheck clicker
+            </button>
+            <button>
+              onSelect clicker
+            </button>
+            <button>
+              onExpand clicker
+            </button>
+            <button>
+              onCollapse clicker
+            </button>
+            <div
+              data-testid="TreeViewListItem-children"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

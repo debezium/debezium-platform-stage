@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartLegendTooltipContent 1`] = `
+<DocumentFragment>
+  <g>
+    <rect
+      height="0"
+      role="presentation"
+      shape-rendering="auto"
+      style="fill: none;"
+      vector-effect="non-scaling-stroke"
+      width="0"
+      x="NaN"
+      y="NaN"
+    />
+  </g>
+</DocumentFragment>
+`;
+
+exports[`ChartLegendTooltipContent 2`] = `
+<DocumentFragment>
+  <g>
+    <rect
+      height="0"
+      role="presentation"
+      shape-rendering="auto"
+      style="fill: none;"
+      vector-effect="non-scaling-stroke"
+      width="0"
+      x="NaN"
+      y="NaN"
+    />
+  </g>
+</DocumentFragment>
+`;
+
+exports[`renders component text 1`] = `
+<DocumentFragment>
+  <g>
+    <rect
+      height="0"
+      role="presentation"
+      shape-rendering="auto"
+      style="fill: none;"
+      vector-effect="non-scaling-stroke"
+      width="0"
+      x="NaN"
+      y="NaN"
+    />
+  </g>
+</DocumentFragment>
+`;

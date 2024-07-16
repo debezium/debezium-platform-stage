@@ -1,0 +1,1 @@
+{"version":3,"file":"RegisterLayoutFactory.d.ts","sourceRoot":"","sources":["../../../../src/components/factories/RegisterLayoutFactory.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAE/B,OAAO,EAAE,aAAa,EAAE,MAAM,aAAa,CAAC;AAE5C,UAAU,KAAK;IACb,OAAO,EAAE,aAAa,CAAC;CACxB;AAED,QAAA,MAAM,qBAAqB,EAAE,KAAK,CAAC,iBAAiB,CAAC,KAAK,CAGzD,CAAC;AAEF,eAAe,qBAAqB,CAAC"}

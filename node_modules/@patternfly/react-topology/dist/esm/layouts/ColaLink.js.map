@@ -1,0 +1,1 @@
+{"version":3,"file":"ColaLink.js","sourceRoot":"","sources":["../../../src/layouts/ColaLink.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAI1C,MAAM,OAAO,QAAS,SAAQ,UAAU;IACtC,YAAY,IAAU,EAAE,MAA2B,EAAE,MAA2B;QAC9E,KAAK,CAAC,IAAI,EAAE,MAAoB,EAAE,MAAoB,CAAC,CAAC;IAC1D,CAAC;CACF"}

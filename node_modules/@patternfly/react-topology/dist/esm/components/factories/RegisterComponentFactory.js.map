@@ -1,0 +1,1 @@
+{"version":3,"file":"RegisterComponentFactory.js","sourceRoot":"","sources":["../../../../src/components/factories/RegisterComponentFactory.tsx"],"names":[],"mappings":"AACA,OAAO,mBAAmB,MAAM,iCAAiC,CAAC;AAOlE,MAAM,wBAAwB,GAAmC,CAAC,EAAE,OAAO,EAAE,EAAE,EAAE;IAC/E,mBAAmB,CAAC,OAAO,CAAC,CAAC;IAC7B,OAAO,IAAI,CAAC;AACd,CAAC,CAAC;AAEF,eAAe,wBAAwB,CAAC"}

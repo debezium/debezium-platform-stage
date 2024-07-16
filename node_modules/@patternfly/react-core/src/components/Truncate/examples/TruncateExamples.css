@@ -1,0 +1,9 @@
+.truncate-example-resize {
+  width: 320px;
+  resize: horizontal;
+  overflow: auto;
+  min-width: 161px;
+  max-width: 100%;
+  padding: var(--pf-v6-global--spacer--md);
+  border: var(--pf-v6-global--BorderWidth--sm) solid var(--pf-v6-global--BorderColor--100);
+}

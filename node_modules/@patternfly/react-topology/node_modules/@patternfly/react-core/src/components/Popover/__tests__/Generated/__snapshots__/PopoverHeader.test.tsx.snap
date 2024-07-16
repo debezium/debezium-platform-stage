@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PopoverHeader should match snapshot (auto-generated) 1`] = `
+<DocumentFragment>
+  <header
+    class="pf-v6-c-popover__header"
+  >
+    <div
+      class="pf-v6-c-popover__title"
+      id="string"
+    >
+      <h6
+        class="pf-v6-c-popover__title-text"
+      >
+        <div>
+          ReactNode
+        </div>
+      </h6>
+    </div>
+  </header>
+</DocumentFragment>
+`;
