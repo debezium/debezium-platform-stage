@@ -33,12 +33,9 @@ import {
 import { DataSourceIcon as SourceIcon } from "@patternfly/react-icons";
 import { DataSinkIcon as SinkIcon } from "@patternfly/react-icons";
 
-
 import { PlusCircleIcon as Icon3 } from "@patternfly/react-icons";
 
 import { DataProcessorIcon as Icon4 } from "@patternfly/react-icons";
-
-
 
 // interface CustomNodeProps {
 //   element: Node;
@@ -63,13 +60,13 @@ const BadgeColors = [
 const CustomNode: React.FC<any> = ({ element }) => {
   const data = element.getData();
   let Icon = SourceIcon;
-  if(data.icon === "transform"){
+  if (data.icon === "transform") {
     Icon = Icon4;
-  }else if(data.icon === "add"){
+  } else if (data.icon === "add") {
     Icon = Icon3;
-  }else if(data.icon === "sink"){
+  } else if (data.icon === "sink") {
     Icon = SinkIcon;
-  } 
+  }
   const badgeColors = BadgeColors.find(
     (badgeColor) => badgeColor.name === data.badge
   );
@@ -95,21 +92,21 @@ const customLayoutFactory: LayoutFactory = (
   graph: Graph
 ): Layout | undefined => {
   switch (type) {
-    case 'BreadthFirst':
+    case "BreadthFirst":
       return new BreadthFirstLayout(graph);
-    case 'Cola':
+    case "Cola":
       return new ColaLayout(graph);
-    case 'ColaNoForce':
+    case "ColaNoForce":
       return new ColaLayout(graph, { layoutOnDrag: false });
-    case 'Concentric':
+    case "Concentric":
       return new ConcentricLayout(graph);
-    case 'Dagre':
+    case "Dagre":
       return new DagreLayout(graph);
-    case 'Force':
+    case "Force":
       return new ForceLayout(graph);
-    case 'Grid':
+    case "Grid":
       return new GridLayout(graph);
-    case 'ColaGroups':
+    case "ColaGroups":
       return new ColaGroupsLayout(graph, { layoutOnDrag: false });
     default:
       return new ColaLayout(graph, { layoutOnDrag: false });
@@ -136,7 +133,6 @@ const customComponentFactory: any = (kind: ModelKind, type: string) => {
 };
 
 const NODE_DIAMETER = 75;
-
 
 const NODES: NodeModel[] = [
   {
@@ -178,7 +174,7 @@ const NODES: NodeModel[] = [
   //     badge: "B",
   //     icon: "transform",
   //   },
-  // }, 
+  // },
 
   // {
   //   id: "node-2",
@@ -238,7 +234,7 @@ const NODES: NodeModel[] = [
     children: [
       "node-add",
       "node-0",
-      'node-1',
+      "node-1",
       // "node-2",
       // "node-3",
       // "node-4",
@@ -264,21 +260,16 @@ const NODES: NodeModel[] = [
       icon: "sink",
     },
   },
-
-
-
-  
-
 ];
 
 const EDGES = [
   {
-    id: 'edge-node-source-node-0',
-    type: 'edge',
-    source: 'node-source',
-    target: 'node-0',
+    id: "edge-node-source-node-0",
+    type: "edge",
+    source: "node-source",
+    target: "node-0",
     edgeStyle: EdgeStyle.dashedMd,
-    animationSpeed: EdgeAnimationSpeed.medium
+    animationSpeed: EdgeAnimationSpeed.medium,
   },
   {
     id: "edge-node-0-node-1",
@@ -286,7 +277,7 @@ const EDGES = [
     source: "node-0",
     target: "node-1",
     edgeStyle: EdgeStyle.dashedMd,
-    animationSpeed: EdgeAnimationSpeed.medium
+    animationSpeed: EdgeAnimationSpeed.medium,
   },
   // {
   //   id: "edge-node-1-node-2",
@@ -313,12 +304,12 @@ const EDGES = [
   //   animationSpeed: EdgeAnimationSpeed.medium
   // },
   {
-    id: 'edge-node-1-node-sink',
-    type: 'edge',
-    source: 'node-1',
-    target: 'node-sink',
+    id: "edge-node-1-node-sink",
+    type: "edge",
+    source: "node-1",
+    target: "node-sink",
     edgeStyle: EdgeStyle.dashedMd,
-    animationSpeed: EdgeAnimationSpeed.medium
+    animationSpeed: EdgeAnimationSpeed.medium,
   },
 ];
 
@@ -354,7 +345,7 @@ const Dashboard: React.FunctionComponent = () => {
   return (
     <PageSection>
       <Title headingLevel="h1" size="lg">
-        Dashboard Page Title!
+        Welcome to Stage
       </Title>
       <div style={{ height: "100%", width: "100%" }}>
         <VisualizationProvider controller={controller}>
