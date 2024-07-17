@@ -40,10 +40,6 @@ interface IAppLayout {
 const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // const updateSidebarOpen = useCallback(() => {
-  //   setSidebarOpen(!sidebarOpen);
-  // }, [sidebarOpen]);
-
   const location = useLocation();
 
   const pageId = "primary-app-container";
@@ -189,7 +185,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       mainContainerId={pageId}
       masthead={Header}
       sidebar={sidebarOpen ? Sidebar : SidebarClosed}
-      // isManagedSidebar
+      isManagedSidebar
       // skipToContent={PageSkipToContent}
       breadcrumb={
         location.pathname === "/" ? (
@@ -200,9 +196,9 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       }
       // isBreadcrumbWidthLimited
       // isBreadcrumbGrouped
-      // groupProps={{
-      //   stickyOnBreakpoint: { default: "top" },
-      // }}
+      groupProps={{
+        stickyOnBreakpoint: { default: "top" },
+      }}
     >
       {children}
     </Page>

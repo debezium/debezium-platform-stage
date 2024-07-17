@@ -1,4 +1,0 @@
-{
-  "packageName": "@patternfly/react-table",
-  "exclude": ["dist/esm/deprecated/index.js", "dist/esm/next/index.js"]
-}
