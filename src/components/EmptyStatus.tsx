@@ -3,42 +3,47 @@ import {
   EmptyStateActions,
   EmptyStateBody,
   EmptyStateFooter,
+  EmptyStateVariant,
+  Text,
+  TextContent,
+  TextVariants,
 } from "@patternfly/react-core";
+import { CubesIcon } from "@patternfly/react-icons";
 import { FC, ReactNode } from "react";
 
 interface EmptyStatusProps {
   heading: string;
-  message: string;
+  primaryMessage: string;
+  secondaryMessage: string;
   primaryAction: ReactNode;
-
+  secondaryActions?: ReactNode;
 }
 
 const EmptyStatus: FC<EmptyStatusProps> = ({
   heading,
-  message,
-  primaryAction
+  primaryMessage,
+  secondaryMessage,
+  primaryAction,
+  secondaryActions,
 }) => {
   return (
-    <EmptyState variant="full" titleText={heading}>
-    {/* // <EmptyState>
-    // <EmptyStateHeader titleText={heading} headingLevel="h4" icon={<EmptyStateIcon icon={CubesIcon} />} /> */}
-    <EmptyStateBody>
-      {message}
-    </EmptyStateBody>
-    <EmptyStateFooter>
-      <EmptyStateActions>
+    <EmptyState
+      variant={EmptyStateVariant.full}
+      titleText={heading}
+      headingLevel="h4"
+      icon={CubesIcon}
+    >
+      <EmptyStateBody>
+        <TextContent>
+          <Text component="p">{primaryMessage}</Text>
+          <Text component={TextVariants.small}>{secondaryMessage}</Text>
+        </TextContent>
+      </EmptyStateBody>
+      <EmptyStateFooter>
         {primaryAction}
-      </EmptyStateActions>
-      {/* <EmptyStateActions>
-        <Button variant="link">Multiple</Button>
-        <Button variant="link">Action Buttons</Button>
-        <Button variant="link">Can</Button>
-        <Button variant="link">Go here</Button>
-        <Button variant="link">In the secondary</Button>
-        <Button variant="link">Action area</Button>
-      </EmptyStateActions> */}
-    </EmptyStateFooter>
-  </EmptyState>
+        <EmptyStateActions>{secondaryActions}</EmptyStateActions>
+      </EmptyStateFooter>
+    </EmptyState>
   );
 };
 

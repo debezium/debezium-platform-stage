@@ -1,0 +1,8 @@
+.custom-gallery {
+
+    --pf-v6-l-gallery--GridTemplateColumns--min: 220px !important;
+  }
+
+  .custom-toolbar {
+    --pf-v6-c-toolbar--m-sticky--BoxShadow: 0 0.5rem 0.5rem -0.375rem rgba(3, 3, 3, 0.18) !important;
+  }

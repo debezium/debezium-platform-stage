@@ -28,7 +28,7 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
     <NavItem
       key={`${route.label}-${index}`}
       id={`${route.label}-${index}`}
-      isActive={route.path === location.pathname}
+      isActive={location.pathname.includes(route.navSection)}
     >
       <NavLink to={route.path}>
         {route.icon}

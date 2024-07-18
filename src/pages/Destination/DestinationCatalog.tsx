@@ -16,7 +16,7 @@ import {
   ToolbarGroup,
   ToolbarItem,
 } from "@patternfly/react-core";
-import "./Sink.css";
+import "./DestinationCatalog.css";
 import { ListIcon, PlusCircleIcon, ThIcon } from "@patternfly/react-icons";
 import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
@@ -25,8 +25,7 @@ export interface ISinkProps {
   sampleProp?: string;
 }
 
-// eslint-disable-next-line prefer-const
-let Sink: React.FunctionComponent<ISinkProps> = () => {
+const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
   const [isSelected, setIsSelected] = React.useState("toggle-group-icons-1");
 
   const handleItemClick = (
@@ -117,22 +116,21 @@ let Sink: React.FunctionComponent<ISinkProps> = () => {
             </GalleryItem>
           ))}
           <GalleryItem>
-              <Tile
-           
-                style={{ width: "100%" }}
-                title="Request new source"
-                icon={<PlusCircleIcon color="#0066CC" />}
-                isStacked
-                isDisplayLarge
-                isSelected={false}
-              >
-                Fill our a form to request a new source.
-              </Tile>
-            </GalleryItem>
+            <Tile
+              style={{ width: "100%" }}
+              title="Request new source"
+              icon={<PlusCircleIcon color="#0066CC" />}
+              isStacked
+              isDisplayLarge
+              isSelected={false}
+            >
+              Fill our a form to request a new source.
+            </Tile>
+          </GalleryItem>
         </Gallery>
       </PageSection>
     </>
   );
 };
 
-export { Sink };
+export { DestinationCatalog };

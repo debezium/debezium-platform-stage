@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 // import { within, userEvent, expect } from '@storybook/test';
 
-import { Sink } from './Sink';
+import { Destination } from './Destination';
 
 const meta = {
   title: 'App/Pages/Sink',
-  component: Sink,
+  component: Destination,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     layout: 'fullscreen',
   },
-} satisfies Meta<typeof Sink>;
+} satisfies Meta<typeof Destination>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -80,7 +80,7 @@ const ConnectorImage: React.FC<ConnectorImageProps> = ({
     <img
     src={src}
     alt={`mongo icon`}
-    style={{ maxHeight: "60px" }}
+    style={{ maxHeight: `${size}px` }}
   />
   ) : (
     <img

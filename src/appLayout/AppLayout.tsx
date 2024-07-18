@@ -1,13 +1,12 @@
 import "@patternfly/react-core/dist/styles/base.css";
 import { Page } from "@patternfly/react-core";
 
-import { useLocation } from "react-router-dom";
-
 import { useCallback, useState } from "react";
-import { AppBreadcrumb } from "../components/AppBreadcrumb";
+import AppBreadcrumb from "./AppBreadcrumb";
 import "./AppLayout.css";
 import AppHeader from "./AppHeader";
 import AppSideNavigation from "./AppSideNavigation";
+import { useLocation } from "react-router-dom";
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -31,11 +30,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       sidebar={<AppSideNavigation isSidebarOpen={sidebarOpen} />}
       isManagedSidebar
       breadcrumb={
-        location.pathname === "/" ? (
-          <></>
-        ) : (
-          <AppBreadcrumb path={location.pathname} />
-        )
+        location.pathname.split("/").length <= 2 ? undefined : <AppBreadcrumb />
       }
       groupProps={{
         stickyOnBreakpoint: { default: "top" },
