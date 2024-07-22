@@ -8,7 +8,6 @@ import {
   NavItem,
   Switch,
   NavExpandable,
-  Tooltip,
 } from "@patternfly/react-core";
 import { MoonIcon, SunIcon } from "@patternfly/react-icons";
 import React from "react";
@@ -43,8 +42,12 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
       id={`${route.label}-${index}`}
       isActive={route.path === location.pathname}
     >
-      <NavLink to={route.path} style={{ fontSize: "20px", flexDirection: "column" }}>
-        <Tooltip content={<div>{route.label}</div>}>{route.icon}</Tooltip>
+      <NavLink
+        to={route.path}
+        style={{ fontSize: "20px", flexDirection: "column" }}
+      >
+        {/* <Tooltip content={<div>{route.label}</div>}>{route.icon}</Tooltip> */}
+        {route.icon}
       </NavLink>
     </NavItem>
   );

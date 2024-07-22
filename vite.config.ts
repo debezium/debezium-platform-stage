@@ -14,6 +14,7 @@ const config: ViteConfig = {
         rewrite: (path) => path.replace(/^\/api/, "/api"), // Keep '/api' prefix
       },
     },
+    port: 3000,
   },
   test: {
     // 👋 add the line below to add jsdom to vite

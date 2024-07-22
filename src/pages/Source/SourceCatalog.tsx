@@ -19,13 +19,16 @@ import {
 import { ListIcon, PlusCircleIcon, ThIcon } from "@patternfly/react-icons";
 import sourceCatalog from "../../mocks/data/SourceCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
-import './SourceCatalog.css'
+import "./SourceCatalog.css";
+import { useNavigate } from "react-router-dom";
 
 export interface ISinkProps {
   sampleProp?: string;
 }
 
 const SourceCatalog: React.FunctionComponent<ISinkProps> = () => {
+  const navigate = useNavigate();
+
   const [isSelected, setIsSelected] = React.useState("toggle-group-icons-1");
 
   const handleItemClick = (
@@ -38,17 +41,20 @@ const SourceCatalog: React.FunctionComponent<ISinkProps> = () => {
     setIsSelected(id);
   };
 
+  const onCardClick = (sourceId: string) => {
+    navigate(`/source/create_source/${sourceId}`);
+  };
+
   return (
     <>
       <PageSection isWidthLimited>
         <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Destination</Text>
+          <Text component="h1">Source catalog</Text>
           <Text component="p">
-            Add a source to stream the change events from a source database. To
-            start select a connector below once you select a connector you can
-            configure it using form or smart editor option. You can also search
-            the connector by its name or toggle the catalog between the list
-            view or card view.
+            Select the type of source you want to connect from the list below,
+            once you select a connector you can configure it using form or smart
+            editor option. You can also search the connector by its name or
+            toggle the catalog between the list view or card view.
           </Text>
         </TextContent>
         <Toolbar
@@ -110,6 +116,7 @@ const SourceCatalog: React.FunctionComponent<ISinkProps> = () => {
                 isStacked
                 isDisplayLarge
                 isSelected={false}
+                onClick={() => onCardClick(item.id)}
               >
                 {item.description}
               </Tile>

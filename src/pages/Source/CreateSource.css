@@ -1,0 +1,7 @@
+.custom-form-group {
+    --pf-v6-c-form__field-group--BorderBlockEndWidth: 1px !important;
+}
+
+.custom-card-body {
+    max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth);
+}

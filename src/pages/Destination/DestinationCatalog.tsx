@@ -20,12 +20,14 @@ import "./DestinationCatalog.css";
 import { ListIcon, PlusCircleIcon, ThIcon } from "@patternfly/react-icons";
 import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
+import { useNavigate } from "react-router-dom";
 
 export interface ISinkProps {
   sampleProp?: string;
 }
 
 const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
+  const navigate = useNavigate();
   const [isSelected, setIsSelected] = React.useState("toggle-group-icons-1");
 
   const handleItemClick = (
@@ -36,6 +38,10 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
   ) => {
     const id = event.currentTarget.id;
     setIsSelected(id);
+  };
+
+  const onCardClick = (destinationId: string) => {
+    navigate(`/destination/create_destination/${destinationId}`);
   };
 
   return (
@@ -110,6 +116,7 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
                 isStacked
                 isDisplayLarge
                 isSelected={false}
+                onClick={() => onCardClick(item.id)}
               >
                 {item.description}
               </Tile>

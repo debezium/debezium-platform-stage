@@ -23,6 +23,7 @@
     "@patternfly/react-table": "6.0.0-alpha.82",
     "@patternfly/react-tokens": "6.0.0-alpha.28",
     "@patternfly/react-topology": "6.0.0-alpha.1",
+    "@patternfly/react-code-editor": "6.0.0-alpha.86",
     "axios": "^1.6.8",
     "lodash": "^4.17.21",
     "react": "^18.2.0",

@@ -1,7 +1,7 @@
 import React from "react";
 import { Dashboard } from "./pages/Dashboard/Dashboard";
-import { Source } from "./pages/Source/Source";
-import { Destination } from "./pages/Destination/Destination";
+import { Sources } from "./pages/Source/Sources";
+import { Destinations } from "./pages/Destination/Destinations";
 import { AppBranding } from "./utils/constants";
 import {
   DataProcessorIcon,
@@ -15,6 +15,8 @@ import { Transformation } from "./pages/Transformation/Transformation";
 import { DestinationCatalog } from "./pages/Destination/DestinationCatalog";
 import { Vaults } from "./pages/Vault/Vaults";
 import { SourceCatalog } from "./pages/Source/SourceCatalog";
+import { CreateSource } from "./pages/Source/CreateSource";
+import { CreateDestination } from "./pages/Destination/CreateDestination";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -38,16 +40,16 @@ const routes: AppRouteConfig[] = [
   {
     component: Dashboard,
     label: "Home",
-    icon: <HomeAltIcon style={{outline: "none"}} />,
+    icon: <HomeAltIcon style={{ outline: "none" }} />,
     path: "/",
     navSection: "home",
     title: `${AppBranding} | Home`,
   },
 
   {
-    component: Source,
+    component: Sources,
     label: "Source",
-    icon: <DataSourceIcon style={{outline: "none"}} />,
+    icon: <DataSourceIcon style={{ outline: "none" }} />,
     path: "/source",
     navSection: "source",
     title: `${AppBranding} | Source`,
@@ -59,17 +61,23 @@ const routes: AppRouteConfig[] = [
     title: `${AppBranding} | Source`,
   },
   {
+    component: CreateSource,
+    path: "/source/create_source/:sourceId",
+    navSection: "source",
+    title: `${AppBranding} | Source`,
+  },
+  {
     component: Transformation,
     label: "Transformation",
-    icon: <DataProcessorIcon style={{outline: "none"}}/>,
+    icon: <DataProcessorIcon style={{ outline: "none" }} />,
     path: "/transformation",
     navSection: "transformation",
     title: `${AppBranding} | Transformation`,
   },
   {
-    component: Destination,
+    component: Destinations,
     label: "Destination",
-    icon: <DataSinkIcon style={{outline: "none"}}/>,
+    icon: <DataSinkIcon style={{ outline: "none" }} />,
     title: `${AppBranding} | Destination`,
     path: "/destination",
     navSection: "destination",
@@ -81,9 +89,15 @@ const routes: AppRouteConfig[] = [
     title: `${AppBranding} | Destination`,
   },
   {
+    component: CreateDestination,
+    path: "/destination/create_destination/:destinationId",
+    navSection: "destination",
+    title: `${AppBranding} | Destination`,
+  },
+  {
     component: Vaults,
     label: "Vaults",
-    icon: <VaultIcon style={{outline: "none"}}/>,
+    icon: <VaultIcon style={{ outline: "none" }} />,
     path: "/vaults",
     navSection: "vaults",
     title: `${AppBranding} | Vaults`,
@@ -91,7 +105,7 @@ const routes: AppRouteConfig[] = [
   {
     component: Dashboard,
     label: "Pipeline",
-    icon: <PipelineIcon style={{outline: "none"}}/>,
+    icon: <PipelineIcon style={{ outline: "none" }} />,
     path: "/pipeline",
     navSection: "pipeline",
     title: `${AppBranding} | Pipeline`,
