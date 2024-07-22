@@ -1,17 +1,8 @@
 import * as React from "react";
 import {
-  Bullseye,
   Button,
   Card,
   debounce,
-  EmptyState,
-  EmptyStateActions,
-  EmptyStateBody,
-  EmptyStateFooter,
-  EmptyStateVariant,
-  Flex,
-  FlexItem,
-  Label,
   PageSection,
   SearchInput,
   Text,
@@ -23,25 +14,14 @@ import {
   ToolbarGroup,
   ToolbarItem,
 } from "@patternfly/react-core";
-import { PlusIcon, SearchIcon, TagIcon } from "@patternfly/react-icons";
+import { PlusIcon } from "@patternfly/react-icons";
 import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
 import { Source, fetchData } from "../../apis/apis";
-import {
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  ActionsColumn,
-  IAction,
-} from "@patternfly/react-table";
 import _ from "lodash";
 import { useQuery } from "react-query";
-import ConnectorImage from "../../components/ComponentImage";
 import { API_URL } from "../../utils/constants";
-import { getConnectorTypeName } from "../../utils/helpers";
+import SourceSinkTable from "../../components/SourceSinkTable";
 
 export interface ISourceProps {
   sampleProp?: string;
@@ -101,16 +81,6 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
     [debouncedSearch]
   );
 
-  const rowActions = (): IAction[] => [
-    {
-      title: "Edit",
-    },
-
-    {
-      title: "Delete",
-    },
-  ];
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -121,7 +91,7 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent >
+        <TextContent>
           <Text component="h1">Source</Text>
           {sourcesList.length > 0 ? (
             <Text component="p">
@@ -152,6 +122,7 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                 <ToolbarItem>
                   <SearchInput
                     aria-label="Items example search input"
+                    placeholder="Find by name"
                     value={searchQuery}
                     onChange={(_event, value) => onSearch(value)}
                     onClear={onClear}
@@ -184,75 +155,12 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                 </ToolbarGroup>
               </ToolbarContent>
             </Toolbar>
-            <Table aria-label="Compact Table">
-              <Thead>
-                <Tr>
-                  <Th key={0}>Name</Th>
-                  <Th key={1}>Type</Th>
-                  <Th key={2}>Active</Th>
-                  <Th key={3}>Actions</Th>
-                </Tr>
-              </Thead>
 
-              <Tbody>
-                {(searchQuery.length > 0 ? searchResult : sourcesList).length >
-                0 ? (
-                  (searchQuery.length > 0 ? searchResult : sourcesList).map(
-                    (instance: Source) => (
-                      <Tr key={instance.id}>
-                        <Td dataLabel="Name">{instance.name}</Td>
-                        <Td dataLabel="Type" style={{ paddingLeft: "0px" }}>
-                          <Flex alignItems={{ default: "alignItemsCenter" }}>
-                            <FlexItem spacer={{ default: "spacerMd" }}>
-                              <ConnectorImage
-                                connectorType={instance.type}
-                                size={35}
-                              />
-                            </FlexItem>
-                            <FlexItem>
-                              {" "}
-                              {getConnectorTypeName(instance.type)}
-                            </FlexItem>
-                          </Flex>
-                        </Td>
-                        <Td dataLabel="Active">
-                          <Label icon={<TagIcon />} color="blue">
-                            2
-                          </Label>
-                        </Td>
-                        <Td dataLabel="Actions" isActionCell>
-                          <ActionsColumn items={rowActions()} />
-                        </Td>
-                      </Tr>
-                    )
-                  )
-                ) : (
-                  <Tr>
-                    <Td colSpan={8}>
-                      <Bullseye>
-                        <EmptyState
-                          headingLevel="h2"
-                          titleText="No results found"
-                          icon={SearchIcon}
-                          variant={EmptyStateVariant.sm}
-                        >
-                          <EmptyStateBody>
-                            Clear search and try again.
-                          </EmptyStateBody>
-                          <EmptyStateFooter>
-                            <EmptyStateActions>
-                              <Button variant="link" onClick={onClear}>
-                                Clear search
-                              </Button>
-                            </EmptyStateActions>
-                          </EmptyStateFooter>
-                        </EmptyState>
-                      </Bullseye>
-                    </Td>
-                  </Tr>
-                )}
-              </Tbody>
-            </Table>
+            <SourceSinkTable
+              data={searchQuery.length > 0 ? searchResult : sourcesList}
+              tableType="source"
+              onClear={onClear}
+            />
           </Card>
         ) : (
           <EmptyStatus

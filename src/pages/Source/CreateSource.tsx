@@ -41,7 +41,7 @@ import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import { useState } from "react";
 import { createPost } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { convertMapToObject } from "../../utils/helpers";
+import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import sourceCatalog from "../../mocks/data/SourceCatalog.json";
 import _ from "lodash";
 
@@ -203,7 +203,7 @@ const CreateSource: React.FunctionComponent = () => {
                             size={35}
                           />
                           <Text component="p" style={{ paddingLeft: "10px" }}>
-                            MongoDb
+                            {getConnectorTypeName(sourceId || "")}
                           </Text>
                         </TextContent>
                       </FormGroup>

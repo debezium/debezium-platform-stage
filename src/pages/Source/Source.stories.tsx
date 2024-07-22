@@ -1,20 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 // import { within, userEvent, expect } from '@storybook/test';
 
-import { Source } from './Sources';
+import { Sources } from "./Sources";
 
 const meta = {
-  title: 'App/Pages/Source',
-  component: Source,
+  title: "App/Pages/Source",
+  component: Sources,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
-} satisfies Meta<typeof Source>;
+} satisfies Meta<typeof Sources>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Landing: Story = {};
-
-

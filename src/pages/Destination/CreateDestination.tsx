@@ -38,7 +38,7 @@ import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import _ from "lodash";
 import { createPost } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { convertMapToObject } from "../../utils/helpers";
+import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 
 const CreateDestination: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -187,7 +187,7 @@ const CreateDestination: React.FunctionComponent = () => {
                       <FormGroup
                         label="Destination type"
                         isRequired
-                        fieldId="simple-form-email-02"
+                        fieldId="destination-type-field"
                       >
                         <TextContent
                           style={{ display: "flex", alignItems: "center" }}
@@ -197,7 +197,7 @@ const CreateDestination: React.FunctionComponent = () => {
                             size={35}
                           />
                           <Text component="p" style={{ paddingLeft: "10px" }}>
-                            MongoDb
+                            {getConnectorTypeName(destinationId || "")}
                           </Text>
                         </TextContent>
                       </FormGroup>
@@ -219,9 +219,9 @@ const CreateDestination: React.FunctionComponent = () => {
                           }
                         />
                       </FormGroup>
-                      <FormGroup label="Details" fieldId="details-field">
+                      <FormGroup label="Details" fieldId="destination-details-field">
                         <TextInput
-                          id="details"
+                          id="destination-details"
                           aria-label="Destination details"
                           onChange={(_event, value) =>
                             setValue("details", value)
@@ -236,7 +236,7 @@ const CreateDestination: React.FunctionComponent = () => {
                           <FormFieldGroupHeader
                             titleText={{
                               text: "Configuration properties",
-                              id: "field-group2-titleText-id",
+                              id: "field-group-destination-id",
                             }}
                             titleDescription="Enter the both key and value pair to configure a property"
                             actions={
@@ -260,14 +260,14 @@ const CreateDestination: React.FunctionComponent = () => {
                                 <FormGroup
                                   label=""
                                   isRequired
-                                  fieldId={`configuration-properties-key-field-${key}`}
+                                  fieldId={`destination-config-props-key-field-${key}`}
                                 >
                                   <TextInput
                                     isRequired
                                     type="text"
                                     placeholder="Key"
-                                    id={`configuration-properties-key-${key}`}
-                                    name={`configuration-properties-key-${key}`}
+                                    id={`destination-config-props-key-${key}`}
+                                    name={`destination-config-props-key-${key}`}
                                     value={properties.get(key)?.key || ""}
                                     onChange={(_e, value) =>
                                       handlePropertyChange(key, "key", value)
@@ -277,14 +277,14 @@ const CreateDestination: React.FunctionComponent = () => {
                                 <FormGroup
                                   label=""
                                   isRequired
-                                  fieldId={`configuration-properties-value-field-${key}`}
+                                  fieldId={`destination-config-props-value-field-${key}`}
                                 >
                                   <TextInput
                                     isRequired
                                     type="text"
-                                    id={`configuration-properties-value-${key}`}
+                                    id={`destination-config-props-value-${key}`}
                                     placeholder="Value"
-                                    name={`configuration-properties-value-${key}`}
+                                    name={`destination-config-props-value-${key}`}
                                     value={properties.get(key)?.value || ""}
                                     onChange={(_e, value) =>
                                       handlePropertyChange(key, "value", value)

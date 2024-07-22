@@ -1,16 +1,7 @@
 import * as React from "react";
 import {
-  Bullseye,
   Button,
   Card,
-  EmptyState,
-  EmptyStateActions,
-  EmptyStateBody,
-  EmptyStateFooter,
-  EmptyStateVariant,
-  Flex,
-  FlexItem,
-  Label,
   PageSection,
   SearchInput,
   Text,
@@ -22,25 +13,14 @@ import {
   ToolbarGroup,
   ToolbarItem,
 } from "@patternfly/react-core";
-import { PlusIcon, SearchIcon, TagIcon } from "@patternfly/react-icons";
+import { PlusIcon } from "@patternfly/react-icons";
 import { useNavigate } from "react-router-dom";
-import {
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  ActionsColumn,
-  IAction,
-} from "@patternfly/react-table";
-import ConnectorImage from "../../components/ComponentImage";
 import EmptyStatus from "../../components/EmptyStatus";
-import { Destination, fetchData, Source } from "../../apis/apis";
+import { Destination, fetchData } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import _, { debounce } from "lodash";
 import { useQuery } from "react-query";
-import { getConnectorTypeName } from "../../utils/helpers";
+import SourceSinkTable from "../../components/SourceSinkTable";
 
 const Destinations: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -96,16 +76,6 @@ const Destinations: React.FunctionComponent = () => {
     [debouncedSearch]
   );
 
-  const rowActions = (): IAction[] => [
-    {
-      title: "Edit",
-    },
-
-    {
-      title: "Delete",
-    },
-  ];
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -150,6 +120,7 @@ const Destinations: React.FunctionComponent = () => {
                   <SearchInput
                     aria-label="Items example search input"
                     value={searchQuery}
+                    placeholder="Find by name"
                     onChange={(_event, value) => onSearch(value)}
                     onClear={onClear}
                   />
@@ -176,81 +147,19 @@ const Destinations: React.FunctionComponent = () => {
                           ? searchResult
                           : destinationsList
                         ).length
-                      }{" "}
+                      }
                       Items
                     </Text>
                   </ToolbarItem>
                 </ToolbarGroup>
               </ToolbarContent>
             </Toolbar>
-            <Table aria-label="Compact Table">
-              <Thead>
-                <Tr>
-                  <Th key={0}>Name</Th>
-                  <Th key={1}>Type</Th>
-                  <Th key={2}>Active</Th>
-                  <Th key={3}>Actions</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {(searchQuery.length > 0 ? searchResult : destinationsList)
-                  .length > 0 ? (
-                  (searchQuery.length > 0
-                    ? searchResult
-                    : destinationsList
-                  ).map((instance: Source) => (
-                    <Tr key={instance.id}>
-                      <Td dataLabel="Name">{instance.name}</Td>
-                      <Td dataLabel="Type" style={{ paddingLeft: "0px" }}>
-                        <Flex alignItems={{ default: "alignItemsCenter" }}>
-                          <FlexItem spacer={{ default: "spacerMd" }}>
-                            <ConnectorImage
-                              connectorType={instance.type}
-                              size={35}
-                            />
-                          </FlexItem>
-                          <FlexItem>
-                            {getConnectorTypeName(instance.type)}
-                          </FlexItem>
-                        </Flex>
-                      </Td>
-                      <Td dataLabel="Active">
-                        <Label icon={<TagIcon />} color="blue">
-                          2
-                        </Label>
-                      </Td>
-                      <Td dataLabel="Actions" isActionCell>
-                        <ActionsColumn items={rowActions()} />
-                      </Td>
-                    </Tr>
-                  ))
-                ) : (
-                  <Tr>
-                    <Td colSpan={8}>
-                      <Bullseye>
-                        <EmptyState
-                          headingLevel="h2"
-                          titleText="No results found"
-                          icon={SearchIcon}
-                          variant={EmptyStateVariant.sm}
-                        >
-                          <EmptyStateBody>
-                            Clear search and try again.
-                          </EmptyStateBody>
-                          <EmptyStateFooter>
-                            <EmptyStateActions>
-                              <Button variant="link" onClick={onClear}>
-                                Clear search
-                              </Button>
-                            </EmptyStateActions>
-                          </EmptyStateFooter>
-                        </EmptyState>
-                      </Bullseye>
-                    </Td>
-                  </Tr>
-                )}
-              </Tbody>
-            </Table>
+
+            <SourceSinkTable
+              data={searchQuery.length > 0 ? searchResult : destinationsList}
+              tableType="destination"
+              onClear={onClear}
+            />
           </Card>
         ) : (
           <EmptyStatus

@@ -37,10 +37,6 @@ import { PlusCircleIcon as Icon3 } from "@patternfly/react-icons";
 
 import { DataProcessorIcon as Icon4 } from "@patternfly/react-icons";
 
-// interface CustomNodeProps {
-//   element: Node;
-// }
-
 const BadgeColors = [
   {
     name: "A",
@@ -80,8 +76,8 @@ const CustomNode: React.FC<any> = ({ element }) => {
       badgeTextColor={badgeColors?.badgeTextColor}
       badgeBorderColor={badgeColors?.badgeBorderColor}
     >
-      <g transform={`translate(25, 25)`}>
-        <Icon style={{ color: "#393F44" }} width={25} height={25} />
+      <g transform={`translate(40, 40)`}>
+        <Icon style={{ color: "#393F44" }} width={40} height={40} />
       </g>
     </DefaultNode>
   );
@@ -132,7 +128,7 @@ const customComponentFactory: any = (kind: ModelKind, type: string) => {
   }
 };
 
-const NODE_DIAMETER = 75;
+const NODE_DIAMETER = 120;
 
 const NODES: NodeModel[] = [
   {
@@ -148,60 +144,7 @@ const NODES: NodeModel[] = [
       icon: "default",
     },
   },
-  // {
-  //   id: "node-4",
-  //   type: "node",
-  //   label: "Node 4",
-  //   width: NODE_DIAMETER,
-  //   height: NODE_DIAMETER,
-  //   shape: NodeShape.trapezoid,
-  //   status: NodeStatus.default,
-  //   data: {
-  //     badge: "B",
-  //     icon: "transform",
-  //   },
-  // },
 
-  // {
-  //   id: "node-3",
-  //   type: "node",
-  //   label: "Node 3",
-  //   width: NODE_DIAMETER,
-  //   height: NODE_DIAMETER,
-  //   shape: NodeShape.trapezoid,
-  //   status: NodeStatus.default,
-  //   data: {
-  //     badge: "B",
-  //     icon: "transform",
-  //   },
-  // },
-
-  // {
-  //   id: "node-2",
-  //   type: "node",
-  //   label: "Node 2",
-  //   width: NODE_DIAMETER,
-  //   height: NODE_DIAMETER,
-  //   shape: NodeShape.trapezoid,
-  //   status: NodeStatus.default,
-  //   data: {
-  //     badge: "B",
-  //     icon: "transform",
-  //   },
-  // },
-  {
-    id: "node-1",
-    type: "node",
-    label: "Node 1",
-    width: NODE_DIAMETER,
-    height: NODE_DIAMETER,
-    shape: NodeShape.trapezoid,
-    status: NodeStatus.default,
-    data: {
-      badge: "B",
-      icon: "transform",
-    },
-  },
   {
     id: "node-0",
     type: "node",
@@ -215,30 +158,23 @@ const NODES: NodeModel[] = [
       icon: "transform",
     },
   },
-  {
-    id: "node-add",
-    type: "node",
-    label: "+ Add",
-    width: NODE_DIAMETER,
-    height: NODE_DIAMETER,
-    shape: NodeShape.ellipse,
-    status: NodeStatus.default,
-    data: {
-      badge: "B",
-      icon: "add",
-    },
-  },
+  // {
+  //   id: "node-add",
+  //   type: "node",
+  //   label: "+ Add",
+  //   width: NODE_DIAMETER,
+  //   height: NODE_DIAMETER,
+  //   shape: NodeShape.ellipse,
+  //   status: NodeStatus.default,
+  //   data: {
+  //     badge: "B",
+  //     icon: "add",
+  //   },
+  // },
 
   {
     id: "Group-1",
-    children: [
-      "node-add",
-      "node-0",
-      "node-1",
-      // "node-2",
-      // "node-3",
-      // "node-4",
-    ],
+    children: [ "node-0"],
     type: "group",
     group: true,
     label: "Transformation",
@@ -271,42 +207,11 @@ const EDGES = [
     edgeStyle: EdgeStyle.dashedMd,
     animationSpeed: EdgeAnimationSpeed.medium,
   },
+
   {
-    id: "edge-node-0-node-1",
+    id: "edge-node-0-node-sink",
     type: "edge",
     source: "node-0",
-    target: "node-1",
-    edgeStyle: EdgeStyle.dashedMd,
-    animationSpeed: EdgeAnimationSpeed.medium,
-  },
-  // {
-  //   id: "edge-node-1-node-2",
-  //   type: "edge",
-  //   source: "node-1",
-  //   target: "node-2",
-  //   edgeStyle: EdgeStyle.dashedMd,
-  //   animationSpeed: EdgeAnimationSpeed.medium
-  // },
-  // {
-  //   id: "edge-node-2-node-3",
-  //   type: "edge",
-  //   source: "node-2",
-  //   target: "node-3",
-  //   edgeStyle: EdgeStyle.dashedMd,
-  //   animationSpeed: EdgeAnimationSpeed.medium
-  // },
-  // {
-  //   id: "edge-node-3-node-4",
-  //   type: "edge",
-  //   source: "node-3",
-  //   target: "node-4",
-  //   edgeStyle: EdgeStyle.dashedMd,
-  //   animationSpeed: EdgeAnimationSpeed.medium
-  // },
-  {
-    id: "edge-node-1-node-sink",
-    type: "edge",
-    source: "node-1",
     target: "node-sink",
     edgeStyle: EdgeStyle.dashedMd,
     animationSpeed: EdgeAnimationSpeed.medium,
@@ -323,7 +228,7 @@ const Dashboard: React.FunctionComponent = () => {
       graph: {
         id: "g1",
         type: "graph",
-        layout: "Dagre",
+        layout: "BreadthFirst",
       },
     };
 
