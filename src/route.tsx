@@ -18,6 +18,8 @@ import { SourceCatalog } from "./pages/Source/SourceCatalog";
 import { CreateSource } from "./pages/Source/CreateSource";
 import { CreateDestination } from "./pages/Destination/CreateDestination";
 import { Pipelines } from "./pages/Pipeline/Pipelines";
+import { PipelineDesigner } from "./pages/Pipeline/PipelineDesigner";
+import { ConfigurePipeline } from "./pages/Pipeline/ConfigurePipeline";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -112,13 +114,13 @@ const routes: AppRouteConfig[] = [
     title: `${AppBranding} | Pipeline`,
   },
   {
-    component: DestinationCatalog,
+    component: PipelineDesigner,
     path: "/pipeline/pipeline_designer",
     navSection: "pipeline",
     title: `${AppBranding} | Pipeline`,
   },
   {
-    component: CreateDestination,
+    component: ConfigurePipeline,
     path: "/pipeline/pipeline_designer/create_pipeline",
     navSection: "pipeline",
     title: `${AppBranding} | Pipeline`,

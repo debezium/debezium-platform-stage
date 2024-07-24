@@ -251,7 +251,7 @@ const Pipelines: React.FunctionComponent = () => {
                         isChecked={true}
                         onChange={() => {}}
                         // isReversed
-                        // isDisabled
+                        isDisabled
                       />
                         </Td>
                         <Td dataLabel="Actions" isActionCell>

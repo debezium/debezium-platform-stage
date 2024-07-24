@@ -1,5 +1,14 @@
 import * as React from "react";
-import { Card, PageSection, Title } from "@patternfly/react-core";
+import {
+    ActionGroup,
+    Button,
+    Card,
+  CardBody,
+  CardFooter,
+  PageSection,
+  Text,
+  TextContent,
+} from "@patternfly/react-core";
 import {
   BreadthFirstLayout,
   ColaGroupsLayout,
@@ -36,6 +45,8 @@ import { DataSinkIcon as SinkIcon } from "@patternfly/react-icons";
 import { PlusCircleIcon as Icon3 } from "@patternfly/react-icons";
 
 import { DataProcessorIcon as Icon4 } from "@patternfly/react-icons";
+import { useNavigate } from "react-router-dom";
+import "./PipelineDesigner.css"
 
 const BadgeColors = [
   {
@@ -174,7 +185,7 @@ const NODES: NodeModel[] = [
 
   {
     id: "Group-1",
-    children: [ "node-0"],
+    children: ["node-0"],
     type: "group",
     group: true,
     label: "Transformation",
@@ -218,8 +229,14 @@ const EDGES = [
   },
 ];
 
-const Dashboard: React.FunctionComponent = () => {
+const PipelineDesigner: React.FunctionComponent = () => {
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+
+  const navigate = useNavigate();
+
+  const navigateTo = (url: string) => {
+    navigate(url);
+  };
 
   const controller = React.useMemo(() => {
     const model: Model = {
@@ -248,27 +265,55 @@ const Dashboard: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <PageSection isFilled>
-      <Title headingLevel="h1" size="lg">
-        Welcome to Stage
-      </Title>
-      <Card isFullHeight
-      // style={{ minHeight: '30em' }}
-      >
-    {/* <CardTitle>Title</CardTitle>
-    <CardBody isFilled={false}>Body pf-m-no-fill</CardBody>
+    <>
+      <PageSection isWidthLimited>
+        <TextContent>
+          <Text component="h1">Pipeline designer</Text>
+          <Text component="p">
+            Configure the pipeline by adding an existing source and destination
+            or create a new one as per you need. Optionally you can also any
+            number of transformation as needed.
+          </Text>
+        </TextContent>
+      </PageSection>
+      <PageSection isFilled>
+        <Card
+          isFullHeight
+          // style={{ minHeight: '30em' }}
+        >
+          {/* <CardTitle>Title</CardTitle>
+   
     <CardBody isFilled={false}>Body pf-m-no-fill</CardBody>
     <CardBody>Body</CardBody>
     <CardFooter>Footer</CardFooter> */}
-    {/* <div style={{ height: "100%", width: "100%" }}> */}
-        <VisualizationProvider controller={controller}>
-          <VisualizationSurface state={{ selectedIds }} />
-        </VisualizationProvider>
-   
-  </Card>
-      
-    </PageSection>
+          {/* <div style={{ height: "100%", width: "100%" }}> */}
+          <CardBody isFilled>
+          <VisualizationProvider controller={controller}>
+            <VisualizationSurface state={{ selectedIds }} />
+          </VisualizationProvider>
+          </CardBody>
+          
+          <CardFooter className="custom-card-footer">
+          <ActionGroup style={{ marginTop: 0 }}>
+                <Button
+                  variant="primary"
+                 onClick={() => navigateTo("/pipeline/pipeline_designer/create_pipeline")}
+                >
+                  Configure Pipeline
+                </Button>
+                <Button
+                  variant="link"
+                  onClick={() => navigateTo("/pipeline")}
+                >
+                  Cancel
+                </Button>
+              </ActionGroup>
+
+          </CardFooter>
+        </Card>
+      </PageSection>
+    </>
   );
 };
 
-export { Dashboard };
+export { PipelineDesigner };

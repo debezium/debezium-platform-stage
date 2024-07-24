@@ -12,6 +12,7 @@ import {
   FormFieldGroupHeader,
   FormGroup,
   FormHelperText,
+  FormSection,
   Grid,
   HelperText,
   HelperTextItem,
@@ -190,72 +191,86 @@ const CreateSource: React.FunctionComponent = () => {
                 <Card isFullHeight className="custom-card-body">
                   <CardBody isFilled>
                     <Form isWidthLimited>
-                      <FormGroup
-                        label="Source type"
-                        isRequired
-                        fieldId="source-type-field"
-                      >
-                        <TextContent
-                          style={{ display: "flex", alignItems: "center" }}
+                      {/* <FormSection title="Capture details" titleElement="h2"> */}
+                        <FormGroup
+                          label="Source type"
+                          isRequired
+                          fieldId="source-type-field"
                         >
-                          <ConnectorImage
-                            connectorType={sourceId || ""}
-                            size={35}
+                          <TextContent
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <ConnectorImage
+                              connectorType={sourceId || ""}
+                              size={35}
+                            />
+                            <Text component="p" style={{ paddingLeft: "10px" }}>
+                              {getConnectorTypeName(sourceId || "")}
+                            </Text>
+                          </TextContent>
+                        </FormGroup>
+                        <FormGroup
+                          label="Source name"
+                          isRequired
+                          fieldId="source-name-field"
+                        >
+                          <TextInput
+                            id="source-name"
+                            aria-label="Source name"
+                            onChange={(_event, value) => {
+                              setValue("source-name", value);
+                              setError("source-name", undefined);
+                            }}
+                            value={getValue("source-name")}
+                            validated={
+                              errors["source-name"] ? "error" : "default"
+                            }
                           />
-                          <Text component="p" style={{ paddingLeft: "10px" }}>
-                            {getConnectorTypeName(sourceId || "")}
-                          </Text>
-                        </TextContent>
-                      </FormGroup>
-                      <FormGroup
-                        label="Source name"
-                        isRequired
-                        fieldId="source-name-field"
-                      >
-                        <TextInput
-                          id="source-name"
-                          aria-label="Source name"
-                          onChange={(_event, value) => {
-                            setValue("source-name", value);
-                            setError("source-name", undefined);
-                          }}
-                          value={getValue("source-name")}
-                          validated={
-                            errors["source-name"] ? "error" : "default"
-                          }
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem
-                              variant={
-                                errors["source-name"] ? "error" : "default"
-                              }
-                              {...(errors["source-name"] && {
-                                icon: <ExclamationCircleIcon />,
-                              })}
-                            >
-                              {errors["source-name"]}
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-                      <FormGroup label="Details" fieldId="details-field">
-                        <TextInput
-                          id="details"
-                          aria-label="Source details"
-                          onChange={(_event, value) =>
-                            setValue("details", value)
-                          }
-                          value={getValue("details")}
-                        />
-                      </FormGroup>
+                          <FormHelperText>
+                            <HelperText>
+                              <HelperTextItem
+                                variant={
+                                  errors["source-name"] ? "error" : "default"
+                                }
+                                {...(errors["source-name"] && {
+                                  icon: <ExclamationCircleIcon />,
+                                })}
+                              >
+                                {errors["source-name"]}
+                              </HelperTextItem>
+                            </HelperText>
+                          </FormHelperText>
+                        </FormGroup>
+                        <FormGroup label="Details" fieldId="details-field">
+                          <TextInput
+                            id="details"
+                            aria-label="Source details"
+                            onChange={(_event, value) =>
+                              setValue("details", value)
+                            }
+                            value={getValue("details")}
+                          />
+                          <FormHelperText>
+                            <HelperText>
+                              <HelperTextItem>
+                                Add a one liner to describe your source or where
+                                you plan to capture.
+                              </HelperTextItem>
+                            </HelperText>
+                          </FormHelperText>
+                        </FormGroup>
+                      {/* </FormSection> */}
 
                       <FormFieldGroup
                         // className="custom-form-group"
                         header={
                           <FormFieldGroupHeader
                             titleText={{
-                              text: "Configuration properties",
+                              text: (
+                                <Text component="h4">
+                                  Configuration properties
+                                </Text>
+                              ),
                               id: "configuration-properties-group",
                             }}
                             titleDescription="Enter the both key and value pair to configure a property"

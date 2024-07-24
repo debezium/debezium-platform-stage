@@ -1,0 +1,9 @@
+.custom-form-group {
+    /* --pf-v6-c-form__field-group--BorderBlockEndWidth: 1px !important; */
+    /* margin-top: 0 !important; */
+    /* border-top: var(--pf-t--global--border--width--100) solid var(--pf-t--global--border--color--default); */
+}
+
+.custom-card-body {
+    max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth);
+}
