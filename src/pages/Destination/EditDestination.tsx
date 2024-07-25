@@ -32,19 +32,25 @@ import {
   CodeIcon,
   PlusIcon,
   TrashIcon,
+  ExclamationCircleIcon,
 } from "@patternfly/react-icons";
-import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CreateDestination.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
-import _ from "lodash";
-import { createPost } from "../../apis/apis";
+import { useState } from "react";
+import {
+  Destination,
+  DestinationConfig,
+  editPut,
+  fetchDataTypeTwo,
+} from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import { useData } from "../../appLayout/AppContext";
+import { useNotification } from "../../appLayout/NotificationContext";
 
-const CreateDestination: React.FunctionComponent = () => {
+const EditDestination: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const { destinationId } = useParams<{ destinationId: string }>();
 
@@ -54,14 +60,50 @@ const CreateDestination: React.FunctionComponent = () => {
 
   const { navigationCollapsed } = useData();
 
+  const { addNotification } = useNotification();
+
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [destination, setDestination] = useState<Destination>();
+  const [isFetchLoading, setIsFetchLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const [properties, setProperties] = React.useState<
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [properties, setProperties] = useState<
     Map<string, { key: string; value: string }>
   >(new Map([["key0", { key: "", value: "" }]]));
-  const [keyCount, setKeyCount] = React.useState<number>(1);
+  const [keyCount, setKeyCount] = useState<number>(1);
+
+  const setConfigProperties = (configProp: DestinationConfig) => {
+    let i = 0;
+    const configMap = new Map();
+    for (const config in configProp) {
+      configMap.set(`key${i}`, { key: config, value: configProp[config] });
+      i++;
+    }
+    setProperties(configMap);
+  };
+
+  React.useEffect(() => {
+    const fetchDestinations = async () => {
+      setIsFetchLoading(true);
+      const response = await fetchDataTypeTwo<Destination>(
+        `${API_URL}/api/destinations/${destinationId}`
+      );
+
+      if (response.error) {
+        setError(response.error);
+      } else {
+        setDestination(response.data);
+        setConfigProperties(response.data?.config ?? { "": "" });
+      }
+
+      setIsFetchLoading(false);
+    };
+
+    fetchDestinations();
+  }, [destinationId]);
 
   const handleAddProperty = () => {
     const newKey = `key${keyCount}`;
@@ -97,30 +139,31 @@ const CreateDestination: React.FunctionComponent = () => {
     });
   };
 
-  const createNewDestination = async (values: Record<string, string>) => {
+  const editDestination = async (values: Record<string, string>) => {
     const payload = {
       description: values["details"],
-      type: _.find(destinationCatalog, { id: destinationId })?.type || "",
-      schema: "schema321",
-      vaults: [],
       config: convertMapToObject(properties),
       name: values["destination-name"],
     };
 
-    const response = await createPost(`${API_URL}/api/destinations`, payload);
+    const response = await editPut(
+      `${API_URL}/api/destinations/${destinationId}`,
+      payload
+    );
 
     if (response.error) {
-      console.error("Failed to create destination:", response.error);
+      console.error("Failed to edit source:", response.error);
     } else {
-      console.log("Destination created successfully:", response.data);
+      addNotification("success");
+      console.log("Source edited successfully:", response.data);
     }
   };
 
-  const handleCreateDestination = (values: Record<string, string>) => {
+  const handleEditDestination = (values: Record<string, string>) => {
     setIsLoading(true);
     // Add a 2-second delay
     setTimeout(async () => {
-      await createNewDestination(values);
+      await editDestination(values);
       setIsLoading(false);
       navigateTo("/destination");
     }, 2000);
@@ -136,57 +179,70 @@ const CreateDestination: React.FunctionComponent = () => {
     setEditorSelected(id);
   };
 
+  if (isFetchLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <>
       <PageSection isWidthLimited>
         <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Create Destination </Text>
+          <Text component="h1">Edit destination </Text>
           <Text component="p">
             To configure and create a connector fill out the below form or use
-            the smart editor to setup a new destination connector. If you
-            already have a configuration file, you can setup a new destination
+            the smart editor to setup a new Destination connector. If you
+            already have a configuration file, you can setup a new Destination
             connector by uploading it in the smart editor.
           </Text>
         </TextContent>
-        <Toolbar id="create-editor-toggle" className="create_destination-toolbar">
-                <ToolbarContent>
-                  <ToolbarItem>
-                    <ToggleGroup aria-label="Toggle between form and smart editor">
-                      <ToggleGroupItem
-                        icon={<PencilAltIcon />}
-                        text="Form editor"
-                        aria-label="Form editor"
-                        buttonId="form-editor"
-                        isSelected={editorSelected === "form-editor"}
-                        onChange={handleItemClick}
-                      />
+        <Toolbar id="edit-editor-toggle" className="create_destination-toolbar">
+          <ToolbarContent style={{ padding: "0" }}>
+            <ToolbarItem>
+              <ToggleGroup aria-label="Toggle between form editor and smart editor">
+                <ToggleGroupItem
+                  icon={<PencilAltIcon />}
+                  text="Form editor"
+                  aria-label="Form editor"
+                  buttonId="form-editor"
+                  isSelected={editorSelected === "form-editor"}
+                  onChange={handleItemClick}
+                />
 
-                      <ToggleGroupItem
-                        icon={<CodeIcon />}
-                        text="Smart editor"
-                        aria-label="Smart editor"
-                        buttonId="smart-editor"
-                        isSelected={editorSelected === "smart-editor"}
-                        onChange={handleItemClick}
-                      />
-                    </ToggleGroup>
-                  </ToolbarItem>
-                </ToolbarContent>
-              </Toolbar>
+                <ToggleGroupItem
+                  icon={<CodeIcon />}
+                  text="Smart editor"
+                  aria-label="Smart editor"
+                  buttonId="smart-editor"
+                  isSelected={editorSelected === "smart-editor"}
+                  onChange={handleItemClick}
+                />
+              </ToggleGroup>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
       </PageSection>
-      <FormContextProvider initialValues={{}}>
+
+      <FormContextProvider
+        initialValues={{
+          "destination-name": destination?.name || "",
+          details: destination?.description || "",
+        }}
+      >
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited = { editorSelected === "form-editor" }
+              isWidthLimited={editorSelected === "form-editor"}
               isCenterAligned
               isFilled
               style={{ paddingTop: "0" }}
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
               className={navigationCollapsed ? "custom-page-section" : ""}
+              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
+              // className="custom-card-body"
             >
-              
-
               {editorSelected === "form-editor" ? (
                 <Card className="custom-card-body">
                   <CardBody isFilled>
@@ -200,9 +256,10 @@ const CreateDestination: React.FunctionComponent = () => {
                           style={{ display: "flex", alignItems: "center" }}
                         >
                           <ConnectorImage
-                            connectorType={destinationId || ""}
+                            connectorType={destination?.type ?? ""}
                             size={35}
                           />
+
                           <Text component="p" style={{ paddingLeft: "10px" }}>
                             {getConnectorTypeName(destinationId || "")}
                           </Text>
@@ -215,7 +272,7 @@ const CreateDestination: React.FunctionComponent = () => {
                       >
                         <TextInput
                           id="destination-name"
-                          aria-label="destination name"
+                          aria-label="Destination name"
                           onChange={(_event, value) => {
                             setValue("destination-name", value);
                             setError("destination-name", undefined);
@@ -225,13 +282,24 @@ const CreateDestination: React.FunctionComponent = () => {
                             errors["destination-name"] ? "error" : "default"
                           }
                         />
+                        <FormHelperText>
+                          <HelperText>
+                            <HelperTextItem
+                              variant={
+                                errors["destination-name"] ? "error" : "default"
+                              }
+                              {...(errors["destination-name"] && {
+                                icon: <ExclamationCircleIcon />,
+                              })}
+                            >
+                              {errors["destination-name"]}
+                            </HelperTextItem>
+                          </HelperText>
+                        </FormHelperText>
                       </FormGroup>
-                      <FormGroup
-                        label="Details"
-                        fieldId="destination-details-field"
-                      >
+                      <FormGroup label="Details" fieldId="details-field">
                         <TextInput
-                          id="destination-details"
+                          id="details"
                           aria-label="Destination details"
                           onChange={(_event, value) =>
                             setValue("details", value)
@@ -241,7 +309,7 @@ const CreateDestination: React.FunctionComponent = () => {
                         <FormHelperText>
                           <HelperText>
                             <HelperTextItem>
-                              Add a one liner to describe your destination or
+                              Add a one liner to describe your Destination or
                               where you plan to capture.
                             </HelperTextItem>
                           </HelperText>
@@ -253,8 +321,12 @@ const CreateDestination: React.FunctionComponent = () => {
                         header={
                           <FormFieldGroupHeader
                             titleText={{
-                              text: "Configuration properties",
-                              id: "field-group-destination-id",
+                              text: (
+                                <Text component="h4">
+                                  Configuration properties
+                                </Text>
+                              ),
+                              id: "configuration-properties-group",
                             }}
                             titleDescription="Enter the both key and value pair to configure a property"
                             actions={
@@ -278,14 +350,14 @@ const CreateDestination: React.FunctionComponent = () => {
                                 <FormGroup
                                   label=""
                                   isRequired
-                                  fieldId={`destination-config-props-key-field-${key}`}
+                                  fieldId={`configuration-properties-key-field-${key}`}
                                 >
                                   <TextInput
                                     isRequired
                                     type="text"
                                     placeholder="Key"
-                                    id={`destination-config-props-key-${key}`}
-                                    name={`destination-config-props-key-${key}`}
+                                    id={`configuration-properties-key-${key}`}
+                                    name={`configuration-properties-key-${key}`}
                                     value={properties.get(key)?.key || ""}
                                     onChange={(_e, value) =>
                                       handlePropertyChange(key, "key", value)
@@ -295,14 +367,14 @@ const CreateDestination: React.FunctionComponent = () => {
                                 <FormGroup
                                   label=""
                                   isRequired
-                                  fieldId={`destination-config-props-value-field-${key}`}
+                                  fieldId={`configuration-properties-value-field-${key}`}
                                 >
                                   <TextInput
                                     isRequired
                                     type="text"
-                                    id={`destination-config-props-value-${key}`}
+                                    id={`configuration-properties-value-${key}`}
                                     placeholder="Value"
-                                    name={`destination-config-props-value-${key}`}
+                                    name={`configuration-properties-value-${key}`}
                                     value={properties.get(key)?.value || ""}
                                     onChange={(_e, value) =>
                                       handlePropertyChange(key, "value", value)
@@ -314,7 +386,7 @@ const CreateDestination: React.FunctionComponent = () => {
                             <SplitItem>
                               <Button
                                 variant="plain"
-                                aria-label="Remove"
+                                aria-label="Remove property"
                                 onClick={() => handleDeleteProperty(key)}
                               >
                                 <TrashIcon />
@@ -336,6 +408,7 @@ const CreateDestination: React.FunctionComponent = () => {
                   language={Language.yaml}
                   // code="your code goes here"
                   height="450px"
+                  // className="custom-card-body"
                 />
               )}
             </PageSection>
@@ -343,6 +416,7 @@ const CreateDestination: React.FunctionComponent = () => {
               <ActionGroup style={{ marginTop: 0 }}>
                 <Button
                   variant="primary"
+                  // onClick={handleCreateSource}
                   isLoading={isLoading}
                   isDisabled={isLoading}
                   type={ButtonType.submit}
@@ -355,17 +429,17 @@ const CreateDestination: React.FunctionComponent = () => {
                         "Destination name is required."
                       );
                     } else {
-                      handleCreateDestination(values);
+                      handleEditDestination(values);
                     }
                   }}
                 >
-                  Create destination
+                  Save change
                 </Button>
                 <Button
                   variant="link"
-                  onClick={() => navigateTo("/destination/catalog")}
+                  onClick={() => navigateTo("/destination")}
                 >
-                  Back to catalog
+                  Cancel
                 </Button>
               </ActionGroup>
             </PageSection>
@@ -376,4 +450,4 @@ const CreateDestination: React.FunctionComponent = () => {
   );
 };
 
-export { CreateDestination };
+export { EditDestination };

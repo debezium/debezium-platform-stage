@@ -10,7 +10,7 @@ import {
   NavExpandable,
 } from "@patternfly/react-core";
 import { MoonIcon, SunIcon } from "@patternfly/react-icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { IAppRoute, IAppRouteGroup, routes } from "../route";
 
@@ -22,6 +22,27 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
   isSidebarOpen,
 }) => {
   const location = useLocation();
+
+  const [isDarkMode, setIsDarkMode] = useState(
+    () => localStorage.getItem("themeMode") === "dark"
+  );
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem(
+      "themeMode",
+      JSON.stringify(!isDarkMode ? "dark" : "light")
+    );
+    console.log("isDarkMode", !isDarkMode);
+    document.body.classList.toggle("pf-v6-theme-dark");
+  };
+
+  useEffect(() => {
+    console.log("isDarkMode", isDarkMode);
+    if (localStorage.getItem("themeMode") === "dark") {
+      document.body.classList.add("pf-v6-theme-dark");
+    }
+  }, []);
 
   const renderNavItem = (route: IAppRoute, index: number) => (
     <NavItem
@@ -108,15 +129,15 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
                       className="pf-v6-c-nav__link"
                       style={{ cursor: "pointer" }}
                     >
-                      <MoonIcon />
+                      {isDarkMode ? <SunIcon /> : <MoonIcon />}
                       Dark mode
                       <Switch
                         // style={{ marginLeft: "auto" }}
                         className="custom-switch"
                         id="reversed-switch"
                         aria-label="Switch to dark mode"
-                        isChecked={false}
-                        onChange={() => {}}
+                        isChecked={isDarkMode}
+                        onChange={toggleDarkMode}
                         isReversed
                       />
                     </div>
@@ -131,7 +152,11 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
                       className="pf-v6-c-nav__link"
                       style={{ fontSize: "20px", cursor: "pointer" }}
                     >
-                      <SunIcon />
+                      {isDarkMode ? (
+                        <SunIcon onClick={toggleDarkMode} />
+                      ) : (
+                        <MoonIcon onClick={toggleDarkMode} />
+                      )}
                     </div>
                   </NavItem>
                 </NavList>

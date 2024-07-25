@@ -95,11 +95,10 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
           <Text component="h1">Source</Text>
           {sourcesList.length > 0 ? (
             <Text component="p">
-              Add a source to streams change events from a source database. To
-              start select a connector below once you select a connector you can
-              configure it using form or smart editor option. You can also
-              search the connector by its name or toggle the catalog between the
-              list view or card view.
+              Lists the available sources configured in the cluster streaming
+              change events from a source database. You can search a source by
+              its name or sort the list by the count of active pipelines using a
+              source.
             </Text>
           ) : (
             <></>

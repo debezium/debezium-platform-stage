@@ -31,12 +31,17 @@ import {
 import React, { useState } from "react";
 import {
   DestinationApiResponse,
+  Pipeline,
   SourceApiResponse,
   deleteResource,
+  fetchData,
 } from "../apis/apis";
 import { getConnectorTypeName } from "../utils/helpers";
 import ConnectorImage from "./ComponentImage";
 import { API_URL } from "../utils/constants";
+import { useQuery } from "react-query";
+import { getActivePipelineCount } from "../utils/pipelineUtils";
+import { useNavigate } from "react-router-dom";
 
 interface ISourceSinkTableProps {
   tableType: "source" | "destination";
@@ -59,6 +64,7 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
   data,
   onClear,
 }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [deleteInstance, setDeleteInstance] = useState<DeleteInstance>({
     id: 0,
@@ -66,6 +72,20 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
   });
   const [deleteInstanceName, setDeleteInstanceName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    data: pipelineList = [],
+    error: pipelineError,
+    isLoading: isPipelineLoading,
+  } = useQuery<Pipeline[], Error>(
+    "pipelines",
+    () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),
+    {
+      refetchInterval: 7000,
+    }
+  );
+
+  console.log(pipelineError, isPipelineLoading);
 
   const handleDelete = async (id: number, type: string) => {
     setIsLoading(true);
@@ -89,6 +109,12 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
     setDeleteInstance({ id: id, name: name });
   };
 
+  const onEditHandler = (id: number, name: string) => {
+    navigate(`/${tableType}/edit_${tableType}/${id}`);
+
+    console.log("Edit clicked", id, name);
+  };
+
   const modalToggle = (toggleValue: boolean) => {
     setDeleteInstanceName("");
     setIsOpen(toggleValue);
@@ -97,7 +123,7 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
   const rowActions = (actionData: ActionData): IAction[] => [
     {
       title: "Edit",
-      isDisabled: true,
+      onClick: () => onEditHandler(actionData.id, actionData.name),
     },
 
     {
@@ -132,7 +158,11 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
                 </Td>
                 <Td dataLabel="Active">
                   <Label icon={<TagIcon />} color="blue">
-                    2
+                    {getActivePipelineCount(
+                      pipelineList,
+                      instance.id,
+                      tableType
+                    )}
                   </Label>
                 </Td>
                 <Td dataLabel="Actions" isActionCell>

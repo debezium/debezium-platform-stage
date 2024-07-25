@@ -20,6 +20,8 @@ import { CreateDestination } from "./pages/Destination/CreateDestination";
 import { Pipelines } from "./pages/Pipeline/Pipelines";
 import { PipelineDesigner } from "./pages/Pipeline/PipelineDesigner";
 import { ConfigurePipeline } from "./pages/Pipeline/ConfigurePipeline";
+import { EditSource } from "./pages/Source/EditSource";
+import { EditDestination } from "./pages/Destination/EditDestination";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -70,6 +72,12 @@ const routes: AppRouteConfig[] = [
     title: `${AppBranding} | Source`,
   },
   {
+    component: EditSource,
+    path: "/source/edit_source/:sourceId",
+    navSection: "source",
+    title: `${AppBranding} | Source`,
+  },
+  {
     component: Transformation,
     label: "Transformation",
     icon: <DataProcessorIcon style={{ outline: "none" }} />,
@@ -94,6 +102,12 @@ const routes: AppRouteConfig[] = [
   {
     component: CreateDestination,
     path: "/destination/create_destination/:destinationId",
+    navSection: "destination",
+    title: `${AppBranding} | Destination`,
+  },
+  {
+    component: EditDestination,
+    path: "/destination/edit_destination/:destinationId",
     navSection: "destination",
     title: `${AppBranding} | Destination`,
   },

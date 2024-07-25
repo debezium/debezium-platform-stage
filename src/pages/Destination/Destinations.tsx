@@ -91,11 +91,10 @@ const Destinations: React.FunctionComponent = () => {
           <Text component="h1">Destination</Text>
           {destinationsList.length > 0 ? (
             <Text component="p">
-              Add a destination to capture the change data event. To start
-              select a connector below once you select a connector you can
-              configure it using form or smart editor option. You can also
-              search the connector by its name or toggle the catalog between the
-              list view or card view.
+                Lists the available destination to capture the streaming
+              change events from a source database. You can search a destination by
+              its name or sort the list by the count of active pipelines using a
+              destination.
             </Text>
           ) : (
             <></>

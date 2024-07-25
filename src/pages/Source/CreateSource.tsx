@@ -12,7 +12,6 @@ import {
   FormFieldGroupHeader,
   FormGroup,
   FormHelperText,
-  FormSection,
   Grid,
   HelperText,
   HelperTextItem,
@@ -45,6 +44,7 @@ import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import sourceCatalog from "../../mocks/data/SourceCatalog.json";
 import _ from "lodash";
+import { useData } from "../../appLayout/AppContext";
 
 const CreateSource: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -53,6 +53,8 @@ const CreateSource: React.FunctionComponent = () => {
   const navigateTo = (url: string) => {
     navigate(url);
   };
+
+  const { navigationCollapsed } = useData();
 
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
@@ -148,20 +150,7 @@ const CreateSource: React.FunctionComponent = () => {
             uploading it in the smart editor.
           </Text>
         </TextContent>
-      </PageSection>
-
-      <FormContextProvider initialValues={{}}>
-        {({ setValue, getValue, setError, values, errors }) => (
-          <>
-            <PageSection
-              // isWidthLimited
-              isCenterAligned
-              isFilled
-              style={{ paddingTop: "0" }}
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              // className="custom-card-body"
-            >
-              <Toolbar id="create-editor-toggle">
+        <Toolbar id="create-editor-toggle" className="create_source-toolbar">
                 <ToolbarContent style={{ padding: "0" }}>
                   <ToolbarItem>
                     <ToggleGroup aria-label="Toggle between form editor and smart editor">
@@ -186,80 +175,93 @@ const CreateSource: React.FunctionComponent = () => {
                   </ToolbarItem>
                 </ToolbarContent>
               </Toolbar>
+      </PageSection>
+
+      <FormContextProvider initialValues={{}}>
+        {({ setValue, getValue, setError, values, errors }) => (
+          <>
+            <PageSection
+              isWidthLimited = { editorSelected === "form-editor" }
+              isCenterAligned
+              isFilled
+              style={{ paddingTop: "0" }}
+              className={navigationCollapsed ? "custom-page-section" : ""}
+              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
+              // className="custom-card-body"
+            >
+
 
               {editorSelected === "form-editor" ? (
-                <Card isFullHeight className="custom-card-body">
+                <Card className="custom-card-body">
                   <CardBody isFilled>
                     <Form isWidthLimited>
-                      {/* <FormSection title="Capture details" titleElement="h2"> */}
-                        <FormGroup
-                          label="Source type"
-                          isRequired
-                          fieldId="source-type-field"
+                      <FormGroup
+                        label="Source type"
+                        isRequired
+                        fieldId="source-type-field"
+                      >
+                        <TextContent
+                          style={{ display: "flex", alignItems: "center" }}
                         >
-                          <TextContent
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <ConnectorImage
-                              connectorType={sourceId || ""}
-                              size={35}
-                            />
-                            <Text component="p" style={{ paddingLeft: "10px" }}>
-                              {getConnectorTypeName(sourceId || "")}
-                            </Text>
-                          </TextContent>
-                        </FormGroup>
-                        <FormGroup
-                          label="Source name"
-                          isRequired
-                          fieldId="source-name-field"
-                        >
-                          <TextInput
-                            id="source-name"
-                            aria-label="Source name"
-                            onChange={(_event, value) => {
-                              setValue("source-name", value);
-                              setError("source-name", undefined);
-                            }}
-                            value={getValue("source-name")}
-                            validated={
-                              errors["source-name"] ? "error" : "default"
-                            }
+                          <ConnectorImage
+                            connectorType={sourceId || ""}
+                            size={35}
                           />
-                          <FormHelperText>
-                            <HelperText>
-                              <HelperTextItem
-                                variant={
-                                  errors["source-name"] ? "error" : "default"
-                                }
-                                {...(errors["source-name"] && {
-                                  icon: <ExclamationCircleIcon />,
-                                })}
-                              >
-                                {errors["source-name"]}
-                              </HelperTextItem>
-                            </HelperText>
-                          </FormHelperText>
-                        </FormGroup>
-                        <FormGroup label="Details" fieldId="details-field">
-                          <TextInput
-                            id="details"
-                            aria-label="Source details"
-                            onChange={(_event, value) =>
-                              setValue("details", value)
-                            }
-                            value={getValue("details")}
-                          />
-                          <FormHelperText>
-                            <HelperText>
-                              <HelperTextItem>
-                                Add a one liner to describe your source or where
-                                you plan to capture.
-                              </HelperTextItem>
-                            </HelperText>
-                          </FormHelperText>
-                        </FormGroup>
-                      {/* </FormSection> */}
+                          <Text component="p" style={{ paddingLeft: "10px" }}>
+                            {getConnectorTypeName(sourceId || "")}
+                          </Text>
+                        </TextContent>
+                      </FormGroup>
+                      <FormGroup
+                        label="Source name"
+                        isRequired
+                        fieldId="source-name-field"
+                      >
+                        <TextInput
+                          id="source-name"
+                          aria-label="Source name"
+                          onChange={(_event, value) => {
+                            setValue("source-name", value);
+                            setError("source-name", undefined);
+                          }}
+                          value={getValue("source-name")}
+                          validated={
+                            errors["source-name"] ? "error" : "default"
+                          }
+                        />
+                        <FormHelperText>
+                          <HelperText>
+                            <HelperTextItem
+                              variant={
+                                errors["source-name"] ? "error" : "default"
+                              }
+                              {...(errors["source-name"] && {
+                                icon: <ExclamationCircleIcon />,
+                              })}
+                            >
+                              {errors["source-name"]}
+                            </HelperTextItem>
+                          </HelperText>
+                        </FormHelperText>
+                      </FormGroup>
+                      <FormGroup label="Details" fieldId="details-field">
+                        <TextInput
+                          id="details"
+                          aria-label="Source details"
+                          onChange={(_event, value) =>
+                            setValue("details", value)
+                          }
+                          value={getValue("details")}
+                        />
+                        <FormHelperText>
+                          <HelperText>
+                            <HelperTextItem>
+                              Add a one liner to describe your source or where
+                              you plan to capture.
+                            </HelperTextItem>
+                          </HelperText>
+                        </FormHelperText>
+                      </FormGroup>
 
                       <FormFieldGroup
                         // className="custom-form-group"
