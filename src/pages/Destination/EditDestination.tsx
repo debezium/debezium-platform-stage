@@ -152,10 +152,17 @@ const EditDestination: React.FunctionComponent = () => {
     );
 
     if (response.error) {
-      console.error("Failed to edit source:", response.error);
+      addNotification(
+        "danger",
+        `${(response.data as Destination).name} edit failed`,
+        `Failed to edit ${(response.data as Destination).name}: ${response.error}`
+      );
     } else {
-      addNotification("success");
-      console.log("Source edited successfully:", response.data);
+      addNotification(
+        "success",
+        `${(response.data as Destination).name} edit successful`,
+        `${(response.data as Destination).name} edited successfully`
+      );
     }
   };
 

@@ -27,7 +27,11 @@ interface AppHeaderProps {
   toggleSidebar: () => void;
   handleNotificationBadgeClick: () => void;
   getNotificationBadgeVariant: () => unknown;
-  addNotification: (variant: NotificationProps["variant"]) => void;
+  addNotification: (
+    variant: NotificationProps["variant"],
+    alertHeader: string,
+    alertMessage: string
+  ) => void;
 }
 
 const AppHeader: React.FC<AppHeaderProps> = ({

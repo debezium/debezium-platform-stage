@@ -20,7 +20,7 @@ interface NotificationContextProps {
   notifications: NotificationProps[];
   alerts: React.ReactElement<AlertProps>[];
   isDrawerExpanded: boolean;
-  addNotification: (variant: NotificationProps["variant"]) => void;
+  addNotification: (variant: NotificationProps["variant"], alertHeader: string, alertMessage: string) => void;
   removeAlert: (key: React.Key) => void;
   setDrawerExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   setAlerts: React.Dispatch<React.SetStateAction<React.ReactElement<AlertProps>[]>>;
@@ -57,11 +57,11 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
-  const addNotification = (variant: NotificationProps["variant"]) => {
+  const addNotification = (variant: NotificationProps["variant"], alertHeader: string, alertMessage: string) => {
     const variantFormatted = variant.charAt(0).toUpperCase() + variant.slice(1);
-    const title = variantFormatted + " alert notification";
+    const title = alertHeader;
     const srTitle = variantFormatted + " alert";
-    const description = variantFormatted + " alert notification description";
+    const description = alertMessage;
     const key = getUniqueId();
     const timestamp = getTimeCreated();
 

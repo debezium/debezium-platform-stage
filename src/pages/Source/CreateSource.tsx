@@ -39,12 +39,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./CreateSource.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import { useState } from "react";
-import { createPost } from "../../apis/apis";
+import { createPost, Source } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import sourceCatalog from "../../mocks/data/SourceCatalog.json";
 import _ from "lodash";
 import { useData } from "../../appLayout/AppContext";
+import { useNotification } from "../../appLayout/NotificationContext";
 
 const CreateSource: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -55,6 +56,8 @@ const CreateSource: React.FunctionComponent = () => {
   };
 
   const { navigationCollapsed } = useData();
+
+  const { addNotification } = useNotification();
 
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
@@ -113,8 +116,18 @@ const CreateSource: React.FunctionComponent = () => {
 
     if (response.error) {
       console.error("Failed to create source:", response.error);
+      addNotification(
+        "danger",
+        `${(response.data as Source).name} edit failed`,
+        `Failed to edit ${(response.data as Source).name}: ${response.error}`
+      );
     } else {
       console.log("Source created successfully:", response.data);
+      addNotification(
+        "success",
+        `${(response.data as Source).name} created`,
+        `Source created successfully.`
+      );
     }
   };
 

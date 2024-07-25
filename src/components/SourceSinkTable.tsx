@@ -42,6 +42,7 @@ import { API_URL } from "../utils/constants";
 import { useQuery } from "react-query";
 import { getActivePipelineCount } from "../utils/pipelineUtils";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../appLayout/NotificationContext";
 
 interface ISourceSinkTableProps {
   tableType: "source" | "destination";
@@ -65,6 +66,9 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
   onClear,
 }) => {
   const navigate = useNavigate();
+
+  const { addNotification } = useNotification();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [deleteInstance, setDeleteInstance] = useState<DeleteInstance>({
     id: 0,
@@ -94,13 +98,21 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
     const result = await deleteResource(url);
 
     if (result.error) {
-      console.error(result.error);
       setIsOpen(false);
       setIsLoading(false);
+      addNotification(
+        "danger",
+        `Delete failed`,
+        `${tableType} deleted successfully`
+      );
     } else {
-      console.log("Resource deleted successfully", result.data);
       modalToggle(false);
       setIsLoading(false);
+      addNotification(
+        "success",
+        `Delete successful`,
+        `${tableType} deleted successfully`
+      );
     }
   };
 

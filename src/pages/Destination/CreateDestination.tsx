@@ -39,10 +39,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./CreateDestination.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import _ from "lodash";
-import { createPost } from "../../apis/apis";
+import { createPost, Destination } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import { useData } from "../../appLayout/AppContext";
+import { useNotification } from "../../appLayout/NotificationContext";
 
 const CreateDestination: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -53,6 +54,8 @@ const CreateDestination: React.FunctionComponent = () => {
   };
 
   const { navigationCollapsed } = useData();
+
+  const { addNotification } = useNotification();
 
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
@@ -110,9 +113,17 @@ const CreateDestination: React.FunctionComponent = () => {
     const response = await createPost(`${API_URL}/api/destinations`, payload);
 
     if (response.error) {
-      console.error("Failed to create destination:", response.error);
+      addNotification(
+        "danger",
+        `Destination creation failed`,
+        `Failed to create destination: ${response.error}`
+      );
     } else {
-      console.log("Destination created successfully:", response.data);
+      addNotification(
+        "success",
+        `${(response.data as Destination).name} created`,
+        ` Destination created successfully.`
+      );
     }
   };
 
@@ -148,45 +159,46 @@ const CreateDestination: React.FunctionComponent = () => {
             connector by uploading it in the smart editor.
           </Text>
         </TextContent>
-        <Toolbar id="create-editor-toggle" className="create_destination-toolbar">
-                <ToolbarContent>
-                  <ToolbarItem>
-                    <ToggleGroup aria-label="Toggle between form and smart editor">
-                      <ToggleGroupItem
-                        icon={<PencilAltIcon />}
-                        text="Form editor"
-                        aria-label="Form editor"
-                        buttonId="form-editor"
-                        isSelected={editorSelected === "form-editor"}
-                        onChange={handleItemClick}
-                      />
+        <Toolbar
+          id="create-editor-toggle"
+          className="create_destination-toolbar"
+        >
+          <ToolbarContent>
+            <ToolbarItem>
+              <ToggleGroup aria-label="Toggle between form and smart editor">
+                <ToggleGroupItem
+                  icon={<PencilAltIcon />}
+                  text="Form editor"
+                  aria-label="Form editor"
+                  buttonId="form-editor"
+                  isSelected={editorSelected === "form-editor"}
+                  onChange={handleItemClick}
+                />
 
-                      <ToggleGroupItem
-                        icon={<CodeIcon />}
-                        text="Smart editor"
-                        aria-label="Smart editor"
-                        buttonId="smart-editor"
-                        isSelected={editorSelected === "smart-editor"}
-                        onChange={handleItemClick}
-                      />
-                    </ToggleGroup>
-                  </ToolbarItem>
-                </ToolbarContent>
-              </Toolbar>
+                <ToggleGroupItem
+                  icon={<CodeIcon />}
+                  text="Smart editor"
+                  aria-label="Smart editor"
+                  buttonId="smart-editor"
+                  isSelected={editorSelected === "smart-editor"}
+                  onChange={handleItemClick}
+                />
+              </ToggleGroup>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
       </PageSection>
       <FormContextProvider initialValues={{}}>
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited = { editorSelected === "form-editor" }
+              isWidthLimited={editorSelected === "form-editor"}
               isCenterAligned
               isFilled
               style={{ paddingTop: "0" }}
               // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
               className={navigationCollapsed ? "custom-page-section" : ""}
             >
-              
-
               {editorSelected === "form-editor" ? (
                 <Card className="custom-card-body">
                   <CardBody isFilled>

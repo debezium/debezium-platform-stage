@@ -154,10 +154,17 @@ const EditSource: React.FunctionComponent = () => {
     );
 
     if (response.error) {
-      console.error("Failed to edit source:", response.error);
+      addNotification(
+        "danger",
+        `${(response.data as Source).name} edit failed`,
+        `Failed to edit ${(response.data as Source).name}: ${response.error}`
+      );
     } else {
-      addNotification("success");
-      console.log("Source edited successfully:", response.data);
+      addNotification(
+        "success",
+        `Edit successful`,
+        `${(response.data as Source).name} edited successfully`
+      );
     }
   };
 
