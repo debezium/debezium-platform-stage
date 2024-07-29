@@ -95,9 +95,8 @@ const EditSource: React.FunctionComponent = () => {
       if (response.error) {
         setError(response.error);
       } else {
-        setSource(response.data);
-        // setSourceName(response.data?.name ?? "");
-        // setDetail(response.data?.description ?? "");
+        setSource(response.data as Source);
+
         setConfigProperties(response.data?.config ?? { "": "" });
       }
 
@@ -156,14 +155,14 @@ const EditSource: React.FunctionComponent = () => {
     if (response.error) {
       addNotification(
         "danger",
-        `${(response.data as Source).name} edit failed`,
+        `Edit failed`,
         `Failed to edit ${(response.data as Source).name}: ${response.error}`
       );
     } else {
       addNotification(
         "success",
         `Edit successful`,
-        `${(response.data as Source).name} edited successfully`
+        `Source "${(response.data as Source).name}" edited successfully.`
       );
     }
   };
@@ -198,7 +197,7 @@ const EditSource: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited isFilled={true}>
+      <PageSection isWidthLimited >
         <TextContent style={{ marginBlockEnd: "10px" }}>
           <Text component="h1">Edit source </Text>
           <Text component="p">

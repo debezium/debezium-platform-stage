@@ -115,18 +115,16 @@ const CreateSource: React.FunctionComponent = () => {
     const response = await createPost(`${API_URL}/api/sources`, payload);
 
     if (response.error) {
-      console.error("Failed to create source:", response.error);
       addNotification(
         "danger",
-        `${(response.data as Source).name} edit failed`,
-        `Failed to edit ${(response.data as Source).name}: ${response.error}`
+        `Source creation failed`,
+        `Failed to create ${(response.data as Source).name}: ${response.error}`
       );
     } else {
-      console.log("Source created successfully:", response.data);
       addNotification(
         "success",
-        `${(response.data as Source).name} created`,
-        `Source created successfully.`
+        `Create successful`,
+        `Source "${(response.data as Source).name}" created successfully.`
       );
     }
   };
@@ -164,37 +162,37 @@ const CreateSource: React.FunctionComponent = () => {
           </Text>
         </TextContent>
         <Toolbar id="create-editor-toggle" className="create_source-toolbar">
-                <ToolbarContent style={{ padding: "0" }}>
-                  <ToolbarItem>
-                    <ToggleGroup aria-label="Toggle between form editor and smart editor">
-                      <ToggleGroupItem
-                        icon={<PencilAltIcon />}
-                        text="Form editor"
-                        aria-label="Form editor"
-                        buttonId="form-editor"
-                        isSelected={editorSelected === "form-editor"}
-                        onChange={handleItemClick}
-                      />
+          <ToolbarContent style={{ padding: "0" }}>
+            <ToolbarItem>
+              <ToggleGroup aria-label="Toggle between form editor and smart editor">
+                <ToggleGroupItem
+                  icon={<PencilAltIcon />}
+                  text="Form editor"
+                  aria-label="Form editor"
+                  buttonId="form-editor"
+                  isSelected={editorSelected === "form-editor"}
+                  onChange={handleItemClick}
+                />
 
-                      <ToggleGroupItem
-                        icon={<CodeIcon />}
-                        text="Smart editor"
-                        aria-label="Smart editor"
-                        buttonId="smart-editor"
-                        isSelected={editorSelected === "smart-editor"}
-                        onChange={handleItemClick}
-                      />
-                    </ToggleGroup>
-                  </ToolbarItem>
-                </ToolbarContent>
-              </Toolbar>
+                <ToggleGroupItem
+                  icon={<CodeIcon />}
+                  text="Smart editor"
+                  aria-label="Smart editor"
+                  buttonId="smart-editor"
+                  isSelected={editorSelected === "smart-editor"}
+                  onChange={handleItemClick}
+                />
+              </ToggleGroup>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
       </PageSection>
 
       <FormContextProvider initialValues={{}}>
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited = { editorSelected === "form-editor" }
+              isWidthLimited={editorSelected === "form-editor"}
               isCenterAligned
               isFilled
               style={{ paddingTop: "0" }}
@@ -202,8 +200,6 @@ const CreateSource: React.FunctionComponent = () => {
               // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
               // className="custom-card-body"
             >
-
-
               {editorSelected === "form-editor" ? (
                 <Card className="custom-card-body">
                   <CardBody isFilled>

@@ -116,13 +116,13 @@ const CreateDestination: React.FunctionComponent = () => {
       addNotification(
         "danger",
         `Destination creation failed`,
-        `Failed to create destination: ${response.error}`
+        `Failed to create ${(response.data as Destination).name}: ${response.error}`
       );
     } else {
       addNotification(
         "success",
-        `${(response.data as Destination).name} created`,
-        ` Destination created successfully.`
+        `Create successful`,
+        `Destination "${(response.data as Destination).name}" created successfully.`
       );
     }
   };

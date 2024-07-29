@@ -95,15 +95,38 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
     setIsLoading(true);
     const resourceType = type === "source" ? "sources" : "destinations";
     const url = `${API_URL}/api/${resourceType}/${id}`;
+    // setTimeout(async () => {
+    //   const result = await deleteResource(url);
+    //   // await createNewSource(values);
+    //   // setIsLoading(false);
+    //   if (result.error) {
+    //     modalToggle(false);
+    //     setIsLoading(false);
+    //     addNotification(
+    //       "danger",
+    //       `Delete failed`,
+    //       `Failed to delete ${tableType}: ${result.error}`
+    //     );
+    //   } else {
+    //     modalToggle(false);
+    //     setIsLoading(false);
+    //     addNotification(
+    //       "success",
+    //       `Delete successful`,
+    //       `${tableType} deleted successfully`
+    //     );
+    //   }
+     
+    // }, 2000);
     const result = await deleteResource(url);
 
     if (result.error) {
-      setIsOpen(false);
+      modalToggle(false);
       setIsLoading(false);
       addNotification(
         "danger",
         `Delete failed`,
-        `${tableType} deleted successfully`
+        `Failed to delete ${tableType}: ${result.error}`
       );
     } else {
       modalToggle(false);

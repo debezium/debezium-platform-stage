@@ -3,8 +3,10 @@ import {
   Button,
   Card,
   debounce,
+  EmptyState,
   PageSection,
   SearchInput,
+  Spinner,
   Text,
   TextContent,
   TextVariants,
@@ -22,6 +24,7 @@ import _ from "lodash";
 import { useQuery } from "react-query";
 import { API_URL } from "../../utils/constants";
 import SourceSinkTable from "../../components/SourceSinkTable";
+import ApiError from "../../components/ApiError";
 
 export interface ISourceProps {
   sampleProp?: string;
@@ -30,8 +33,8 @@ export interface ISourceProps {
 const Sources: React.FunctionComponent<ISourceProps> = () => {
   const navigate = useNavigate();
 
-  const navigateTo = () => {
-    navigate("/source/catalog");
+  const navigateTo = (url: string) => {
+    navigate(url);
   };
 
   const [searchResult, setSearchResult] = React.useState<Source[]>([]);
@@ -80,114 +83,124 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
     },
     [debouncedSearch]
   );
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
   return (
     <>
-      <PageSection isWidthLimited>
-        <TextContent>
-          <Text component="h1">Source</Text>
-          {sourcesList.length > 0 ? (
-            <Text component="p">
-              Lists the available sources configured in the cluster streaming
-              change events from a source database. You can search a source by
-              its name or sort the list by the count of active pipelines using a
-              source.
-            </Text>
-          ) : (
-            <></>
-          )}
-        </TextContent>
-      </PageSection>
-      <PageSection>
-        {sourcesList.length > 0 ? (
-          <Card style={{ paddingTop: "15px" }}>
-            <Toolbar
-              id="toolbar-sticky"
-              style={{
-                marginRight: "1px",
-                marginLeft: "1px",
-              }}
-              className="custom-toolbar"
-              isSticky
-            >
-              <ToolbarContent>
-                <ToolbarItem>
-                  <SearchInput
-                    aria-label="Items example search input"
-                    placeholder="Find by name"
-                    value={searchQuery}
-                    onChange={(_event, value) => onSearch(value)}
+      {error ? (
+        <ApiError errorType="large" errorMsg={error.message} secondaryActions={ <>
+          <Button variant="link"  onClick={()=>navigateTo("/destination")}>Go to destination</Button>
+          <Button variant="link"  onClick={()=>navigateTo("/pipeline")}>Go to pipeline</Button>
+        </>} />
+      ) : (
+        <>
+          <PageSection isWidthLimited>
+            <TextContent>
+              <Text component="h1">Source</Text>
+              {isLoading || sourcesList.length > 0 ? (
+                <Text component="p">
+                  Lists the available sources configured in the cluster
+                  streaming change events from a source database. You can search
+                  a source by its name or sort the list by the count of active
+                  pipelines using a source.
+                </Text>
+              ) : (
+                <></>
+              )}
+            </TextContent>
+          </PageSection>
+          <PageSection>
+            {isLoading || sourcesList.length > 0 ? (
+              <Card style={{ paddingTop: "15px" }}>
+                <Toolbar
+                  id="toolbar-sticky"
+                  style={{
+                    marginRight: "1px",
+                    marginLeft: "1px",
+                  }}
+                  className="custom-toolbar"
+                  isSticky
+                >
+                  <ToolbarContent>
+                    <ToolbarItem>
+                      <SearchInput
+                        aria-label="Items example search input"
+                        placeholder="Find by name"
+                        value={searchQuery}
+                        onChange={(_event, value) => onSearch(value)}
+                        onClear={onClear}
+                      />
+                    </ToolbarItem>
+                    <ToolbarItem>
+                      <ToggleGroup aria-label="Icon variant toggle group">
+                        <Button
+                          variant="primary"
+                          icon={<PlusIcon />}
+                          onClick={()=>navigateTo("/source/catalog")}
+                        >
+                          Add source
+                        </Button>
+                      </ToggleGroup>
+                    </ToolbarItem>
+                    <ToolbarGroup
+                      variant="icon-button-group"
+                      align={{ default: "alignEnd" }}
+                    >
+                      <ToolbarItem>
+                        <Text component={TextVariants.small}>
+                          {
+                            (searchQuery.length > 0
+                              ? searchResult
+                              : sourcesList
+                            ).length
+                          }{" "}
+                          Items
+                        </Text>
+                      </ToolbarItem>
+                    </ToolbarGroup>
+                  </ToolbarContent>
+                </Toolbar>
+                {isLoading ? (
+                  <EmptyState
+                    titleText="Loading"
+                    headingLevel="h4"
+                    icon={Spinner}
+                  />
+                ) : (
+                  <SourceSinkTable
+                    data={searchQuery.length > 0 ? searchResult : sourcesList}
+                    tableType="source"
                     onClear={onClear}
                   />
-                </ToolbarItem>
-                <ToolbarItem>
-                  <ToggleGroup aria-label="Icon variant toggle group">
-                    <Button
-                      variant="primary"
-                      icon={<PlusIcon />}
-                      onClick={navigateTo}
-                    >
-                      Add source
-                    </Button>
-                  </ToggleGroup>
-                </ToolbarItem>
-                <ToolbarGroup
-                  variant="icon-button-group"
-                  align={{ default: "alignEnd" }}
-                >
-                  <ToolbarItem>
-                    <Text component={TextVariants.small}>
-                      {
-                        (searchQuery.length > 0 ? searchResult : sourcesList)
-                          .length
-                      }{" "}
-                      Items
-                    </Text>
-                  </ToolbarItem>
-                </ToolbarGroup>
-              </ToolbarContent>
-            </Toolbar>
-
-            <SourceSinkTable
-              data={searchQuery.length > 0 ? searchResult : sourcesList}
-              tableType="source"
-              onClear={onClear}
-            />
-          </Card>
-        ) : (
-          <EmptyStatus
-            heading="No source available"
-            primaryMessage=' No source is configure for this cluster yet. To streams change
-              events from a source database you can configure a source by click
-              the "Add source" button.'
-            secondaryMessage="This text has overridden a css component variable to demonstrate
-              how to apply customizations using PatternFly's global
-              variable API."
-            primaryAction={
-              <Button
-                variant="primary"
-                icon={<PlusIcon />}
-                onClick={navigateTo}
-              >
-                Add source
-              </Button>
-            }
-            secondaryActions={
-              <>
-                <Button variant="link">Go to destination</Button>
-                <Button variant="link">Configure Vaults</Button>
-              </>
-            }
-          />
-        )}
-      </PageSection>
+                )}
+              </Card>
+            ) : (
+              <EmptyStatus
+                heading="No source available"
+                primaryMessage=' No source is configure for this cluster yet. To streams change
+            events from a source database you can configure a source by click
+            the "Add source" button.'
+                secondaryMessage="This text has overridden a css component variable to demonstrate
+            how to apply customizations using PatternFly's global
+            variable API."
+                primaryAction={
+                  <Button
+                    variant="primary"
+                    icon={<PlusIcon />}
+                    onClick={()=>navigateTo("/source/catalog")}
+                  >
+                    Add source
+                  </Button>
+                }
+                secondaryActions={
+                  <>
+                    <Button variant="link">Go to destination</Button>
+                    <Button variant="link">Configure Vaults</Button>
+                  </>
+                }
+              />
+            )}
+          </PageSection>
+        </>
+      )}
     </>
   );
 };

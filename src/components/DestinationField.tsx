@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 import { API_URL } from "../utils/constants";
-import { Flex, FlexItem } from "@patternfly/react-core";
+import { Flex, FlexItem, Skeleton } from "@patternfly/react-core";
 import {
   Destination,
   PipelineDestination,
-  Source,
   fetchDataTypeTwo,
 } from "../apis/apis";
 import { Td } from "@patternfly/react-table";
 import ConnectorImage from "./ComponentImage";
+import ApiError from "./ApiError";
 
 interface DestinationFieldProps {
   pipelineDestination: PipelineDestination;
@@ -32,7 +32,7 @@ const DestinationField: React.FC<DestinationFieldProps> = ({
       if (response.error) {
         setError(response.error);
       } else {
-        setDestination(response.data);
+        setDestination(response.data as Destination);
       }
 
       setIsLoading(false);
@@ -41,27 +41,25 @@ const DestinationField: React.FC<DestinationFieldProps> = ({
     fetchDestination();
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <Td dataLabel="Destination" style={{ paddingLeft: "0px" }}>
-      <Flex alignItems={{ default: "alignItemsCenter" }}>
-        <FlexItem spacer={{ default: "spacerMd" }}>
-          {destination && (
-            <ConnectorImage
-              connectorType={(destination as Source).type}
-              size={35}
-            />
-          )}
-        </FlexItem>
-        <FlexItem>{pipelineDestination.name}</FlexItem>
-      </Flex>
+      {error ? (
+        <ApiError errorType="small" />
+      ) : isLoading ? (
+        <Skeleton screenreaderText="Loading contents" />
+      ) : (
+        <Flex alignItems={{ default: "alignItemsCenter" }}>
+          <FlexItem spacer={{ default: "spacerMd" }}>
+            {destination && (
+              <ConnectorImage
+                connectorType={(destination as Destination).type}
+                size={35}
+              />
+            )}
+          </FlexItem>
+          <FlexItem>{pipelineDestination.name}</FlexItem>
+        </Flex>
+      )}
     </Td>
   );
 };

@@ -13,6 +13,7 @@ import { MoonIcon, SunIcon } from "@patternfly/react-icons";
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { IAppRoute, IAppRouteGroup, routes } from "../route";
+import { useData } from "./AppContext";
 
 interface AppSideNavigationProps {
   isSidebarOpen: boolean;
@@ -23,22 +24,23 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
 }) => {
   const location = useLocation();
 
+  const { setDarkMode } = useData();
+
   const [isDarkMode, setIsDarkMode] = useState(
     () => localStorage.getItem("themeMode") === "dark"
   );
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+    setDarkMode(!isDarkMode);
     localStorage.setItem(
       "themeMode",
       JSON.stringify(!isDarkMode ? "dark" : "light")
     );
-    console.log("isDarkMode", !isDarkMode);
     document.body.classList.toggle("pf-v6-theme-dark");
   };
 
   useEffect(() => {
-    console.log("isDarkMode", isDarkMode);
     if (localStorage.getItem("themeMode") === "dark") {
       document.body.classList.add("pf-v6-theme-dark");
     }

@@ -110,7 +110,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         mainContainerId={pageId}
         masthead={
           <AppHeader
-            isSidebarOpen={sidebarOpen}
+        
             toggleSidebar={toggleSidebar}
             handleNotificationBadgeClick={onNotificationBadgeClick}
             getNotificationBadgeVariant={getNotificationBadgeVariant}

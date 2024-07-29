@@ -95,7 +95,7 @@ const EditDestination: React.FunctionComponent = () => {
       if (response.error) {
         setError(response.error);
       } else {
-        setDestination(response.data);
+        setDestination(response.data as Destination);
         setConfigProperties(response.data?.config ?? { "": "" });
       }
 
@@ -154,14 +154,14 @@ const EditDestination: React.FunctionComponent = () => {
     if (response.error) {
       addNotification(
         "danger",
-        `${(response.data as Destination).name} edit failed`,
+        `Edit failed`,
         `Failed to edit ${(response.data as Destination).name}: ${response.error}`
       );
     } else {
       addNotification(
         "success",
-        `${(response.data as Destination).name} edit successful`,
-        `${(response.data as Destination).name} edited successfully`
+        `Edit successful`,
+        `Destination "${(response.data as Destination).name}" edited successfully.`
       );
     }
   };

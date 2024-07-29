@@ -8,7 +8,7 @@ import {
   TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import { CubesIcon } from "@patternfly/react-icons";
+import { PlusCircleIcon } from "@patternfly/react-icons";
 import { FC, ReactNode } from "react";
 
 interface EmptyStatusProps {
@@ -28,10 +28,10 @@ const EmptyStatus: FC<EmptyStatusProps> = ({
 }) => {
   return (
     <EmptyState
-      variant={EmptyStateVariant.full}
+      variant={EmptyStateVariant.lg}
       titleText={heading}
       headingLevel="h4"
-      icon={CubesIcon}
+      icon={PlusCircleIcon}
     >
       <EmptyStateBody>
         <TextContent>

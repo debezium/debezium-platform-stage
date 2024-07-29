@@ -21,9 +21,9 @@ import dbz_svg from "../assets/debezium_logo.png";
 import imgAvatar from "@patternfly/react-core/src/components/assets/avatarImg.svg";
 import { useNavigate } from "react-router-dom";
 import { NotificationProps } from "./AppLayout";
+import { useData } from "./AppContext";
 
 interface AppHeaderProps {
-  isSidebarOpen: boolean;
   toggleSidebar: () => void;
   handleNotificationBadgeClick: () => void;
   getNotificationBadgeVariant: () => unknown;
@@ -35,12 +35,13 @@ interface AppHeaderProps {
 }
 
 const AppHeader: React.FC<AppHeaderProps> = ({
-  isSidebarOpen,
   toggleSidebar,
   handleNotificationBadgeClick,
   getNotificationBadgeVariant,
 }) => {
   const navigate = useNavigate();
+
+  const { darkMode } = useData();
 
   const navigateTo = (url: string) => {
     navigate(url);
@@ -60,7 +61,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
       <MastheadMain>
         <MastheadBrand>
           <Brand
-            src={isSidebarOpen ? dbz_logo_black : dbz_svg}
+            src={!darkMode ? dbz_logo_black : dbz_svg}
             alt="Debezium Logo"
             heights={{ default: "36px" }}
             onClick={() => navigateTo("/")}

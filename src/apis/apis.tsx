@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 // };
 
 export type ApiResponse<T> = {
-  data?: T;
+  data?: T | null;
   error?: string;
 };
 
@@ -153,9 +153,16 @@ export const deleteResource = async <T,>(
       return { error: errorMsg };
     }
 
-    const data = await response.json();
+    let data: T;
+    if (response.status === 204) {
+      data = {} as T; 
+    } else {
+      data = await response.json();
+    }
+
     // Refresh data after resource is deleted
     queryClient.invalidateQueries("sources");
+    queryClient.invalidateQueries("destinations");
 
     return { data };
   } catch (error) {

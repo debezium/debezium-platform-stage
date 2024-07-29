@@ -12,6 +12,8 @@ import {
 
 interface AppContextType {
   navigationCollapsed: boolean;
+  darkMode: boolean;
+  setDarkMode: (darkMode: boolean) => void;
   updateNavigationCollapsed: (collapsed: boolean) => void;
 }
 
@@ -24,6 +26,7 @@ export const AppContextProvider: FC<{ children: ReactNode }> = ({
     const savedPreference = localStorage.getItem("side-nav-collapsed");
     return savedPreference ? JSON.parse(savedPreference) : false;
   });
+  const [darkMode, setDarkMode] = useState(false);
 
   const updateNavigationCollapsed = useCallback(
     (collapsed: boolean) => {
@@ -37,8 +40,10 @@ export const AppContextProvider: FC<{ children: ReactNode }> = ({
     () => ({
       navigationCollapsed,
       updateNavigationCollapsed,
+      darkMode,
+      setDarkMode,
     }),
-    [navigationCollapsed, updateNavigationCollapsed]
+    [navigationCollapsed, updateNavigationCollapsed, darkMode, setDarkMode]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
