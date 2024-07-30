@@ -32,11 +32,11 @@ const AppBreadcrumb: React.FC = () => {
             {generateBreadcrumbItem("#", "Catalog", true)}
           </BreadcrumbGenerator>
         );
-      case route.match("/source/[^/]+/edit") !== null:
+      case route.match("source/edit_source/[^/]+") !== null:
         return (
           <BreadcrumbGenerator>
             {generateBreadcrumbItem("/source", "Source")}
-            {generateBreadcrumbItem("#", "test-source-mongo", true)}
+            {generateBreadcrumbItem("#", "Edit source", true)}
           </BreadcrumbGenerator>
         );
       case route.includes("/source/create_source"):
@@ -54,11 +54,11 @@ const AppBreadcrumb: React.FC = () => {
             {generateBreadcrumbItem("#", "Catalog", true)}
           </BreadcrumbGenerator>
         );
-      case route.match("/destination/[^/]+/edit") !== null:
+      case route.match("destination/edit_destination/[^/]+") !== null:
         return (
           <BreadcrumbGenerator>
             {generateBreadcrumbItem("/destination", "Destination")}
-            {generateBreadcrumbItem("#", "test-infi", true)}
+            {generateBreadcrumbItem("#", "Edit destination", true)}
           </BreadcrumbGenerator>
         );
       case route.includes("/destination/create_destination"):
@@ -76,15 +76,14 @@ const AppBreadcrumb: React.FC = () => {
             {generateBreadcrumbItem("#", "Pipeline designer", true)}
           </BreadcrumbGenerator>
         );
-      case route.match("/pipeline/[^/]+/edit") !== null:
+      case route.match("/pipeline/pipeline_overview/[^/]+") !== null:
         return (
           <BreadcrumbGenerator>
             {generateBreadcrumbItem("/pipeline", "Pipeline")}
-            {generateBreadcrumbItem("#", "indra-ui-test", true)}
-            {generateBreadcrumbItem("#", "Edit", true)}
+            {generateBreadcrumbItem("#", "Overview", true)}
           </BreadcrumbGenerator>
         );
-      case route.match("/pipeline/[^/]+/overview") !== null:
+      case route.match("/pipeline/pipeline_edit/[^/]+") !== null:
         return (
           <BreadcrumbGenerator>
             {generateBreadcrumbItem("/pipeline", "Pipeline")}

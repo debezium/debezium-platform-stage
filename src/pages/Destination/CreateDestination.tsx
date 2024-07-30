@@ -129,7 +129,7 @@ const CreateDestination: React.FunctionComponent = () => {
 
   const handleCreateDestination = (values: Record<string, string>) => {
     setIsLoading(true);
-    // Add a 2-second delay
+    // TODO - Remove after demo: Add a 2-second delay
     setTimeout(async () => {
       await createNewDestination(values);
       setIsLoading(false);
@@ -239,7 +239,7 @@ const CreateDestination: React.FunctionComponent = () => {
                         />
                       </FormGroup>
                       <FormGroup
-                        label="Details"
+                        label="Description"
                         fieldId="destination-details-field"
                       >
                         <TextInput

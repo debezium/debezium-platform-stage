@@ -169,7 +169,7 @@ const EditSource: React.FunctionComponent = () => {
 
   const handleEditSource = (values: Record<string, string>) => {
     setIsLoading(true);
-    // Add a 2-second delay
+     // TODO - Remove after demo: Add a 2-second delay
     setTimeout(async () => {
       await editSource(values);
       setIsLoading(false);

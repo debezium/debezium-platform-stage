@@ -114,7 +114,7 @@ const ConfigurePipeline: React.FunctionComponent = () => {
 
   const handleCreateSource = (values: Record<string, string>) => {
     setIsLoading(true);
-    // Add a 2-second delay
+     // TODO - Remove after demo: Add a 2-second delay
     setTimeout(async () => {
       await createNewSource(values);
       setIsLoading(false);
@@ -271,7 +271,7 @@ const ConfigurePipeline: React.FunctionComponent = () => {
                           </HelperText>
                         </FormHelperText>
                       </FormGroup>
-                      <FormGroup label="Details" fieldId="details-field">
+                      <FormGroup label="Description" fieldId="details-field">
                         <TextInput
                           id="details"
                           aria-label="Source details"

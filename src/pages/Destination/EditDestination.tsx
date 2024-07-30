@@ -168,7 +168,7 @@ const EditDestination: React.FunctionComponent = () => {
 
   const handleEditDestination = (values: Record<string, string>) => {
     setIsLoading(true);
-    // Add a 2-second delay
+     // TODO - Remove after demo: Add a 2-second delay
     setTimeout(async () => {
       await editDestination(values);
       setIsLoading(false);

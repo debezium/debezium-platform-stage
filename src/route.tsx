@@ -22,6 +22,7 @@ import { PipelineDesigner } from "./pages/Pipeline/PipelineDesigner";
 import { ConfigurePipeline } from "./pages/Pipeline/ConfigurePipeline";
 import { EditSource } from "./pages/Source/EditSource";
 import { EditDestination } from "./pages/Destination/EditDestination";
+import { PipelineOverview } from "./pages/Pipeline/PipelineOverview";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -124,6 +125,12 @@ const routes: AppRouteConfig[] = [
     label: "Pipeline",
     icon: <PipelineIcon style={{ outline: "none" }} />,
     path: "/pipeline",
+    navSection: "pipeline",
+    title: `${AppBranding} | Pipeline`,
+  },
+  {
+    component: PipelineOverview,
+    path: "/pipeline/pipeline_overview/:pipelineId",
     navSection: "pipeline",
     title: `${AppBranding} | Pipeline`,
   },

@@ -46,6 +46,16 @@ import SourceField from "../../components/SourceField";
 import DestinationField from "../../components/DestinationField";
 import ApiError from "../../components/ApiError";
 
+// type DeleteInstance = {
+//   id: number;
+//   name: string;
+// };
+
+type ActionData = {
+  id: number;
+  name: string;
+};
+
 const Pipelines: React.FunctionComponent = () => {
   const navigate = useNavigate();
 
@@ -101,14 +111,25 @@ const Pipelines: React.FunctionComponent = () => {
     [debouncedSearch]
   );
 
-  const rowActions = (): IAction[] => [
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onOverviewHandler = (id: number, _name: string) => {
+    console.log("Overview clicked", id);
+    navigateTo(`/pipeline/pipeline_overview/${id}`);
+  };
+
+  const rowActions = (actionData: ActionData): IAction[] => [
     {
       title: "Pause",
+      isDisabled: true,
     },
     {
       title: "Resume",
+      isDisabled: true,
     },
-    { title: "Overview" },
+    {
+      title: "Overview",
+      onClick:  () => onOverviewHandler(actionData.id, actionData.name),
+    },
     { isSeparator: true },
     {
       title: "Edit",
@@ -122,10 +143,20 @@ const Pipelines: React.FunctionComponent = () => {
   return (
     <>
       {error ? (
-        <ApiError errorType="large" errorMsg={error.message} secondaryActions={ <>
-          <Button variant="link"  onClick={()=>navigateTo("/source")}>Go to source</Button>
-          <Button variant="link"  onClick={()=>navigateTo("/destination")}>Go to destination</Button>
-        </>} />
+        <ApiError
+          errorType="large"
+          errorMsg={error.message}
+          secondaryActions={
+            <>
+              <Button variant="link" onClick={() => navigateTo("/source")}>
+                Go to source
+              </Button>
+              <Button variant="link" onClick={() => navigateTo("/destination")}>
+                Go to destination
+              </Button>
+            </>
+          }
+        />
       ) : (
         <>
           <PageSection isWidthLimited>
@@ -263,7 +294,6 @@ const Pipelines: React.FunctionComponent = () => {
                             </Td>
                             <Td dataLabel="Enabled">
                               <Switch
-                                // style={{ marginLeft: "auto" }}
                                 // className="custom-switch"
                                 id="pipeline-enable-switch"
                                 aria-label="switch pipeline enable"
@@ -274,7 +304,12 @@ const Pipelines: React.FunctionComponent = () => {
                               />
                             </Td>
                             <Td dataLabel="Actions" isActionCell>
-                              <ActionsColumn items={rowActions()} />
+                              <ActionsColumn
+                                items={rowActions({
+                                  id: instance.id,
+                                  name: instance.name,
+                                })}
+                              />
                             </Td>
                           </Tr>
                         ))

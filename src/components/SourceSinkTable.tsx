@@ -144,10 +144,9 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
     setDeleteInstance({ id: id, name: name });
   };
 
-  const onEditHandler = (id: number, name: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onEditHandler = (id: number, _name: string) => {
     navigate(`/${tableType}/edit_${tableType}/${id}`);
-
-    console.log("Edit clicked", id, name);
   };
 
   const modalToggle = (toggleValue: boolean) => {
