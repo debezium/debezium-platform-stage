@@ -261,7 +261,6 @@ const CreateDestination: React.FunctionComponent = () => {
                       </FormGroup>
 
                       <FormFieldGroup
-                        // className="custom-form-group"
                         header={
                           <FormFieldGroupHeader
                             titleText={{

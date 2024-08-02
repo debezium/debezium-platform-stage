@@ -6,6 +6,8 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Flex,
+  FlexItem,
   Form,
   FormContextProvider,
   FormGroup,
@@ -16,6 +18,7 @@ import {
   HelperText,
   HelperTextItem,
   PageSection,
+  Skeleton,
   Text,
   TextContent,
   TextInput,
@@ -32,78 +35,100 @@ import {
   ArrowRightIcon,
 } from "@patternfly/react-icons";
 import ConnectorImage from "../../components/ComponentImage";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ConfigurePipeline.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
-import { useState } from "react";
-import { createPost } from "../../apis/apis";
+import { useEffect, useState } from "react";
+import {
+  createPost,
+  Destination,
+  fetchDataTypeTwo,
+  Source,
+} from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { convertMapToObject } from "../../utils/helpers";
-import sourceCatalog from "../../mocks/data/SourceCatalog.json";
-import _ from "lodash";
+import { useData } from "../../appLayout/AppContext";
 
 const ConfigurePipeline: React.FunctionComponent = () => {
   const navigate = useNavigate();
-  const { sourceId } = useParams<{ sourceId: string }>();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const sourceId = params.get("sourceId");
+  const destinationId = params.get("destinationId");
 
   const navigateTo = (url: string) => {
     navigate(url);
   };
 
-  const [editorSelected, setEditorSelected] = React.useState("form-editor");
+  const { navigationCollapsed } = useData();
+
+  const [editorSelected, setEditorSelected] = useState("form-editor");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [properties, setProperties] = useState<
-    Map<string, { key: string; value: string }>
-  >(new Map([["key0", { key: "", value: "" }]]));
-  const [keyCount, setKeyCount] = useState<number>(1);
+  const [source, setSource] = useState<Source>();
+  const [isSourceLoading, setIsSourceLoading] = useState<boolean>(true);
+  const [sourceError, setSourceError] = useState<string | null>(null);
 
-  const handleAddProperty = () => {
-    const newKey = `key${keyCount}`;
-    setProperties(
-      (prevProperties) =>
-        new Map(prevProperties.set(newKey, { key: "", value: "" }))
-    );
-    setKeyCount((prevCount) => prevCount + 1);
-  };
+  const [destination, setDestination] = useState<Destination>();
+  const [isDestinationLoading, setIsDestinationLoading] =
+    useState<boolean>(true);
+  const [destinationError, setDestinationError] = useState<string | null>(null);
 
-  const handleDeleteProperty = (key: string) => {
-    setProperties((prevProperties) => {
-      const newProperties = new Map(prevProperties);
-      newProperties.delete(key);
-      return newProperties;
-    });
-  };
+  useEffect(() => {
+    const fetchSources = async () => {
+      setIsSourceLoading(true);
+      const response = await fetchDataTypeTwo<Source>(
+        `${API_URL}/api/sources/${sourceId}`
+      );
 
-  const handlePropertyChange = (
-    key: string,
-    type: "key" | "value",
-    newValue: string
-  ) => {
-    setProperties((prevProperties) => {
-      const newProperties = new Map(prevProperties);
-      const property = newProperties.get(key);
-      if (property) {
-        if (type === "key") property.key = newValue;
-        else if (type === "value") property.value = newValue;
-        newProperties.set(key, property);
+      if (response.error) {
+        setSourceError(response.error);
+      } else {
+        setSource(response.data as Source);
       }
-      return newProperties;
-    });
-  };
 
-  const createNewSource = async (values: Record<string, string>) => {
-    const payload = {
-      description: values["details"],
-      type: _.find(sourceCatalog, { id: sourceId })?.type || "",
-      schema: "schema321",
-      vaults: [],
-      config: convertMapToObject(properties),
-      name: values["source-name"],
+      setIsSourceLoading(false);
     };
 
-    const response = await createPost(`${API_URL}/api/sources`, payload);
+    fetchSources();
+  }, [sourceId]);
+
+  useEffect(() => {
+    const fetchDestination = async () => {
+      setIsDestinationLoading(true);
+      const response = await fetchDataTypeTwo<Destination>(
+        API_URL + `/api/destinations/${destinationId}`
+      );
+
+      if (response.error) {
+        setDestinationError(response.error);
+      } else {
+        setDestination(response.data as Destination);
+      }
+
+      setIsDestinationLoading(false);
+    };
+
+    fetchDestination();
+  }, [destinationId]);
+
+  const createNewPipline = async (values: Record<string, string>) => {
+    const payload = {
+      description: values["description"],
+      logLevel: logLevel,
+      source: {
+        name: source?.name,
+        id: source?.id,
+      },
+      destination: {
+        name: destination?.name,
+        id: destination?.id,
+      },
+      transforms: [],
+      name: values["pipeline-name"],
+    };
+
+    const response = await createPost(`${API_URL}/api/pipelines`, payload);
 
     if (response.error) {
       console.error("Failed to create source:", response.error);
@@ -112,13 +137,13 @@ const ConfigurePipeline: React.FunctionComponent = () => {
     }
   };
 
-  const handleCreateSource = (values: Record<string, string>) => {
+  const handleCreatePipline = (values: Record<string, string>) => {
     setIsLoading(true);
-     // TODO - Remove after demo: Add a 2-second delay
+    // TODO - Remove after demo: Add a 2-second delay
     setTimeout(async () => {
-      await createNewSource(values);
+      await createNewPipline(values);
       setIsLoading(false);
-      navigateTo("/source");
+      navigateTo("/pipeline");
     }, 2000);
   };
 
@@ -165,120 +190,140 @@ const ConfigurePipeline: React.FunctionComponent = () => {
             uploading it in the smart editor.
           </Text>
         </TextContent>
+        <Toolbar id="create-editor-toggle" className="create_pipeline-toolbar">
+          <ToolbarContent style={{ padding: "0" }}>
+            <ToolbarItem>
+              <ToggleGroup aria-label="Toggle between form editor and smart editor">
+                <ToggleGroupItem
+                  icon={<PencilAltIcon />}
+                  text="Form editor"
+                  aria-label="Form editor"
+                  buttonId="form-editor"
+                  isSelected={editorSelected === "form-editor"}
+                  onChange={handleItemClick}
+                />
+
+                <ToggleGroupItem
+                  icon={<CodeIcon />}
+                  text="Smart editor"
+                  aria-label="Smart editor"
+                  buttonId="smart-editor"
+                  isSelected={editorSelected === "smart-editor"}
+                  onChange={handleItemClick}
+                />
+              </ToggleGroup>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
       </PageSection>
 
       <FormContextProvider initialValues={{}}>
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              // isWidthLimited
+              isWidthLimited={editorSelected === "form-editor"}
               isCenterAligned
               isFilled
               style={{ paddingTop: "0" }}
               // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              // className="custom-card-body"
+              className={navigationCollapsed ? "pipeline-page-section" : ""}
             >
-              <Toolbar id="create-editor-toggle">
-                <ToolbarContent style={{ padding: "0" }}>
-                  <ToolbarItem>
-                    <ToggleGroup aria-label="Toggle between form editor and smart editor">
-                      <ToggleGroupItem
-                        icon={<PencilAltIcon />}
-                        text="Form editor"
-                        aria-label="Form editor"
-                        buttonId="form-editor"
-                        isSelected={editorSelected === "form-editor"}
-                        onChange={handleItemClick}
-                      />
-
-                      <ToggleGroupItem
-                        icon={<CodeIcon />}
-                        text="Smart editor"
-                        aria-label="Smart editor"
-                        buttonId="smart-editor"
-                        isSelected={editorSelected === "smart-editor"}
-                        onChange={handleItemClick}
-                      />
-                    </ToggleGroup>
-                  </ToolbarItem>
-                </ToolbarContent>
-              </Toolbar>
-
               {editorSelected === "form-editor" ? (
-                <Card className="custom-card-body">
+                <Card className="pipeline-card-body">
                   <CardBody isFilled>
                     <Form isWidthLimited>
                       <FormGroup
-                        label="Source type"
+                        label="Pipeline flow"
                         isRequired
-                        fieldId="source-type-field"
+                        fieldId="pipeline-flow-field"
                       >
-                        <TextContent
-                          style={{ display: "flex", alignItems: "center" }}
-                        >
-                          <ConnectorImage
-                            connectorType={"postgres"}
-                            size={35}
-                          />
-                          {/* <Text component="p" style={{ paddingLeft: "10px" }}>
-                            {getConnectorTypeName(sourceId || "")}
-                          </Text> */}
-                          <div
-                            style={{
-                              paddingLeft: "10px",
-                              paddingRight: "10px",
-                            }}
-                          >
-                            {" "}
-                            <ArrowRightIcon />
-                          </div>
+                        <Flex alignItems={{ default: "alignItemsCenter" }}>
+                          {isSourceLoading ? (
+                            <>
+                              <FlexItem spacer={{ default: "spacerMd" }}>
+                                <Skeleton
+                                  shape="circle"
+                                  width="15%"
+                                  screenreaderText="Loading source"
+                                />
+                              </FlexItem>
+                              <FlexItem>
+                                <Skeleton
+                                  shape="circle"
+                                  width="15%"
+                                  screenreaderText="Loading source"
+                                />
+                              </FlexItem>
+                            </>
+                          ) : (
+                            <FlexItem spacer={{ default: "spacerMd" }}>
+                              <ConnectorImage
+                                connectorType={source?.type || ""}
+                                size={30}
+                              />
+                            </FlexItem>
+                          )}
 
-                          <ConnectorImage
-                            connectorType={"infinispan"}
-                            size={35}
-                          />
-                        </TextContent>
+                          <FlexItem spacer={{ default: "spacerMd" }}>
+                            {source?.name}
+                          </FlexItem>
+                          <FlexItem spacer={{ default: "spacerMd" }}>
+                            <ArrowRightIcon />
+                          </FlexItem>
+                          <FlexItem spacer={{ default: "spacerMd" }}>
+                            <ConnectorImage
+                              connectorType={destination?.type || ""}
+                              size={30}
+                            />
+                          </FlexItem>
+                          <FlexItem spacer={{ default: "spacerMd" }}>
+                            {destination?.name}
+                          </FlexItem>
+                        </Flex>
                       </FormGroup>
                       <FormGroup
-                        label="Source name"
+                        label="Pipeline name"
                         isRequired
-                        fieldId="source-name-field"
+                        fieldId="pipeline-name-field"
                       >
                         <TextInput
-                          id="source-name"
-                          aria-label="Source name"
+                          id="pipeline-name"
+                          aria-label="pipeline name"
                           onChange={(_event, value) => {
-                            setValue("source-name", value);
-                            setError("source-name", undefined);
+                            setValue("pipeline-name", value);
+                            setError("pipeline-name", undefined);
                           }}
-                          value={getValue("source-name")}
+                          value={getValue("pipeline-name")}
                           validated={
-                            errors["source-name"] ? "error" : "default"
+                            errors["pipeline-name"] ? "error" : "default"
                           }
                         />
                         <FormHelperText>
                           <HelperText>
                             <HelperTextItem
                               variant={
-                                errors["source-name"] ? "error" : "default"
+                                errors["pipeline-name"] ? "error" : "default"
                               }
-                              {...(errors["source-name"] && {
+                              {...(errors["pipeline-name"] && {
                                 icon: <ExclamationCircleIcon />,
                               })}
                             >
-                              {errors["source-name"]}
+                              {errors["pipeline-name"]}
                             </HelperTextItem>
                           </HelperText>
                         </FormHelperText>
                       </FormGroup>
-                      <FormGroup label="Description" fieldId="details-field">
+                      <FormGroup
+                        label="Description"
+                        fieldId="description-field"
+                      >
                         <TextInput
-                          id="details"
-                          aria-label="Source details"
+                          id="description"
+                          aria-label="Pipeline description"
                           onChange={(_event, value) =>
-                            setValue("details", value)
+                            setValue("description", value)
                           }
-                          value={getValue("details")}
+                          value={getValue("description")}
                         />
                         <FormHelperText>
                           <HelperText>
@@ -289,13 +334,15 @@ const ConfigurePipeline: React.FunctionComponent = () => {
                           </HelperText>
                         </FormHelperText>
                       </FormGroup>
-                      <FormSection title="Configuration properties" titleElement="h2"  
-                      className="custom-form-group"
+                      <FormSection
+                        title="Configuration properties"
+                        titleElement="h2"
+                        className="custom-form-group"
                       >
-                      <FormGroup
+                        <FormGroup
                           label="Log level"
                           isRequired
-                          fieldId="details-field"
+                          fieldId="logLevel-field"
                         >
                           <FormSelect
                             value={logLevel}
@@ -314,20 +361,6 @@ const ConfigurePipeline: React.FunctionComponent = () => {
                           </FormSelect>
                         </FormGroup>
                       </FormSection>
-
-                      {/* <FormFieldGroup
-                        // className="custom-form-group"
-                        header={
-                          <FormFieldGroupHeader
-                            titleText={{
-                              text: "Configuration properties",
-                              id: "configuration-properties-group",
-                            }}
-                          />
-                        }
-                      >
-                       
-                      </FormFieldGroup> */}
                     </Form>
                   </CardBody>
                 </Card>
@@ -356,14 +389,14 @@ const ConfigurePipeline: React.FunctionComponent = () => {
                   onClick={(e) => {
                     e.preventDefault();
 
-                    if (!values["source-name"]) {
-                      setError("source-name", "Source name is required.");
+                    if (!values["pipeline-name"]) {
+                      setError("pipeline-name", "Pipeline name is required.");
                     } else {
-                      handleCreateSource(values);
+                      handleCreatePipline(values);
                     }
                   }}
                 >
-                  Create source
+                  Create pipeline
                 </Button>
                 <Button
                   variant="link"

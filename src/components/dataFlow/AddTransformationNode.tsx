@@ -47,7 +47,8 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
             style={{ paddingRight: 5, paddingLeft: 5, fontSize: 12 }}
             size="sm"
             icon={<PlusIcon />}
-            onClick={() => navigateTo("destination")}
+            onClick={() => navigateTo("")}
+            isDisabled
           >
             {data.label}
           </Button>

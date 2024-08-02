@@ -4,24 +4,20 @@ import {
   Bullseye,
   Stack,
   StackItem,
-  TextContent,
 } from "@patternfly/react-core";
 import { Handle, Position } from "reactflow";
-import ConnectorImage from "../ComponentImage";
 import "./DataNode.css";
-import { PencilAltIcon } from "@patternfly/react-icons";
+import { DataSinkIcon, DataSourceIcon } from "@patternfly/react-icons";
 
-interface DataNodeProps {
+interface DataNodeSelectorProps {
   data: {
-    connectorType: string;
     label: string;
     type: string;
-    editAction: () => void;
-    compositionFlow?: boolean;
+    action: React.ReactNode;
   };
 }
 
-const DataNode: React.FC<DataNodeProps> = ({ data }) => {
+const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
   return (
     <>
       <Card
@@ -36,16 +32,6 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
           )}
 
           <Bullseye>
-            <PencilAltIcon
-             onClick={data.editAction}
-              style={{
-                position: "absolute",
-                top: "6px",
-                right: "6px",
-                cursor: "pointer",
-                fontSize: "10px",
-              }}
-            />
             <Stack>
               <StackItem
                 style={{
@@ -54,18 +40,20 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
                   justifyContent: "center",
                 }}
               >
-                <Bullseye
+                <div
                   style={{
                     padding: 5,
                     borderRadius: 10,
                     backgroundColor: "#E7F1FA",
+                    width: 50,
                   }}
                 >
-                  <ConnectorImage
-                    connectorType={data.connectorType}
-                    size={30}
-                  />
-                </Bullseye>
+                  {data.type === "source" ? (
+                    <DataSourceIcon style={{ fontSize: 18 }} />
+                  ) : (
+                    <DataSinkIcon style={{ fontSize: 18 }} />
+                  )}
+                </div>
               </StackItem>
               <StackItem
                 style={{
@@ -74,12 +62,7 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
                   paddingInlineStart: 5,
                 }}
               >
-                <TextContent
-                  type="p"
-                  style={{ fontSize: "10px", fontWeight: "bold" }}
-                >
-                  {data.label}
-                </TextContent>
+                {data.action}
               </StackItem>
             </Stack>
           </Bullseye>
@@ -93,4 +76,4 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
   );
 };
 
-export default DataNode;
+export default DataNodeSelector;
