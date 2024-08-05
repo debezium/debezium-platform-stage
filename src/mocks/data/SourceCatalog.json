@@ -1,0 +1,32 @@
+[
+  {
+    "name": "MongoDB",
+    "id": "mongodb",
+    "type": "io.debezium.connector.mongodb.MongoDbConnector",
+    "description": "Lorem ipsum dolor sit amet, consec adipiscing elit."
+  },
+  {
+    "name": "MySQL",
+    "id": "mysql",
+    "type": "io.debezium.connector.mysql.MySqlConnector",
+    "description": "Lorem ipsum dolor sit amet, consectet adipiscing elit."
+  },
+  { 
+    "name": "PostgreSQL",
+    "id": "postgresql",
+    "type": "io.debezium.connector.postgresql.PostgresConnector",
+    "description": "Lorem ipsum dolor sit amet, conse adipiscing elit."
+  },
+  {
+    "name": "SQL Server",
+    "id": "sqlserver",
+    "type": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    "name": "Cassandra",
+    "id": "cassandra",
+    "type": "io.debezium.connector.cassandra.CassandraConnector",
+    "description": "Lorem ipsum dolor sit amet, consect adipiscing elit."
+  }
+]
