@@ -17,6 +17,7 @@ dist/
 .npm
 
 # Ignore log files
+logs
 *.log
 
 # Ignore coverage directory

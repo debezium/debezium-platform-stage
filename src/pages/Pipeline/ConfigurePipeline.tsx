@@ -67,12 +67,12 @@ const ConfigurePipeline: React.FunctionComponent = () => {
 
   const [source, setSource] = useState<Source>();
   const [isSourceLoading, setIsSourceLoading] = useState<boolean>(true);
-  const [sourceError, setSourceError] = useState<string | null>(null);
+  const [, setSourceError] = useState<string | null>(null);
 
   const [destination, setDestination] = useState<Destination>();
-  const [isDestinationLoading, setIsDestinationLoading] =
+  const [, setIsDestinationLoading] =
     useState<boolean>(true);
-  const [destinationError, setDestinationError] = useState<string | null>(null);
+  const [, setDestinationError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSources = async () => {
