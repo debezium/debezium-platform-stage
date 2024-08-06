@@ -25,12 +25,55 @@ node (version 20.x.x or higher) and yarn (version 1.22.x or higher).
 To quickly start react app locally. 
 
 ```bash
-git clone https://github.com/indraraj/stage-chakra
-cd stage-chakra
+git clone https://github.com/debezium/debezium-platform-stage
+cd debezium-platform-stage
 yarn && yarn dev
 ```
 
 Stage UI will be available on [http://localhost:3000](http://localhost:3000)  
+
+## Running UI app with backend via docker
+
+### DEV Infrastructure with Docker-Compose
+
+```bash
+git clone https://github.com/debezium/debezium-platform-stage
+cd debezium-platform-stage
+```
+
+You can set up a running DEV infrastructure with debezium-platform-conductor and Postgres using docker compose:
+
+```
+## start containers
+$ docker compose up -d
+```
+    
+Platform conductor REST API will be available on local port **8080**.   
+Postgres will be available on local port **5432**.   
+Platform Stage UI will be available on [http://localhost:3000](http://localhost:3000) 
+
+### Cleanup
+
+later stop running containers.
+
+```
+$ docker compose down
+
+```
+
+## UI Development
+
+Install all the dependencies
+```bash
+yarn
+```
+
+Running UI web app targeting local dev setup 
+```bash
+VITE_BACKEND_BASE_URL={backend_URL} && yarn dev
+```
+
+Debezium UI will be available on [http://localhost:3000](http://localhost:3000)  
 
 ## Development scripts
 ```sh
