@@ -1,12 +1,17 @@
 import * as React from "react";
-import { Card, PageSection, Title } from "@patternfly/react-core";
+import {
+  Card,
+  PageSection,
+  Text,
+  TextContent,
+  Title,
+} from "@patternfly/react-core";
 import {
   BreadthFirstLayout,
   ColaGroupsLayout,
   ColaLayout,
   ConcentricLayout,
   DagreLayout,
-  // ComponentFactory,
   DefaultEdge,
   DefaultGroup,
   DefaultNode,
@@ -148,7 +153,7 @@ const NODES: NodeModel[] = [
   {
     id: "node-0",
     type: "node",
-    label: "Node 0",
+    label: "Transformation",
     width: NODE_DIAMETER,
     height: NODE_DIAMETER,
     shape: NodeShape.trapezoid,
@@ -158,23 +163,10 @@ const NODES: NodeModel[] = [
       icon: "transform",
     },
   },
-  // {
-  //   id: "node-add",
-  //   type: "node",
-  //   label: "+ Add",
-  //   width: NODE_DIAMETER,
-  //   height: NODE_DIAMETER,
-  //   shape: NodeShape.ellipse,
-  //   status: NodeStatus.default,
-  //   data: {
-  //     badge: "B",
-  //     icon: "add",
-  //   },
-  // },
 
   {
     id: "Group-1",
-    children: [ "node-0"],
+    children: ["node-0"],
     type: "group",
     group: true,
     label: "Transformation",
@@ -248,26 +240,28 @@ const Dashboard: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <PageSection isFilled>
-      <Title headingLevel="h1" size="lg">
-        Welcome to Stage
-      </Title>
-      <Card isFullHeight
-      // style={{ minHeight: '30em' }}
-      >
-    {/* <CardTitle>Title</CardTitle>
-    <CardBody isFilled={false}>Body pf-m-no-fill</CardBody>
-    <CardBody isFilled={false}>Body pf-m-no-fill</CardBody>
-    <CardBody>Body</CardBody>
-    <CardFooter>Footer</CardFooter> */}
-    {/* <div style={{ height: "100%", width: "100%" }}> */}
-        <VisualizationProvider controller={controller}>
-          <VisualizationSurface state={{ selectedIds }} />
-        </VisualizationProvider>
-   
-  </Card>
-      
-    </PageSection>
+    <>
+      <PageSection>
+        <TextContent>
+          <Text component="h1" size={1.125}>
+            {" "}
+            Welcome to Stage
+          </Text>
+          <Text component="p">
+            Stage UI provide a visual tool to setup and operate with data
+            pipelines where can you define the source, the destination, and any
+            data transformations.
+          </Text>
+        </TextContent>
+      </PageSection>
+      <PageSection isFilled>
+        <Card isFullHeight>
+          <VisualizationProvider controller={controller}>
+            <VisualizationSurface state={{ selectedIds }} />
+          </VisualizationProvider>
+        </Card>
+      </PageSection>
+    </>
   );
 };
 

@@ -8,6 +8,7 @@ import {
 import { Handle, Position } from "reactflow";
 import "./DataNode.css";
 import { DataSinkIcon, DataSourceIcon } from "@patternfly/react-icons";
+import { useData } from "../../appLayout/AppContext";
 
 interface DataNodeSelectorProps {
   data: {
@@ -18,6 +19,7 @@ interface DataNodeSelectorProps {
 }
 
 const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
+  const { darkMode } = useData();
   return (
     <>
       <Card
@@ -41,7 +43,13 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
                 }}
               >
                 <div
-                  style={{
+                  style={darkMode  ? {
+                    padding: 5,
+                    borderRadius: 10,
+                    backgroundColor: "#4f6c87",
+                    color: "#f2f2f2",
+                    width: 50,
+                  }:{
                     padding: 5,
                     borderRadius: 10,
                     backgroundColor: "#E7F1FA",

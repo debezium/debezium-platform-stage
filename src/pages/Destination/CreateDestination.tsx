@@ -127,14 +127,17 @@ const CreateDestination: React.FunctionComponent = () => {
     }
   };
 
-  const handleCreateDestination = (values: Record<string, string>) => {
+  const handleCreateDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
     // TODO - Remove after demo: Add a 2-second delay
-    setTimeout(async () => {
-      await createNewDestination(values);
-      setIsLoading(false);
-      navigateTo("/destination");
-    }, 2000);
+    // setTimeout(async () => {
+    //   await createNewDestination(values);
+    //   setIsLoading(false);
+    //   navigateTo("/destination");
+    // }, 2000);
+    await createNewDestination(values);
+    setIsLoading(false);
+    navigateTo("/destination");
   };
 
   const handleItemClick = (

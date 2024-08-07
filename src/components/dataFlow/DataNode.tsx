@@ -10,6 +10,7 @@ import { Handle, Position } from "reactflow";
 import ConnectorImage from "../ComponentImage";
 import "./DataNode.css";
 import { PencilAltIcon } from "@patternfly/react-icons";
+import { useData } from "../../appLayout/AppContext";
 
 interface DataNodeProps {
   data: {
@@ -22,6 +23,8 @@ interface DataNodeProps {
 }
 
 const DataNode: React.FC<DataNodeProps> = ({ data }) => {
+  const { darkMode } = useData();
+
   return (
     <>
       <Card
@@ -37,7 +40,7 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
 
           <Bullseye>
             <PencilAltIcon
-             onClick={data.editAction}
+              onClick={data.editAction}
               style={{
                 position: "absolute",
                 top: "6px",
@@ -55,11 +58,15 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
                 }}
               >
                 <Bullseye
-                  style={{
-                    padding: 5,
-                    borderRadius: 10,
-                    backgroundColor: "#E7F1FA",
-                  }}
+                  style={
+                    darkMode
+                      ? { background: "#4f6c87", padding: 5, borderRadius: 10 }
+                      : {
+                          padding: 5,
+                          borderRadius: 10,
+                          backgroundColor: "#E7F1FA",
+                        }
+                  }
                 >
                   <ConnectorImage
                     connectorType={data.connectorType}

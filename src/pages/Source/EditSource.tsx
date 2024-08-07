@@ -167,14 +167,17 @@ const EditSource: React.FunctionComponent = () => {
     }
   };
 
-  const handleEditSource = (values: Record<string, string>) => {
+  const handleEditSource = async (values: Record<string, string>) => {
     setIsLoading(true);
      // TODO - Remove after demo: Add a 2-second delay
-    setTimeout(async () => {
-      await editSource(values);
-      setIsLoading(false);
-      navigateTo("/source");
-    }, 2000);
+    // setTimeout(async () => {
+    //   await editSource(values);
+    //   setIsLoading(false);
+    //   navigateTo("/source");
+    // }, 2000);
+    await editSource(values);
+    setIsLoading(false);
+    navigateTo("/source");
   };
 
   const handleItemClick = (

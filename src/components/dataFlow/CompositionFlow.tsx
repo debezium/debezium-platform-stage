@@ -14,6 +14,7 @@ import ReactFlow, {
 } from "reactflow";
 import AddTransformationNode from "./AddTransformationNode";
 import DataNode from "./DataNode";
+import { useData } from "../../appLayout/AppContext";
 
 const nodeTypes = {
   addTransformation: AddTransformationNode,
@@ -35,6 +36,8 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
   destinationName,
   destinationType,
 }) => {
+  const { darkMode } = useData();
+
   const dataSourceNode = useMemo(
     () => ({
       id: "source",
@@ -58,7 +61,9 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
       data: { label: "Transformation" },
       position: { x: 330, y: 120 },
       style: {
-        backgroundColor: "rgba(203,213,224, 0.2)",
+        backgroundColor: darkMode
+          ? "rgb(21, 21, 21, 0.2)"
+          : "rgba(203,213,224, 0.2)",
         width: 200,
         height: 150,
         borderRadius: 10,
@@ -177,7 +182,7 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
             borderRadius: "5px",
           }}
           gap={15}
-          // color={"#F8FAF6"}
+          color={darkMode ? "#292929" : ""}
         />
       </ReactFlow>
     </>

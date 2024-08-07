@@ -90,6 +90,7 @@ const PipelineDesigner: React.FunctionComponent = () => {
             <ActionGroup style={{ marginTop: 0 }}>
               <Button
                 variant="primary"
+                isDisabled={!(isSourceConfigured && isDestinationConfigured)}
                 onClick={() =>
                   navigateTo(`/pipeline/pipeline_designer/create_pipeline?sourceId=${selectedSource?.id}&destinationId=${selectedDestination?.id}`)
                 }
