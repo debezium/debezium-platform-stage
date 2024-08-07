@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Button, PageSection, Text, TextContent } from "@patternfly/react-core";
+import { Button, PageSection } from "@patternfly/react-core";
 import { PlusIcon } from "@patternfly/react-icons";
 import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
+import comingSoonImage from "../../assets/comingSoon.png";
+import "../Transformation/Transformation.css";
+import { useData } from "../../appLayout/AppContext";
 
 export interface IVaultsProps {
   sampleProp?: string;
@@ -14,23 +17,23 @@ const Vaults: React.FunctionComponent<IVaultsProps> = () => {
   const navigateTo = (url: string) => {
     navigate(url);
   };
+  const { darkMode } = useData();
 
   return (
     <>
-      <PageSection isWidthLimited>
-        <TextContent>
-          <Text component="h1">Vaults</Text>
-        </TextContent>
-      </PageSection>
-      <PageSection>
+      <PageSection style={{ position: "relative" }}>
+        <div
+          className="transformation_overlay"
+          style={darkMode ? { background: "rgba(41, 41, 41, 0.6)" } : {}}
+        >
+          <img src={comingSoonImage} alt="Coming Soon" />
+        </div>
         <EmptyStatus
           heading="No vaults available"
           primaryMessage=' No vaults is configure for this cluster yet. To streams change
               events from a source database you can configure a source by click
               the "Add vaults" button.'
-          secondaryMessage="This text has overridden a css component variable to demonstrate
-              how to apply customizations using PatternFly's global
-              variable API."
+          secondaryMessage=""
           primaryAction={
             <Button variant="primary" icon={<PlusIcon />}>
               Add vaults
@@ -41,8 +44,11 @@ const Vaults: React.FunctionComponent<IVaultsProps> = () => {
               <Button variant="link" onClick={() => navigateTo("/source")}>
                 Go to source
               </Button>
-              <Button variant="link" onClick={() => navigateTo("/source")}>
+              <Button variant="link" onClick={() => navigateTo("/destination")}>
                 Go to destination
+              </Button>
+              <Button variant="link" onClick={() => navigateTo("/pipeline")}>
+                Go to pipeline
               </Button>
             </>
           }

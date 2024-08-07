@@ -137,14 +137,17 @@ const ConfigurePipeline: React.FunctionComponent = () => {
     }
   };
 
-  const handleCreatePipline = (values: Record<string, string>) => {
+  const handleCreatePipline = async (values: Record<string, string>) => {
     setIsLoading(true);
     // TODO - Remove after demo: Add a 2-second delay
-    setTimeout(async () => {
-      await createNewPipline(values);
-      setIsLoading(false);
-      navigateTo("/pipeline");
-    }, 2000);
+    // setTimeout(async () => {
+    //   await createNewPipline(values);
+    //   setIsLoading(false);
+    //   navigateTo("/pipeline");
+    // }, 2000);
+    await createNewPipline(values);
+    setIsLoading(false);
+    navigateTo("/pipeline");
   };
 
   const [logLevel, setLogLevel] = React.useState("");

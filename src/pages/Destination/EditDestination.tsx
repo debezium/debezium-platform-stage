@@ -166,14 +166,17 @@ const EditDestination: React.FunctionComponent = () => {
     }
   };
 
-  const handleEditDestination = (values: Record<string, string>) => {
+  const handleEditDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
      // TODO - Remove after demo: Add a 2-second delay
-    setTimeout(async () => {
-      await editDestination(values);
-      setIsLoading(false);
-      navigateTo("/destination");
-    }, 2000);
+    // setTimeout(async () => {
+    //   await editDestination(values);
+    //   setIsLoading(false);
+    //   navigateTo("/destination");
+    // }, 2000);
+    await editDestination(values);
+    setIsLoading(false);
+    navigateTo("/destination");
   };
 
   const handleItemClick = (
