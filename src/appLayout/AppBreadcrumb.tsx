@@ -88,7 +88,7 @@ const AppBreadcrumb: React.FC = () => {
           <BreadcrumbGenerator>
             {generateBreadcrumbItem("/pipeline", "Pipeline")}
             {generateBreadcrumbItem("#", "indra-ui-test", true)}
-            {generateBreadcrumbItem("#", "Overview", true)}
+            {generateBreadcrumbItem("#", "Edit", true)}
           </BreadcrumbGenerator>
         );
       case route === "/pipeline/pipeline_designer/configure":

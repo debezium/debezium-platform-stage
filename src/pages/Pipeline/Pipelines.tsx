@@ -111,10 +111,12 @@ const Pipelines: React.FunctionComponent = () => {
     [debouncedSearch]
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onOverviewHandler = (id: number, _name: string) => {
-    console.log("Overview clicked", id);
     navigateTo(`/pipeline/pipeline_overview/${id}`);
+  };
+
+  const onEditHandler = (id: number, _name: string) => {
+    navigateTo(`/pipeline/pipeline_edit/${id}`);
   };
 
   const rowActions = (actionData: ActionData): IAction[] => [
@@ -128,11 +130,12 @@ const Pipelines: React.FunctionComponent = () => {
     },
     {
       title: "Overview",
-      onClick:  () => onOverviewHandler(actionData.id, actionData.name),
+      onClick: () => onOverviewHandler(actionData.id, actionData.name),
     },
     { isSeparator: true },
     {
       title: "Edit",
+      onClick: () => onEditHandler(actionData.id, actionData.name),
     },
 
     {

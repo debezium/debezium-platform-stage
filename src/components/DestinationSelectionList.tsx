@@ -41,9 +41,6 @@ const DestinationSelectionList: React.FunctionComponent<
     }
   );
 
-  console.log(pipelineError, isPipelineLoading);
-  console.log(destinationError, isDestinationLoading);
-
   return (
     <>
       <Table aria-label={`${tableType} table`}>
