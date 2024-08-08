@@ -41,9 +41,6 @@ const SourceSelectionList: React.FunctionComponent<
     }
   );
 
-  console.log(pipelineError, isPipelineLoading);
-  console.log(sourceError, isSourceLoading);
-
   return (
     <>
       <Table aria-label={`${tableType} table`}>

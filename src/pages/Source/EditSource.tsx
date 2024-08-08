@@ -142,7 +142,7 @@ const EditSource: React.FunctionComponent = () => {
 
   const editSource = async (values: Record<string, string>) => {
     const payload = {
-      description: values["details"],
+      description: values["descriptions"],
       config: convertMapToObject(properties),
       name: values["source-name"],
     };
@@ -169,7 +169,7 @@ const EditSource: React.FunctionComponent = () => {
 
   const handleEditSource = async (values: Record<string, string>) => {
     setIsLoading(true);
-     // TODO - Remove after demo: Add a 2-second delay
+    // TODO - Remove after demo: Add a 2-second delay
     // setTimeout(async () => {
     //   await editSource(values);
     //   setIsLoading(false);
@@ -200,7 +200,7 @@ const EditSource: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited >
+      <PageSection isWidthLimited>
         <TextContent style={{ marginBlockEnd: "10px" }}>
           <Text component="h1">Edit source </Text>
           <Text component="p">
@@ -240,7 +240,7 @@ const EditSource: React.FunctionComponent = () => {
       <FormContextProvider
         initialValues={{
           "source-name": source?.name || "",
-          details: source?.description || "",
+          descriptions: source?.description || "",
         }}
       >
         {({ setValue, getValue, setError, values, errors }) => (
@@ -308,14 +308,17 @@ const EditSource: React.FunctionComponent = () => {
                           </HelperText>
                         </FormHelperText>
                       </FormGroup>
-                      <FormGroup label="Details" fieldId="details-field">
+                      <FormGroup
+                        label="Description"
+                        fieldId="descriptions-field"
+                      >
                         <TextInput
-                          id="details"
-                          aria-label="Source details"
+                          id="descriptions"
+                          aria-label="Source description"
                           onChange={(_event, value) =>
-                            setValue("details", value)
+                            setValue("descriptions", value)
                           }
-                          value={getValue("details")}
+                          value={getValue("descriptions")}
                         />
                         <FormHelperText>
                           <HelperText>
