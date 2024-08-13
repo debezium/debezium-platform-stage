@@ -17,18 +17,12 @@ import DataNode from "./DataNode";
 
 import { MdLogin, MdLogout } from "react-icons/md";
 import DataNodeSelector from "./DataNodeSelector";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalVariant,
-} from "@patternfly/react-core";
+import { Button, Modal, ModalBody, ModalHeader } from "@patternfly/react-core";
 import { Destination, Source } from "../../apis/apis";
 import { PlusIcon } from "@patternfly/react-icons";
-import DestinationSelectionList from "../DestinationSelectionList";
 import "./CreationFlow.css";
 import SourcePipelineModel from "./SourcePipelineModel";
+import DestinationPipelineModel from "./DestinationPipelineModel";
 
 // we define the nodeTypes outside of the component to prevent re-renderings
 // you could also use useMemo inside the component
@@ -311,92 +305,42 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
         />
       </ReactFlow>
       <Modal
-        // variant={ModalVariant.large}
         isOpen={isSourceModalOpen}
         onClose={handleSourceModalToggle}
         aria-labelledby="modal-source-body-with-description"
         aria-describedby="modal-source-body-with-description"
       >
         <ModalHeader
-          title="Data Source"
-          labelId="modal-with-description-title"
-          description="Select a source to be used in pipeline from the list of already configured source list below or configure a new source by selection create a new source radio button."
+          title="Pipeline source"
+          className="pipeline_flow-modal_header"
+          labelId="modal-with-source-description-title"
+          description="Select a source to be used in pipeline from the list of already configured source listed below or configure a new source by selecting create a new source radio card."
         />
 
         <ModalBody tabIndex={0} id="modal-source-body-with-description">
           <SourcePipelineModel onSourceSelection={onSourceSelection} />
-          {/* <Split hasGutter>
-            <SplitItem className="creation_flow-card_selection">
-              <Card
-                id="select-existing-source"
-                isSelectable
-                isSelected={isChecked === id1}
-                
-              >
-                <CardHeader
-                  selectableActions={{
-                    selectableActionId: id1,
-                    selectableActionAriaLabelledby: "select-existing-source",
-                    name: "pipeline-source",
-                    variant: "single",
-                    onChange,
-                  }}
-                >
-                  <CardTitle>Select a Source</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  Select a already configured source from the list below
-                </CardBody>
-              </Card>
-            </SplitItem>
-
-            <SplitItem className="creation_flow-card_selection">
-              <Card
-                id="create-new-source"
-                isSelectable
-                isSelected={isChecked === id2}
-               
-              >
-                <CardHeader
-                  selectableActions={{
-                    selectableActionId: id2,
-                    selectableActionAriaLabelledby: "create-new-source",
-                    name: "pipeline-source",
-                    variant: "single",
-                    onChange,
-                  }}
-                >
-                  <CardTitle>Create a source</CardTitle>
-                </CardHeader>
-                <CardBody>Create a new source for your data pipeline.</CardBody>
-              </Card>
-            </SplitItem>
-          </Split>
-          <Divider  style={{marginTop: "10px"}}/>
-          {isChecked === id1 ? ( <SourceSelectionList
-            tableType="source"
-            onSelection={onSourceSelection}
-          />):(<SourceCatalogGrid/>)} */}
         </ModalBody>
       </Modal>
 
       <Modal
-        variant={ModalVariant.large}
         isOpen={isDestinationModalOpen}
         onClose={handleDestinationModalToggle}
         aria-labelledby="modal-with-description-title"
-        aria-describedby="modal-box-body-with-description"
+        aria-describedby="modal-box-body-destination-with-description"
       >
         <ModalHeader
-          title="Select a destination"
-          labelId="modal-with-description-title"
-          description="A description is used when you want to provide more info about the modal than the title is able to describe. The content in the description is static and will not scroll with the rest of the modal body."
+          title="Pipeline destination"
+           className="pipeline_flow-modal_header"
+          labelId="modal-with-destination-description-title"
+          description="Select a destination to be used in pipeline from the list of already configured destination listed below or configure a new destination by selecting create a new destination radio card."
         />
 
-        <ModalBody tabIndex={0} id="modal-box-body-with-description">
-          <DestinationSelectionList
-            tableType="destination"
-            onSelection={onDestinationSelection}
+        <ModalBody
+          tabIndex={0}
+          id="modal-box-body-destination-with-description"
+        >
+          <DestinationPipelineModel
+            onDestinationSelection={onDestinationSelection}
           />
         </ModalBody>
       </Modal>

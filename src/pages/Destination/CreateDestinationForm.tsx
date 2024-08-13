@@ -29,34 +29,31 @@ import {
   ToolbarItem,
 } from "@patternfly/react-core";
 import {
+  PencilAltIcon,
+  CodeIcon,
   PlusIcon,
   TrashIcon,
-  ExclamationCircleIcon,
-  CodeIcon,
-  PencilAltIcon,
 } from "@patternfly/react-icons";
+import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
 import { useNavigate } from "react-router-dom";
-import "./CreateSource.css";
+import "./CreateDestination.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
-import { useState } from "react";
-import { createPost, Source } from "../../apis/apis";
+import _ from "lodash";
+import { createPost, Destination } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
-import sourceCatalog from "../../mocks/data/SourceCatalog.json";
-import _ from "lodash";
 import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/NotificationContext";
 
-type CreateSourceFormProps = {
-  sourceId: string;
-  selectSource: (sourceId: string) => void;
+type CreateDestinationFormProps = {
+  destinationId: string;
+  selectDestination: (destinationId: string) => void;
 };
 
-const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
-  sourceId,
-  selectSource,
-}) => {
+const CreateDestinationForm: React.FunctionComponent<
+  CreateDestinationFormProps
+> = ({ destinationId, selectDestination }) => {
   const navigate = useNavigate();
 
   const navigateTo = (url: string) => {
@@ -69,12 +66,12 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
 
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const [properties, setProperties] = useState<
+  const [properties, setProperties] = React.useState<
     Map<string, { key: string; value: string }>
   >(new Map([["key0", { key: "", value: "" }]]));
-  const [keyCount, setKeyCount] = useState<number>(1);
+  const [keyCount, setKeyCount] = React.useState<number>(1);
 
   const handleAddProperty = () => {
     const newKey = `key${keyCount}`;
@@ -110,44 +107,44 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
     });
   };
 
-  const createNewSource = async (values: Record<string, string>) => {
+  const createNewDestination = async (values: Record<string, string>) => {
     const payload = {
       description: values["details"],
-      type: _.find(sourceCatalog, { id: sourceId })?.type || "",
+      type: _.find(destinationCatalog, { id: destinationId })?.type || "",
       schema: "schema321",
       vaults: [],
       config: convertMapToObject(properties),
-      name: values["source-name"],
+      name: values["destination-name"],
     };
 
-    const response = await createPost(`${API_URL}/api/sources`, payload);
+    const response = await createPost(`${API_URL}/api/destinations`, payload);
 
     if (response.error) {
       addNotification(
         "danger",
-        `Source creation failed`,
-        `Failed to create ${(response.data as Source).name}: ${response.error}`
+        `Destination creation failed`,
+        `Failed to create ${(response.data as Destination).name}: ${response.error}`
       );
     } else {
       addNotification(
         "success",
         `Create successful`,
-        `Source "${(response.data as Source).name}" created successfully.`
+        `Destination "${(response.data as Destination).name}" created successfully.`
       );
     }
   };
 
-  const handleCreateSource = async (values: Record<string, string>) => {
+  const handleCreateDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
     // TODO - Remove after demo: Add a 2-second delay
     // setTimeout(async () => {
-    //   await createNewSource(values);
+    //   await createNewDestination(values);
     //   setIsLoading(false);
-    //   navigateTo("/source");
+    //   navigateTo("/destination");
     // }, 2000);
-    await createNewSource(values);
+    await createNewDestination(values);
     setIsLoading(false);
-    navigateTo("/source");
+    navigateTo("/destination");
   };
 
   const handleItemClick = (
@@ -163,10 +160,13 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
   return (
     <>
       <PageSection isWidthLimited style={{ paddingTop: 0 }}>
-        <Toolbar id="create-editor-toggle" className="create_source-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
+        <Toolbar
+          id="create-editor-toggle"
+          className="create_destination-toolbar"
+        >
+          <ToolbarContent>
             <ToolbarItem>
-              <ToggleGroup aria-label="Toggle between form editor and smart editor">
+              <ToggleGroup aria-label="Toggle between form and smart editor">
                 <ToggleGroupItem
                   icon={<PencilAltIcon />}
                   text="Form editor"
@@ -206,44 +206,30 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                       <CardBody isFilled>
                         <Form isWidthLimited>
                           <FormGroup
-                            label="Source name"
+                            label="Destination name"
                             isRequired
-                            fieldId="source-name-field"
+                            fieldId="destination-name-field"
                           >
                             <TextInput
-                              id="source-name"
-                              aria-label="Source name"
+                              id="destination-name"
+                              aria-label="destination name"
                               onChange={(_event, value) => {
-                                setValue("source-name", value);
-                                setError("source-name", undefined);
+                                setValue("destination-name", value);
+                                setError("destination-name", undefined);
                               }}
-                              value={getValue("source-name")}
+                              value={getValue("destination-name")}
                               validated={
-                                errors["source-name"] ? "error" : "default"
+                                errors["destination-name"] ? "error" : "default"
                               }
                             />
-                            <FormHelperText>
-                              <HelperText>
-                                <HelperTextItem
-                                  variant={
-                                    errors["source-name"] ? "error" : "default"
-                                  }
-                                  {...(errors["source-name"] && {
-                                    icon: <ExclamationCircleIcon />,
-                                  })}
-                                >
-                                  {errors["source-name"]}
-                                </HelperTextItem>
-                              </HelperText>
-                            </FormHelperText>
                           </FormGroup>
                           <FormGroup
                             label="Description"
-                            fieldId="details-field"
+                            fieldId="destination-details-field"
                           >
                             <TextInput
-                              id="details"
-                              aria-label="Source details"
+                              id="destination-details"
+                              aria-label="Destination details"
                               onChange={(_event, value) =>
                                 setValue("details", value)
                               }
@@ -252,8 +238,8 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                             <FormHelperText>
                               <HelperText>
                                 <HelperTextItem>
-                                  Add a one liner to describe your source or
-                                  where you plan to capture.
+                                  Add a one-liner to describe your destination
+                                  or where you plan to capture.
                                 </HelperTextItem>
                               </HelperText>
                             </FormHelperText>
@@ -263,24 +249,18 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                             header={
                               <FormFieldGroupHeader
                                 titleText={{
-                                  text: (
-                                    <Text component="h4">
-                                      Configuration properties
-                                    </Text>
-                                  ),
-                                  id: "configuration-properties-group",
+                                  text: "Configuration properties",
+                                  id: "field-group-destination-id",
                                 }}
-                                titleDescription="Enter the both key and value pair to configure a property"
+                                titleDescription="Enter both key and value pairs to configure a property"
                                 actions={
-                                  <>
-                                    <Button
-                                      variant="secondary"
-                                      icon={<PlusIcon />}
-                                      onClick={handleAddProperty}
-                                    >
-                                      Add property
-                                    </Button>
-                                  </>
+                                  <Button
+                                    variant="secondary"
+                                    icon={<PlusIcon />}
+                                    onClick={handleAddProperty}
+                                  >
+                                    Add property
+                                  </Button>
                                 }
                               />
                             }
@@ -292,14 +272,14 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                                     <FormGroup
                                       label=""
                                       isRequired
-                                      fieldId={`configuration-properties-key-field-${key}`}
+                                      fieldId={`destination-config-props-key-field-${key}`}
                                     >
                                       <TextInput
                                         isRequired
                                         type="text"
                                         placeholder="Key"
-                                        id={`configuration-properties-key-${key}`}
-                                        name={`configuration-properties-key-${key}`}
+                                        id={`destination-config-props-key-${key}`}
+                                        name={`destination-config-props-key-${key}`}
                                         value={properties.get(key)?.key || ""}
                                         onChange={(_e, value) =>
                                           handlePropertyChange(
@@ -313,14 +293,14 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                                     <FormGroup
                                       label=""
                                       isRequired
-                                      fieldId={`configuration-properties-value-field-${key}`}
+                                      fieldId={`destination-config-props-value-field-${key}`}
                                     >
                                       <TextInput
                                         isRequired
                                         type="text"
-                                        id={`configuration-properties-value-${key}`}
+                                        id={`destination-config-props-value-${key}`}
                                         placeholder="Value"
-                                        name={`configuration-properties-value-${key}`}
+                                        name={`destination-config-props-value-${key}`}
                                         value={properties.get(key)?.value || ""}
                                         onChange={(_e, value) =>
                                           handlePropertyChange(
@@ -336,7 +316,7 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                                 <SplitItem>
                                   <Button
                                     variant="plain"
-                                    aria-label="Remove property"
+                                    aria-label="Remove"
                                     onClick={() => handleDeleteProperty(key)}
                                   >
                                     <TrashIcon />
@@ -349,15 +329,16 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                       </CardBody>
                     </Card>
                   </SplitItem>
+
                   <SplitItem>
                     <Bullseye>
                       <TextContent style={{ textAlign: "center" }}>
                         <ConnectorImage
-                          connectorType={sourceId || ""}
+                          connectorType={destinationId || ""}
                           size={160}
                         />
                         <Text component="h4">
-                          {getConnectorTypeName(sourceId || "")}
+                          {getConnectorTypeName(destinationId || "")}
                         </Text>
                       </TextContent>
                     </Bullseye>
@@ -373,31 +354,33 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                   language={Language.yaml}
                   // code="your code goes here"
                   height="450px"
-                  // className="custom-card-body"
                 />
               )}
             </PageSection>
+
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
               <ActionGroup style={{ marginTop: 0 }}>
                 <Button
                   variant="primary"
-                  // onClick={handleCreateSource}
                   isLoading={isLoading}
                   isDisabled={isLoading}
                   type={ButtonType.submit}
                   onClick={(e) => {
                     e.preventDefault();
 
-                    if (!values["source-name"]) {
-                      setError("source-name", "Source name is required.");
+                    if (!values["destination-name"]) {
+                      setError(
+                        "destination-name",
+                        "Destination name is required."
+                      );
                     } else {
-                      handleCreateSource(values);
+                      handleCreateDestination(values);
                     }
                   }}
                 >
-                  Create source
+                  Create destination
                 </Button>
-                <Button variant="link" onClick={() => selectSource("")}>
+                <Button variant="link" onClick={() => selectDestination("")}>
                   Back
                 </Button>
               </ActionGroup>
@@ -409,4 +392,4 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
   );
 };
 
-export { CreateSourceForm };
+export { CreateDestinationForm };

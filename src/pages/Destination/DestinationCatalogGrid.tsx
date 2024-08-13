@@ -6,25 +6,25 @@ import {
   PageSection,
   Tile,
 } from "@patternfly/react-core";
-import sourceCatalog from "../../mocks/data/SourceCatalog.json";
+import "./DestinationCatalog.css";
+import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
-import "./SourceCatalog.css";
 
-export interface ISourceCatalogGridProps {
-  selectSource: (sourceId: string) => void;
+export interface IDestinationCatalogGridProps {
+  selectDestination: (destinationId: string) => void;
 }
 
-const SourceCatalogGrid: React.FunctionComponent<ISourceCatalogGridProps> = ({
-  selectSource,
-}) => {
-  const onCardClick = (sourceId: string) => {
-    selectSource(sourceId);
+const DestinationCatalogGrid: React.FunctionComponent<
+  IDestinationCatalogGridProps
+> = ({ selectDestination }) => {
+  const onCardClick = (destinationId: string) => {
+    selectDestination(destinationId);
   };
 
   return (
     <PageSection>
       <Gallery hasGutter className="custom-gallery">
-        {sourceCatalog.map((item) => (
+        {destinationCatalog.map((item) => (
           <GalleryItem>
             <Tile
               key={item.id}
@@ -45,4 +45,4 @@ const SourceCatalogGrid: React.FunctionComponent<ISourceCatalogGridProps> = ({
   );
 };
 
-export { SourceCatalogGrid };
+export { DestinationCatalogGrid };
