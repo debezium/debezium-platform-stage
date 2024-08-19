@@ -45,25 +45,24 @@ import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import sourceCatalog from "../../mocks/data/SourceCatalog.json";
 import _ from "lodash";
-import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/NotificationContext";
 
 type CreateSourceFormProps = {
   sourceId: string;
   selectSource: (sourceId: string) => void;
+  onSelection: (selection: Source ) => void;
 };
 
 const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
   sourceId,
   selectSource,
+  onSelection
 }) => {
   const navigate = useNavigate();
 
   const navigateTo = (url: string) => {
     navigate(url);
   };
-
-  const { navigationCollapsed } = useData();
 
   const { addNotification } = useNotification();
 
@@ -129,6 +128,7 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
         `Failed to create ${(response.data as Source).name}: ${response.error}`
       );
     } else {
+      onSelection(response.data as Source);
       addNotification(
         "success",
         `Create successful`,
@@ -197,172 +197,167 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
               isCenterAligned
               isFilled
               style={{ paddingTop: "0" }}
-              className={navigationCollapsed ? "custom-page-section" : ""}
+              className={"custom-page-section"}
             >
               {editorSelected === "form-editor" ? (
-                <Split hasGutter style={{ alignItems: "center" }}>
-                  <SplitItem isFilled style={{ maxWidth: "75%" }}>
-                    <Card className="custom-card-body">
-                      <CardBody isFilled>
-                        <Form isWidthLimited>
-                          <FormGroup
-                            label="Source name"
-                            isRequired
-                            fieldId="source-name-field"
+                <>
+                  <Card className="custom-card-body">
+                    <CardBody isFilled>
+                      <Form isWidthLimited>
+                        <FormGroup
+                          label="Source type"
+                          isRequired
+                          fieldId="source-type-field"
+                        >
+                          <TextContent
+                            style={{ display: "flex", alignItems: "center" }}
                           >
-                            <TextInput
-                              id="source-name"
-                              aria-label="Source name"
-                              onChange={(_event, value) => {
-                                setValue("source-name", value);
-                                setError("source-name", undefined);
-                              }}
-                              value={getValue("source-name")}
-                              validated={
-                                errors["source-name"] ? "error" : "default"
-                              }
+                            <ConnectorImage
+                              connectorType={sourceId || ""}
+                              size={35}
                             />
-                            <FormHelperText>
-                              <HelperText>
-                                <HelperTextItem
-                                  variant={
-                                    errors["source-name"] ? "error" : "default"
-                                  }
-                                  {...(errors["source-name"] && {
-                                    icon: <ExclamationCircleIcon />,
-                                  })}
-                                >
-                                  {errors["source-name"]}
-                                </HelperTextItem>
-                              </HelperText>
-                            </FormHelperText>
-                          </FormGroup>
-                          <FormGroup
-                            label="Description"
-                            fieldId="details-field"
-                          >
-                            <TextInput
-                              id="details"
-                              aria-label="Source details"
-                              onChange={(_event, value) =>
-                                setValue("details", value)
-                              }
-                              value={getValue("details")}
-                            />
-                            <FormHelperText>
-                              <HelperText>
-                                <HelperTextItem>
-                                  Add a one liner to describe your source or
-                                  where you plan to capture.
-                                </HelperTextItem>
-                              </HelperText>
-                            </FormHelperText>
-                          </FormGroup>
-
-                          <FormFieldGroup
-                            header={
-                              <FormFieldGroupHeader
-                                titleText={{
-                                  text: (
-                                    <Text component="h4">
-                                      Configuration properties
-                                    </Text>
-                                  ),
-                                  id: "configuration-properties-group",
-                                }}
-                                titleDescription="Enter the both key and value pair to configure a property"
-                                actions={
-                                  <>
-                                    <Button
-                                      variant="secondary"
-                                      icon={<PlusIcon />}
-                                      onClick={handleAddProperty}
-                                    >
-                                      Add property
-                                    </Button>
-                                  </>
-                                }
-                              />
+                            <Text component="p" style={{ paddingLeft: "10px" }}>
+                              {getConnectorTypeName(sourceId || "")}
+                            </Text>
+                          </TextContent>
+                        </FormGroup>
+                        <FormGroup
+                          label="Source name"
+                          isRequired
+                          fieldId="source-name-field"
+                        >
+                          <TextInput
+                            id="source-name"
+                            aria-label="Source name"
+                            onChange={(_event, value) => {
+                              setValue("source-name", value);
+                              setError("source-name", undefined);
+                            }}
+                            value={getValue("source-name")}
+                            validated={
+                              errors["source-name"] ? "error" : "default"
                             }
-                          >
-                            {Array.from(properties.keys()).map((key) => (
-                              <Split hasGutter key={key}>
-                                <SplitItem isFilled>
-                                  <Grid hasGutter md={6}>
-                                    <FormGroup
-                                      label=""
-                                      isRequired
-                                      fieldId={`configuration-properties-key-field-${key}`}
-                                    >
-                                      <TextInput
-                                        isRequired
-                                        type="text"
-                                        placeholder="Key"
-                                        id={`configuration-properties-key-${key}`}
-                                        name={`configuration-properties-key-${key}`}
-                                        value={properties.get(key)?.key || ""}
-                                        onChange={(_e, value) =>
-                                          handlePropertyChange(
-                                            key,
-                                            "key",
-                                            value
-                                          )
-                                        }
-                                      />
-                                    </FormGroup>
-                                    <FormGroup
-                                      label=""
-                                      isRequired
-                                      fieldId={`configuration-properties-value-field-${key}`}
-                                    >
-                                      <TextInput
-                                        isRequired
-                                        type="text"
-                                        id={`configuration-properties-value-${key}`}
-                                        placeholder="Value"
-                                        name={`configuration-properties-value-${key}`}
-                                        value={properties.get(key)?.value || ""}
-                                        onChange={(_e, value) =>
-                                          handlePropertyChange(
-                                            key,
-                                            "value",
-                                            value
-                                          )
-                                        }
-                                      />
-                                    </FormGroup>
-                                  </Grid>
-                                </SplitItem>
-                                <SplitItem>
+                          />
+                          <FormHelperText>
+                            <HelperText>
+                              <HelperTextItem
+                                variant={
+                                  errors["source-name"] ? "error" : "default"
+                                }
+                                {...(errors["source-name"] && {
+                                  icon: <ExclamationCircleIcon />,
+                                })}
+                              >
+                                {errors["source-name"]}
+                              </HelperTextItem>
+                            </HelperText>
+                          </FormHelperText>
+                        </FormGroup>
+                        <FormGroup label="Description" fieldId="details-field">
+                          <TextInput
+                            id="details"
+                            aria-label="Source details"
+                            onChange={(_event, value) =>
+                              setValue("details", value)
+                            }
+                            value={getValue("details")}
+                          />
+                          <FormHelperText>
+                            <HelperText>
+                              <HelperTextItem>
+                                Add a one liner to describe your source or where
+                                you plan to capture.
+                              </HelperTextItem>
+                            </HelperText>
+                          </FormHelperText>
+                        </FormGroup>
+
+                        <FormFieldGroup
+                          header={
+                            <FormFieldGroupHeader
+                              titleText={{
+                                text: (
+                                  <Text component="h4">
+                                    Configuration properties
+                                  </Text>
+                                ),
+                                id: "configuration-properties-group",
+                              }}
+                              titleDescription="Enter the both key and value pair to configure a property"
+                              actions={
+                                <>
                                   <Button
-                                    variant="plain"
-                                    aria-label="Remove property"
-                                    onClick={() => handleDeleteProperty(key)}
+                                    variant="secondary"
+                                    icon={<PlusIcon />}
+                                    onClick={handleAddProperty}
                                   >
-                                    <TrashIcon />
+                                    Add property
                                   </Button>
-                                </SplitItem>
-                              </Split>
-                            ))}
-                          </FormFieldGroup>
-                        </Form>
-                      </CardBody>
-                    </Card>
-                  </SplitItem>
-                  <SplitItem>
-                    <Bullseye>
-                      <TextContent style={{ textAlign: "center" }}>
-                        <ConnectorImage
-                          connectorType={sourceId || ""}
-                          size={160}
-                        />
-                        <Text component="h4">
-                          {getConnectorTypeName(sourceId || "")}
-                        </Text>
-                      </TextContent>
-                    </Bullseye>
-                  </SplitItem>
-                </Split>
+                                </>
+                              }
+                            />
+                          }
+                        >
+                          {Array.from(properties.keys()).map((key) => (
+                            <Split hasGutter key={key}>
+                              <SplitItem isFilled>
+                                <Grid hasGutter md={6}>
+                                  <FormGroup
+                                    label=""
+                                    isRequired
+                                    fieldId={`configuration-properties-key-field-${key}`}
+                                  >
+                                    <TextInput
+                                      isRequired
+                                      type="text"
+                                      placeholder="Key"
+                                      id={`configuration-properties-key-${key}`}
+                                      name={`configuration-properties-key-${key}`}
+                                      value={properties.get(key)?.key || ""}
+                                      onChange={(_e, value) =>
+                                        handlePropertyChange(key, "key", value)
+                                      }
+                                    />
+                                  </FormGroup>
+                                  <FormGroup
+                                    label=""
+                                    isRequired
+                                    fieldId={`configuration-properties-value-field-${key}`}
+                                  >
+                                    <TextInput
+                                      isRequired
+                                      type="text"
+                                      id={`configuration-properties-value-${key}`}
+                                      placeholder="Value"
+                                      name={`configuration-properties-value-${key}`}
+                                      value={properties.get(key)?.value || ""}
+                                      onChange={(_e, value) =>
+                                        handlePropertyChange(
+                                          key,
+                                          "value",
+                                          value
+                                        )
+                                      }
+                                    />
+                                  </FormGroup>
+                                </Grid>
+                              </SplitItem>
+                              <SplitItem>
+                                <Button
+                                  variant="plain"
+                                  aria-label="Remove property"
+                                  onClick={() => handleDeleteProperty(key)}
+                                >
+                                  <TrashIcon />
+                                </Button>
+                              </SplitItem>
+                            </Split>
+                          ))}
+                        </FormFieldGroup>
+                      </Form>
+                    </CardBody>
+                  </Card>
+                </>
               ) : (
                 <CodeEditor
                   isUploadEnabled

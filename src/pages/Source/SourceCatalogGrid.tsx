@@ -25,9 +25,9 @@ const SourceCatalogGrid: React.FunctionComponent<ISourceCatalogGridProps> = ({
     <PageSection>
       <Gallery hasGutter className="custom-gallery">
         {sourceCatalog.map((item) => (
-          <GalleryItem>
+          <GalleryItem  key={item.id}>
             <Tile
-              key={item.id}
+             
               style={{ width: "100%" }}
               title={item.name}
               icon={<ConnectorImage connectorType={item.id} />}

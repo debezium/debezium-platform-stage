@@ -1,4 +1,3 @@
-import SourceSelectionList from "../../components/SourceSelectionList";
 import {
   Card,
   CardHeader,
@@ -10,10 +9,13 @@ import {
   Flex,
   FlexItem,
 } from "@patternfly/react-core";
-import React, { useCallback, useState } from "react";
-import { Source } from "../../apis/apis";
+import React, { useCallback, useEffect, useState } from "react";
+import { fetchData, Source } from "../../apis/apis";
 import { SourceCatalogGrid } from "../../pages/Source/SourceCatalogGrid";
 import { CreateSourceForm } from "../../pages/Source/CreateSourceForm";
+import { API_URL } from "../../utils/constants";
+import { useQuery } from "react-query";
+import SourceDestinationSelectionList from "../../components/SourceDestinationSelectionList";
 
 type SourcePipelineModelProps = {
   onSourceSelection: (source: Source) => void;
@@ -26,6 +28,20 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
   const id2 = "pipeline-source-create";
   const [isCreateChecked, setIsCreateChecked] = useState(id1);
   const [selectedSource, setSelectedSource] = useState<string>("");
+
+  const {
+    data: sourceList = [],
+    error: sourceError,
+    isLoading: isSourceLoading,
+  } = useQuery<Source[], Error>("sources", () =>
+    fetchData<Source[]>(`${API_URL}/api/sources`)
+  );
+
+  useEffect(() => {
+    if (sourceList.length === 0 && isSourceLoading === false) {
+      setIsCreateChecked(id2);
+    }
+  }, [sourceList, isSourceLoading]);
 
   const selectSource = useCallback(
     (sourceId: string) => {
@@ -112,8 +128,9 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
         ))}
 
       {isCreateChecked === id1 ? (
-        <SourceSelectionList
+        <SourceDestinationSelectionList
           tableType="source"
+          data={sourceList}
           onSelection={onSourceSelection}
         />
       ) : selectedSource === "" ? (
@@ -122,6 +139,7 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
         <CreateSourceForm
           sourceId={selectedSource}
           selectSource={selectSource}
+          onSelection={onSourceSelection}
         />
       )}
     </>

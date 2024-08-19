@@ -107,9 +107,9 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
       <PageSection>
         <Gallery hasGutter className="custom-gallery">
           {destinationCatalog.map((item) => (
-            <GalleryItem>
+            <GalleryItem  key={item.id}>
               <Tile
-                key={item.id}
+               
                 style={{ width: "100%" }}
                 title={item.name}
                 icon={<ConnectorImage connectorType={item.id} />}

@@ -9,11 +9,13 @@ import {
   Text,
   TextContent,
 } from "@patternfly/react-core";
-import React, { useCallback, useState } from "react";
-import { Destination } from "../../apis/apis";
-import DestinationSelectionList from "../../components/DestinationSelectionList";
+import React, { useCallback, useEffect, useState } from "react";
+import { Destination, fetchData } from "../../apis/apis";
 import { CreateDestinationForm } from "../../pages/Destination/CreateDestinationForm";
 import { DestinationCatalogGrid } from "../../pages/Destination/DestinationCatalogGrid";
+import { useQuery } from "react-query";
+import { API_URL } from "../../utils/constants";
+import SourceDestinationSelectionList from "../../components/SourceDestinationSelectionList";
 
 type DestinationPipelineModelProps = {
   onDestinationSelection: (destination: Destination) => void;
@@ -26,6 +28,20 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
   const id2 = "pipeline-destination-create";
   const [isCreateChecked, setIsCreateChecked] = useState(id1);
   const [selectedDestination, setSelectedDestination] = useState<string>("");
+
+  const {
+    data: destinationList = [],
+    error: destinationError,
+    isLoading: isDestinationLoading,
+  } = useQuery<Destination[], Error>("destinations", () =>
+    fetchData<Destination[]>(`${API_URL}/api/destinations`)
+  );
+
+  useEffect(() => {
+    if (destinationList.length === 0 && isDestinationLoading === false) {
+      setIsCreateChecked(id2);
+    }
+  }, [destinationList, isDestinationLoading]);
 
   const selectDestination = useCallback(
     (destinationId: string) => {
@@ -113,8 +129,9 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
         ))}
 
       {isCreateChecked === id1 ? (
-        <DestinationSelectionList
+        <SourceDestinationSelectionList
           tableType="destination"
+          data={destinationList}
           onSelection={onDestinationSelection}
         />
       ) : selectedDestination === "" ? (
@@ -123,6 +140,7 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
         <CreateDestinationForm
           destinationId={selectedDestination}
           selectDestination={selectDestination}
+          onSelection={onDestinationSelection}
         />
       )}
     </>

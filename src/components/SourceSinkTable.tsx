@@ -207,7 +207,7 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
         </Tbody>
       </Table>
       <Modal
-        variant="small"
+        variant="medium"
         title="Delete modal"
         isOpen={isOpen}
         onClose={() => modalToggle(false)}
@@ -215,7 +215,7 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
         aria-describedby="modal-box-body-variant"
       >
         <ModalHeader
-          title={`Enter "${deleteInstance.name}" to delete ${tableType}`}
+          title={<p>: Enter <i>"{`${deleteInstance.name}`}"</i> to delete {`${tableType}`}</p>}
           titleIconVariant="warning"
           labelId="delete-modal-title"
         />

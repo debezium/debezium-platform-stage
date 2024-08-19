@@ -2,7 +2,6 @@
 import * as React from "react";
 import {
   ActionGroup,
-  Bullseye,
   Button,
   ButtonType,
   Card,
@@ -36,31 +35,23 @@ import {
 } from "@patternfly/react-icons";
 import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
-import { useNavigate } from "react-router-dom";
 import "./CreateDestination.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import _ from "lodash";
 import { createPost, Destination } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
-import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/NotificationContext";
 
 type CreateDestinationFormProps = {
   destinationId: string;
   selectDestination: (destinationId: string) => void;
+  onSelection: (selection: Destination) => void;
 };
 
 const CreateDestinationForm: React.FunctionComponent<
   CreateDestinationFormProps
-> = ({ destinationId, selectDestination }) => {
-  const navigate = useNavigate();
-
-  const navigateTo = (url: string) => {
-    navigate(url);
-  };
-
-  const { navigationCollapsed } = useData();
+> = ({ destinationId, selectDestination, onSelection }) => {
 
   const { addNotification } = useNotification();
 
@@ -126,6 +117,7 @@ const CreateDestinationForm: React.FunctionComponent<
         `Failed to create ${(response.data as Destination).name}: ${response.error}`
       );
     } else {
+      onSelection(response.data as Destination);
       addNotification(
         "success",
         `Create successful`,
@@ -144,7 +136,6 @@ const CreateDestinationForm: React.FunctionComponent<
     // }, 2000);
     await createNewDestination(values);
     setIsLoading(false);
-    navigateTo("/destination");
   };
 
   const handleItemClick = (
@@ -197,153 +188,150 @@ const CreateDestinationForm: React.FunctionComponent<
               isCenterAligned
               isFilled
               style={{ paddingTop: "0" }}
-              className={navigationCollapsed ? "custom-page-section" : ""}
+              className={"custom-page-section"}
             >
               {editorSelected === "form-editor" ? (
-                <Split hasGutter style={{ alignItems: "center" }}>
-                  <SplitItem isFilled style={{ maxWidth: "75%" }}>
-                    <Card className="custom-card-body">
-                      <CardBody isFilled>
-                        <Form isWidthLimited>
-                          <FormGroup
-                            label="Destination name"
-                            isRequired
-                            fieldId="destination-name-field"
+                <>
+                  <Card className="custom-card-body">
+                    <CardBody isFilled>
+                      <Form isWidthLimited>
+                        <FormGroup
+                          label="Destination type"
+                          isRequired
+                          fieldId="destination-type-field"
+                        >
+                          <TextContent
+                            style={{ display: "flex", alignItems: "center" }}
                           >
-                            <TextInput
-                              id="destination-name"
-                              aria-label="destination name"
-                              onChange={(_event, value) => {
-                                setValue("destination-name", value);
-                                setError("destination-name", undefined);
-                              }}
-                              value={getValue("destination-name")}
-                              validated={
-                                errors["destination-name"] ? "error" : "default"
-                              }
+                            <ConnectorImage
+                              connectorType={destinationId || ""}
+                              size={35}
                             />
-                          </FormGroup>
-                          <FormGroup
-                            label="Description"
-                            fieldId="destination-details-field"
-                          >
-                            <TextInput
-                              id="destination-details"
-                              aria-label="Destination details"
-                              onChange={(_event, value) =>
-                                setValue("details", value)
-                              }
-                              value={getValue("details")}
-                            />
-                            <FormHelperText>
-                              <HelperText>
-                                <HelperTextItem>
-                                  Add a one-liner to describe your destination
-                                  or where you plan to capture.
-                                </HelperTextItem>
-                              </HelperText>
-                            </FormHelperText>
-                          </FormGroup>
-
-                          <FormFieldGroup
-                            header={
-                              <FormFieldGroupHeader
-                                titleText={{
-                                  text: "Configuration properties",
-                                  id: "field-group-destination-id",
-                                }}
-                                titleDescription="Enter both key and value pairs to configure a property"
-                                actions={
-                                  <Button
-                                    variant="secondary"
-                                    icon={<PlusIcon />}
-                                    onClick={handleAddProperty}
-                                  >
-                                    Add property
-                                  </Button>
-                                }
-                              />
+                            <Text component="p" style={{ paddingLeft: "10px" }}>
+                              {getConnectorTypeName(destinationId || "")}
+                            </Text>
+                          </TextContent>
+                        </FormGroup>
+                        <FormGroup
+                          label="Destination name"
+                          isRequired
+                          fieldId="destination-name-field"
+                        >
+                          <TextInput
+                            id="destination-name"
+                            aria-label="destination name"
+                            onChange={(_event, value) => {
+                              setValue("destination-name", value);
+                              setError("destination-name", undefined);
+                            }}
+                            value={getValue("destination-name")}
+                            validated={
+                              errors["destination-name"] ? "error" : "default"
                             }
-                          >
-                            {Array.from(properties.keys()).map((key) => (
-                              <Split hasGutter key={key}>
-                                <SplitItem isFilled>
-                                  <Grid hasGutter md={6}>
-                                    <FormGroup
-                                      label=""
-                                      isRequired
-                                      fieldId={`destination-config-props-key-field-${key}`}
-                                    >
-                                      <TextInput
-                                        isRequired
-                                        type="text"
-                                        placeholder="Key"
-                                        id={`destination-config-props-key-${key}`}
-                                        name={`destination-config-props-key-${key}`}
-                                        value={properties.get(key)?.key || ""}
-                                        onChange={(_e, value) =>
-                                          handlePropertyChange(
-                                            key,
-                                            "key",
-                                            value
-                                          )
-                                        }
-                                      />
-                                    </FormGroup>
-                                    <FormGroup
-                                      label=""
-                                      isRequired
-                                      fieldId={`destination-config-props-value-field-${key}`}
-                                    >
-                                      <TextInput
-                                        isRequired
-                                        type="text"
-                                        id={`destination-config-props-value-${key}`}
-                                        placeholder="Value"
-                                        name={`destination-config-props-value-${key}`}
-                                        value={properties.get(key)?.value || ""}
-                                        onChange={(_e, value) =>
-                                          handlePropertyChange(
-                                            key,
-                                            "value",
-                                            value
-                                          )
-                                        }
-                                      />
-                                    </FormGroup>
-                                  </Grid>
-                                </SplitItem>
-                                <SplitItem>
-                                  <Button
-                                    variant="plain"
-                                    aria-label="Remove"
-                                    onClick={() => handleDeleteProperty(key)}
-                                  >
-                                    <TrashIcon />
-                                  </Button>
-                                </SplitItem>
-                              </Split>
-                            ))}
-                          </FormFieldGroup>
-                        </Form>
-                      </CardBody>
-                    </Card>
-                  </SplitItem>
+                          />
+                        </FormGroup>
+                        <FormGroup
+                          label="Description"
+                          fieldId="destination-details-field"
+                        >
+                          <TextInput
+                            id="destination-details"
+                            aria-label="Destination details"
+                            onChange={(_event, value) =>
+                              setValue("details", value)
+                            }
+                            value={getValue("details")}
+                          />
+                          <FormHelperText>
+                            <HelperText>
+                              <HelperTextItem>
+                                Add a one-liner to describe your destination or
+                                where you plan to capture.
+                              </HelperTextItem>
+                            </HelperText>
+                          </FormHelperText>
+                        </FormGroup>
 
-                  <SplitItem>
-                    <Bullseye>
-                      <TextContent style={{ textAlign: "center" }}>
-                        <ConnectorImage
-                          connectorType={destinationId || ""}
-                          size={160}
-                        />
-                        <Text component="h4">
-                          {getConnectorTypeName(destinationId || "")}
-                        </Text>
-                      </TextContent>
-                    </Bullseye>
-                  </SplitItem>
-                </Split>
+                        <FormFieldGroup
+                          header={
+                            <FormFieldGroupHeader
+                              titleText={{
+                                text: "Configuration properties",
+                                id: "field-group-destination-id",
+                              }}
+                              titleDescription="Enter both key and value pairs to configure a property"
+                              actions={
+                                <Button
+                                  variant="secondary"
+                                  icon={<PlusIcon />}
+                                  onClick={handleAddProperty}
+                                >
+                                  Add property
+                                </Button>
+                              }
+                            />
+                          }
+                        >
+                          {Array.from(properties.keys()).map((key) => (
+                            <Split hasGutter key={key}>
+                              <SplitItem isFilled>
+                                <Grid hasGutter md={6}>
+                                  <FormGroup
+                                    label=""
+                                    isRequired
+                                    fieldId={`destination-config-props-key-field-${key}`}
+                                  >
+                                    <TextInput
+                                      isRequired
+                                      type="text"
+                                      placeholder="Key"
+                                      id={`destination-config-props-key-${key}`}
+                                      name={`destination-config-props-key-${key}`}
+                                      value={properties.get(key)?.key || ""}
+                                      onChange={(_e, value) =>
+                                        handlePropertyChange(key, "key", value)
+                                      }
+                                    />
+                                  </FormGroup>
+                                  <FormGroup
+                                    label=""
+                                    isRequired
+                                    fieldId={`destination-config-props-value-field-${key}`}
+                                  >
+                                    <TextInput
+                                      isRequired
+                                      type="text"
+                                      id={`destination-config-props-value-${key}`}
+                                      placeholder="Value"
+                                      name={`destination-config-props-value-${key}`}
+                                      value={properties.get(key)?.value || ""}
+                                      onChange={(_e, value) =>
+                                        handlePropertyChange(
+                                          key,
+                                          "value",
+                                          value
+                                        )
+                                      }
+                                    />
+                                  </FormGroup>
+                                </Grid>
+                              </SplitItem>
+                              <SplitItem>
+                                <Button
+                                  variant="plain"
+                                  aria-label="Remove"
+                                  onClick={() => handleDeleteProperty(key)}
+                                >
+                                  <TrashIcon />
+                                </Button>
+                              </SplitItem>
+                            </Split>
+                          ))}
+                        </FormFieldGroup>
+                      </Form>
+                    </CardBody>
+                  </Card>
+                </>
               ) : (
                 <CodeEditor
                   isUploadEnabled
