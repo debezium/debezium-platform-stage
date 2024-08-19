@@ -9,6 +9,12 @@ import {
   EmptyStateBody,
   EmptyStateFooter,
   EmptyStateVariant,
+  Form,
+  FormGroup,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   PageSection,
   ProgressStep,
   ProgressStepper,
@@ -17,6 +23,7 @@ import {
   Switch,
   Text,
   TextContent,
+  TextInput,
   TextVariants,
   ToggleGroup,
   Toolbar,
@@ -27,7 +34,7 @@ import {
 import { PlusIcon, SearchIcon } from "@patternfly/react-icons";
 import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
-import { Pipeline, fetchData } from "../../apis/apis";
+import { Pipeline, deleteResource, fetchData } from "../../apis/apis";
 import {
   Table,
   Thead,
@@ -45,11 +52,12 @@ import { useCallback, useState } from "react";
 import SourceField from "../../components/SourceField";
 import DestinationField from "../../components/DestinationField";
 import ApiError from "../../components/ApiError";
+import { useNotification } from "../../appLayout/NotificationContext";
 
-// type DeleteInstance = {
-//   id: number;
-//   name: string;
-// };
+type DeleteInstance = {
+  id: number;
+  name: string;
+};
 
 type ActionData = {
   id: number;
@@ -63,6 +71,16 @@ const Pipelines: React.FunctionComponent = () => {
     navigate(url);
   };
 
+  const { addNotification } = useNotification();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [deleteInstance, setDeleteInstance] = useState<DeleteInstance>({
+    id: 0,
+    name: "",
+  });
+  const [deleteInstanceName, setDeleteInstanceName] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const [searchResult, setSearchResult] = useState<Pipeline[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -72,8 +90,8 @@ const Pipelines: React.FunctionComponent = () => {
 
   const {
     data: pipelinesList = [],
-    error,
-    isLoading,
+    error: pipelinesError,
+    isLoading: pipelinesLoading,
   } = useQuery<Pipeline[], Error>(
     "pipelines",
     () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),
@@ -91,6 +109,30 @@ const Pipelines: React.FunctionComponent = () => {
       },
     }
   );
+
+  const handleDelete = async (id: number) => {
+    setIsLoading(true);
+    const url = `${API_URL}/api/pipelines/${id}`;
+    const result = await deleteResource(url);
+
+    if (result.error) {
+      modalToggle(false);
+      setIsLoading(false);
+      addNotification(
+        "danger",
+        `Delete failed`,
+        `Failed to delete pipeline: ${result.error}`
+      );
+    } else {
+      modalToggle(false);
+      setIsLoading(false);
+      addNotification(
+        "success",
+        `Delete successful`,
+        `Pipeline deleted successfully`
+      );
+    }
+  };
 
   const debouncedSearch = useCallback(
     debounce((searchQuery: string) => {
@@ -111,8 +153,18 @@ const Pipelines: React.FunctionComponent = () => {
     [debouncedSearch]
   );
 
+  const modalToggle = (toggleValue: boolean) => {
+    setDeleteInstanceName("");
+    setIsOpen(toggleValue);
+  };
+
   const onOverviewHandler = (id: number, _name: string) => {
     navigateTo(`/pipeline/pipeline_overview/${id}`);
+  };
+
+  const onDeleteHandler = (id: number, name: string) => {
+    setIsOpen(true);
+    setDeleteInstance({ id: id, name: name });
   };
 
   const onEditHandler = (id: number, _name: string) => {
@@ -140,15 +192,16 @@ const Pipelines: React.FunctionComponent = () => {
 
     {
       title: "Delete",
+      onClick: () => onDeleteHandler(actionData.id, actionData.name),
     },
   ];
 
   return (
     <>
-      {error ? (
+      {pipelinesError ? (
         <ApiError
           errorType="large"
-          errorMsg={error.message}
+          errorMsg={pipelinesError.message}
           secondaryActions={
             <>
               <Button variant="link" onClick={() => navigateTo("/source")}>
@@ -165,7 +218,7 @@ const Pipelines: React.FunctionComponent = () => {
           <PageSection isWidthLimited>
             <TextContent>
               <Text component="h1">Pipeline</Text>
-              {isLoading || pipelinesList.length > 0 ? (
+              {pipelinesLoading || pipelinesList.length > 0 ? (
                 <Text component="p">
                   Add a pipeline to streams change events from a pipeline
                   database. To start select a connector below once you select a
@@ -179,7 +232,7 @@ const Pipelines: React.FunctionComponent = () => {
             </TextContent>
           </PageSection>
           <PageSection>
-            {isLoading || pipelinesList.length > 0 ? (
+            {pipelinesLoading || pipelinesList.length > 0 ? (
               <Card style={{ paddingTop: "15px" }}>
                 <Toolbar
                   id="toolbar-sticky"
@@ -232,7 +285,7 @@ const Pipelines: React.FunctionComponent = () => {
                   </ToolbarContent>
                 </Toolbar>
 
-                {isLoading ? (
+                {pipelinesLoading ? (
                   <EmptyState
                     titleText="Loading"
                     headingLevel="h4"
@@ -382,6 +435,50 @@ const Pipelines: React.FunctionComponent = () => {
               />
             )}
           </PageSection>
+          <Modal
+            variant="medium"
+            title="Delete pipeline"
+            isOpen={isOpen}
+            onClose={() => modalToggle(false)}
+            aria-labelledby={`delete pipeline model`}
+            aria-describedby="modal-box-body-variant"
+          >
+            <ModalHeader
+              title={<p>: Enter <i>"{`${deleteInstance.name}`}"</i> to delete pipeline</p>}
+              titleIconVariant="warning"
+              labelId="delete-modal-title"
+            />
+            <ModalBody id="modal-box-body-variant">
+              <Form>
+                <FormGroup isRequired fieldId={`pipeline-delete-name`}>
+                  <TextInput
+                    id="delete-name"
+                    aria-label="delete name"
+                    onChange={(_e, value) => setDeleteInstanceName(value)}
+                    value={deleteInstanceName}
+                  />
+                </FormGroup>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                key="confirm"
+                variant="primary"
+                onClick={() => handleDelete(deleteInstance.id)}
+                isDisabled={deleteInstanceName !== deleteInstance.name}
+                isLoading={isLoading}
+              >
+                Confirm
+              </Button>
+              <Button
+                key="cancel"
+                variant="link"
+                onClick={() => modalToggle(false)}
+              >
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
         </>
       )}
     </>

@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Card,
-  PageSection,
-  Text,
-  TextContent,
-  Title,
-} from "@patternfly/react-core";
+import { Card, PageSection, Text, TextContent } from "@patternfly/react-core";
 import {
   BreadthFirstLayout,
   ColaGroupsLayout,

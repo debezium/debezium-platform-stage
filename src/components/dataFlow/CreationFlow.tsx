@@ -17,17 +17,12 @@ import DataNode from "./DataNode";
 
 import { MdLogin, MdLogout } from "react-icons/md";
 import DataNodeSelector from "./DataNodeSelector";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalVariant,
-} from "@patternfly/react-core";
-import SourceSelectionList from "../SourceSelectionList";
+import { Button, Modal, ModalBody, ModalHeader } from "@patternfly/react-core";
 import { Destination, Source } from "../../apis/apis";
 import { PlusIcon } from "@patternfly/react-icons";
-import DestinationSelectionList from "../DestinationSelectionList";
+import "./CreationFlow.css";
+import SourcePipelineModel from "./SourcePipelineModel";
+import DestinationPipelineModel from "./DestinationPipelineModel";
 
 // we define the nodeTypes outside of the component to prevent re-renderings
 // you could also use useMemo inside the component
@@ -310,43 +305,42 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
         />
       </ReactFlow>
       <Modal
-        variant={ModalVariant.large}
         isOpen={isSourceModalOpen}
         onClose={handleSourceModalToggle}
-        aria-labelledby="modal-with-description-title"
-        aria-describedby="modal-box-body-with-description"
+        aria-labelledby="modal-source-body-with-description"
+        aria-describedby="modal-source-body-with-description"
       >
         <ModalHeader
-          title="Select a Source"
-          labelId="modal-with-description-title"
-          description="A description is used when you want to provide more info about the modal than the title is able to describe. The content in the description is static and will not scroll with the rest of the modal body."
+          title="Pipeline source"
+          className="pipeline_flow-modal_header"
+          labelId="modal-with-source-description-title"
+          description="Select a source to be used in pipeline from the list of already configured source listed below or configure a new source by selecting create a new source radio card."
         />
 
-        <ModalBody tabIndex={0} id="modal-box-body-with-description">
-          <SourceSelectionList
-            tableType="source"
-            onSelection={onSourceSelection}
-          />
+        <ModalBody tabIndex={0} id="modal-source-body-with-description">
+          <SourcePipelineModel onSourceSelection={onSourceSelection} />
         </ModalBody>
       </Modal>
 
       <Modal
-        variant={ModalVariant.large}
         isOpen={isDestinationModalOpen}
         onClose={handleDestinationModalToggle}
         aria-labelledby="modal-with-description-title"
-        aria-describedby="modal-box-body-with-description"
+        aria-describedby="modal-box-body-destination-with-description"
       >
         <ModalHeader
-          title="Select a destination"
-          labelId="modal-with-description-title"
-          description="A description is used when you want to provide more info about the modal than the title is able to describe. The content in the description is static and will not scroll with the rest of the modal body."
+          title="Pipeline destination"
+           className="pipeline_flow-modal_header"
+          labelId="modal-with-destination-description-title"
+          description="Select a destination to be used in pipeline from the list of already configured destination listed below or configure a new destination by selecting create a new destination radio card."
         />
 
-        <ModalBody tabIndex={0} id="modal-box-body-with-description">
-          <DestinationSelectionList
-            tableType="destination"
-            onSelection={onDestinationSelection}
+        <ModalBody
+          tabIndex={0}
+          id="modal-box-body-destination-with-description"
+        >
+          <DestinationPipelineModel
+            onDestinationSelection={onDestinationSelection}
           />
         </ModalBody>
       </Modal>
