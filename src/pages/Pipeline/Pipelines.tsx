@@ -444,12 +444,12 @@ const Pipelines: React.FunctionComponent = () => {
             aria-describedby="modal-box-body-variant"
           >
             <ModalHeader
-              title={<p>: Enter <i>"{`${deleteInstance.name}`}"</i> to delete pipeline</p>}
+              title={<p> Enter <i>"{`${deleteInstance.name}`}"</i> to delete pipeline</p>}
               titleIconVariant="warning"
               labelId="delete-modal-title"
             />
             <ModalBody id="modal-box-body-variant">
-              <Form>
+              <Form style={{paddingRight: 45}}>
                 <FormGroup isRequired fieldId={`pipeline-delete-name`}>
                   <TextInput
                     id="delete-name"

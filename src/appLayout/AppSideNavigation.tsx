@@ -103,7 +103,7 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
   );
 
   const NavigationClosed = (
-    <Nav id="nav-primary-simple" style={{ paddingInlineEnd: "unset" }}>
+    <Nav id="nav-primary-simple">
       <NavList id="nav-list-simple">
         {routes.map(
           (route, idx) =>

@@ -215,12 +215,12 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
         aria-describedby="modal-box-body-variant"
       >
         <ModalHeader
-          title={<p>: Enter <i>"{`${deleteInstance.name}`}"</i> to delete {`${tableType}`}</p>}
+          title={<p> Enter <i>"{`${deleteInstance.name}`}"</i> to delete {`${tableType}`}</p>}
           titleIconVariant="warning"
           labelId="delete-modal-title"
         />
         <ModalBody id="modal-box-body-variant">
-          <Form>
+          <Form style={{paddingRight: 45}}>
             <FormGroup isRequired fieldId={`${tableType}-delete-name`}>
               <TextInput
                 id="dalete-name"
