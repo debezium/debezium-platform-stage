@@ -36,7 +36,6 @@ import {
   PencilAltIcon,
 } from "@patternfly/react-icons";
 import ConnectorImage from "../../components/ComponentImage";
-import { useNavigate } from "react-router-dom";
 import "./CreateSource.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import { useState } from "react";
@@ -58,11 +57,6 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
   selectSource,
   onSelection
 }) => {
-  const navigate = useNavigate();
-
-  const navigateTo = (url: string) => {
-    navigate(url);
-  };
 
   const { addNotification } = useNotification();
 
@@ -147,7 +141,6 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
     // }, 2000);
     await createNewSource(values);
     setIsLoading(false);
-    navigateTo("/source");
   };
 
   const handleItemClick = (

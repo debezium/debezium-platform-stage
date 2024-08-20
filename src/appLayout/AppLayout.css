@@ -5,3 +5,7 @@ margin-left: auto;
     /* display: grid;
     max-height: 100%; */
 }
+
+.pf-v6-c-page__main-container {
+    margin-left: 0 !important;
+}
