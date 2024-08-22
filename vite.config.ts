@@ -2,10 +2,11 @@ import { defineConfig } from "vite";
 import type { InlineConfig } from "vitest";
 import type { UserConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 type ViteConfig = UserConfig & { test: InlineConfig };
 const config: ViteConfig = {
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   server: {
     proxy: {
       "/api": {

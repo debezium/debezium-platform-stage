@@ -1,68 +1,19 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  --brand-color--green: #a5c82d;
+  --brand-color--green-light: #7fc5a5;
+  --brand-color--teal: #58b2da;
+  /* --brand-shadow: 10px 0 15px rgba(88, 178, 218, 0.3),
+    -10px 0 15px rgba(165, 200, 45, 0.3); */
+  --brand-shadow: 7px 7px 15px rgba(88, 178, 218, 0.3),
+    -7px -7px 15px rgba(165, 200, 45, 0.3);
+  --brand-shadow--light: 3.5px 3.5px 7.5px rgba(88, 178, 218, 0.3),
+    /* Light Blue */ -3.5px -3.5px 7.5px rgba(165, 200, 45, 0.3); /* Green */
+  --brand-shadow--green: 5px 0 7.5px rgba(165, 200, 45, 0.3),
+    -5px 0 7.5px rgba(165, 200, 45, 0.3);
+  --brand-shadow--green-large: 10px 0 15px rgba(165, 200, 45, 0.3),
+    -10px 0 15px rgba(165, 200, 45, 0.3);
+  --brand-shadow--teal: 5px 0 7.5px rgba(88, 178, 218, 0.3),
+    -5px 0 7.5px rgba(88, 178, 218, 0.3);
+  --brand-shadow--teal-large: 10px 0 15px rgba(88, 178, 218, 0.3),
+    -10px 0 15px rgba(88, 178, 218, 0.3);
 }
