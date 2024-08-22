@@ -5,9 +5,7 @@
   position: relative;
   border-radius: 10px;
   flex-grow: 1;
-  box-shadow:
-    3.5px 3.5px 7.5px rgba(88, 178, 218, 0.3), /* Light Blue */ 
-   -3.5px -3.5px 7.5px rgba(165, 200, 45, 0.3); /* Green */
+  box-shadow: var(--brand-shadow--light);
 }
 
 .transformationGradient:before {
@@ -17,10 +15,10 @@
   width: calc(100% * 1.41421356237);
   background: conic-gradient(
     from -45deg at 50% 50%,
-    #a5c82d, /* Green */ 
-    #7fc5a5 120deg, /* Light Teal */ 
-    #58b2da 200deg, /* Light Blue */ 
-    #a5c82d 360deg /* Green */
+    var(--brand-color--green),
+    var(--brand-color--green-light) 120deg,
+    var(--brand-color--teal) 200deg,
+    var(--brand-color--green) 360deg
   );
   left: 50%;
   top: 50%;
@@ -32,10 +30,10 @@
   content: "";
   background: conic-gradient(
     from -45deg at 50% 50%,
-    #a5c82d, /* Green */ 
-    #7fc5a5 120deg, /* Light Teal */ 
-    #58b2da 200deg, /* Light Blue */ 
-    #a5c82d 360deg /* Green */
+    var(--brand-color--green),
+    var(--brand-color--green-light) 120deg,
+    var(--brand-color--teal) 200deg,
+    var(--brand-color--green) 360deg
   );
   /* animation: spinner 4s linear infinite; */
   transform: translate(-50%, -50%) rotate(0deg);

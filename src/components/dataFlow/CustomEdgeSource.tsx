@@ -2,6 +2,7 @@ import React from "react";
 
 import { EdgeProps, getBezierPath } from "reactflow";
 import "./CustomEdgeSource.css";
+import { BrandColors } from "@utils/constants";
 
 const CustomEdgeSource: React.FC<EdgeProps> = ({
   id,
@@ -36,7 +37,7 @@ const CustomEdgeSource: React.FC<EdgeProps> = ({
         d={edgePath}
         markerEnd={markerEnd}
       />
-      <circle r="5" fill="#58b2da">
+      <circle r="5" fill={BrandColors.green}>
         <animateMotion dur="2.5s" repeatCount="indefinite" path={edgePath} />
       </circle>
     </>

@@ -12,6 +12,7 @@ import ConnectorImage from "../ComponentImage";
 import "./DataNode.css";
 import { PencilAltIcon } from "@patternfly/react-icons";
 import { useData } from "../../appLayout/AppContext";
+import { AppColors, AppStrings } from "../../utils/constants";
 
 interface DataNodeProps {
   data: {
@@ -31,7 +32,7 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
       <div
         onClick={data.editAction}
         className={
-          data.type === "source"
+          data.type === AppStrings.source
             ? "gradientSource editDataNodeSource"
             : "gradientDestination editDataNodeDestination"
         }
@@ -41,10 +42,10 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
             style={
               darkMode
                 ? {
-                    background: "#292929",
+                    background: AppColors.dark,
                   }
                 : {
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: AppColors.white,
                   }
             }
           >
@@ -54,7 +55,7 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
       </div>
       <div
         className={
-          data.type === "source"
+          data.type === AppStrings.source
             ? "wrapperSource gradientSource"
             : "wrapperDestination gradientDestination"
         }
@@ -64,14 +65,14 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
           style={
             darkMode
               ? {
-                  background: "#292929",
+                  background: AppColors.dark,
                 }
               : {
-                  backgroundColor: "#FFFFFF",
+                  backgroundColor: AppColors.white,
                 }
           }
         >
-          {data.type === "source" && (
+          {data.type === AppStrings.source && (
             <Handle type="source" position={Position.Right} id="smt-input" />
           )}
           <Card
@@ -95,8 +96,8 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
                       style={
                         darkMode
                           ? {
-                              background: "#4f6c87",
-                              padding: 2,
+                              background: AppColors.darkBlue,
+                              padding: 10,
                               borderRadius: 10,
                             }
                           : {}

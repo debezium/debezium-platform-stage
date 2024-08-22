@@ -7,9 +7,8 @@
     position: relative;
     border-radius: 10px;
     flex-grow: 1;
-    /* box-shadow: 10px 0 15px rgba(88, 178, 218, 0.3), 
-    -10px 0 15px rgba(165, 200, 45, 0.3);  */
-    box-shadow: 10px 0 15px rgba(165, 200, 45, 0.3),-10px 0 15px rgba(165, 200, 45, 0.3);
+    /* box-shadow: var(--brand-shadow); */
+    box-shadow: var(--brand-shadow--green-large);
   }
 
   .wrapperSource {
@@ -19,7 +18,7 @@
     position: relative;
     border-radius: 10px;
     flex-grow: 1;
-    box-shadow: 5px 0 7.5px rgba(165, 200, 45, 0.3),-5px 0 7.5px rgba(165, 200, 45, 0.3);
+    box-shadow: var(--brand-shadow--green);
   }
 
   .wrapperDestination {
@@ -29,7 +28,7 @@
     position: relative;
     border-radius: 10px;
     flex-grow: 1;
-    box-shadow: 5px 0 7.5px rgba(88, 178, 218, 0.3),-5px 0 7.5px rgba(88, 178, 218, 0.3);
+    box-shadow: var(--brand-shadow--teal);
   }
 
   .dataNodeSelectorWrapper {
@@ -39,7 +38,7 @@
     position: relative;
     border-radius: 10px;
     flex-grow: 1;
-     box-shadow: 10px 0 15px rgba(88, 178, 218, 0.3),-10px 0 15px rgba(88, 178, 218, 0.3);
+     box-shadow: var(--brand-shadow--teal-large);
   }
 
   .gradient:before {
@@ -49,12 +48,12 @@
     width: calc(100% * 1.41421356237);
     /* background: conic-gradient(
         from -45deg at 50% 50%, 
-        #a5c82d, 
-        #7fc5a5 120deg,  
-        #58b2da 200deg,  
-        #a5c82d 360deg 
+        var(--brand-color--green), 
+        var(--brand-color--green-light) 120deg,  
+        var(--brand-color--teal) 200deg,  
+        var(--brand-color--green) 360deg 
       ); */
-    background: #a5c82d;
+    background: var(--brand-color--green);
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -66,7 +65,7 @@
     position: absolute;
     padding-bottom: calc(100% * 1.41421356237);
     width: calc(100% * 1.41421356237);
-    background: #a5c82d;
+    background: var(--brand-color--green);
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -78,7 +77,7 @@
     position: absolute;
     padding-bottom: calc(100% * 1.41421356237);
     width: calc(100% * 1.41421356237);
-    background: #58b2da;
+    background: var(--brand-color--teal);
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -89,12 +88,12 @@
     content: '';
      /* background: conic-gradient(
         from -45deg at 50% 50%, 
-        #a5c82d, 
-        #7fc5a5 120deg,  
-        #58b2da 200deg,  
-        #a5c82d 360deg 
+        var(--brand-color--green), 
+        var(--brand-color--green-light) 120deg,  
+        var(--brand-color--teal) 200deg,  
+        var(--brand-color--green) 360deg 
       ); */
-    background: #a5c82d;
+    background: var(--brand-color--green);
     /* animation: spinner 4s linear infinite; */
     transform: translate(-50%, -50%) rotate(0deg);
     z-index: -1;
@@ -102,7 +101,7 @@
 
   .dataNodeSelectorWrapper.gradient:before {
     content: '';
-    background: #58b2da;
+    background: var(--brand-color--teal);
     animation: spinner 4s linear infinite;
     transform: translate(-50%, -50%) rotate(0deg);
     z-index: -1;
@@ -136,8 +135,7 @@
     transform-origin: center center;
     padding: 1px;
     overflow: hidden;
-    box-shadow: 10px 0 15px rgba(88, 178, 218, 0.3), /* Light Blue */
-    -10px 0 15px rgba(165, 200, 45, 0.3); /* Green */
+    box-shadow: var(--brand-shadow);
     z-index: 1;
 }
 
@@ -154,7 +152,7 @@
   transform-origin: center center;
   padding: 1px;
   overflow: hidden;
-  box-shadow: 10px 0 15px rgba(165, 200, 45, 0.3),-10px 0 15px rgba(165, 200, 45, 0.3);
+  box-shadow: var(--brand-shadow--green-large);
   z-index: 1;
 }
 
@@ -171,7 +169,7 @@
   transform-origin: center center;
   padding: 1px;
   overflow: hidden;
-  box-shadow: 10px 0 15px rgba(88, 178, 218, 0.3),-10px 0 15px rgba(88, 178, 218, 0.3);
+  box-shadow: var(--brand-shadow--teal-large);
   z-index: 1;
 }
 .editDataNode div {

@@ -5,12 +5,12 @@ import {
   CardFooter,
   Button,
 } from "@patternfly/react-core";
-import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
 import "./AddTransformationNode.css";
 
 import { OptimizeIcon, PlusIcon } from "@patternfly/react-icons";
 import { useData } from "../../appLayout/AppContext";
+import { AppColors } from "@utils/constants";
 
 interface AddTransformationNodeProps {
   data: { label: string; sourcePosition: Position; targetPosition: Position };
@@ -20,11 +20,6 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
   data,
 }) => {
   const { darkMode } = useData();
-  const navigate = useNavigate();
-
-  const navigateTo = (navigateTo: string) => {
-    navigate(`/pipeline/pipeline_designer/${navigateTo}`);
-  };
   return (
     <>
       <div className="transformationWrapper transformationGradient">
@@ -33,10 +28,10 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
           style={
             darkMode
               ? {
-                  background: "#292929",
+                  background: AppColors.dark,
                 }
               : {
-                  backgroundColor: "#FFFFFF",
+                  backgroundColor: AppColors.white,
                 }
           }
         >
@@ -44,7 +39,6 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
           <Card
             ouiaId="BasicCard"
             isCompact
-            style={{ background: "#FFFFFF" }}
             isPlain
           >
             <CardBody style={{ paddingBottom: 10 }}>
@@ -62,7 +56,7 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
                 style={{ paddingRight: 5, paddingLeft: 5, fontSize: ".7em" }}
                 size="sm"
                 icon={<PlusIcon />}
-                onClick={() => navigateTo("")}
+                onClick={() => {}}
                 isDisabled
               >
                 {data.label}

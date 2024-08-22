@@ -25,6 +25,8 @@ import SourcePipelineModel from "./SourcePipelineModel";
 import DestinationPipelineModel from "./DestinationPipelineModel";
 import CustomEdgeDestination from "./CustomEdgeDestination";
 import CustomEdgeSource from "./CustomEdgeSource";
+import { useData } from "../../appLayout/AppContext";
+import { AppColors } from "@utils/constants";
 
 const nodeTypes = {
   dataNodeSelector: DataNodeSelector,
@@ -61,6 +63,9 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
   updateSelectedSource,
   updateSelectedDestination,
 }) => {
+
+  const { darkMode } = useData();
+  
   const [updatedSourceNodes, setUpdatedSourceNodes] = useState<any>();
   const [updatedDestinationNodes, setUpdatedDestinationNodes] = useState<any>();
 
@@ -109,7 +114,7 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
         boxShadow:
           "7px 7px 15px rgba(88, 178, 218, 0.3), -7px -7px 15px rgba(165, 200, 45, 0.3)",
         borderRadius: "10px",
-        border: "1px solid #FFFFFF",
+        border: "0",
         width: 210,
         height: 150,
       },
@@ -318,7 +323,7 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
             borderRadius: "5px",
           }}
           gap={15}
-          color={"#F2F9FF"}
+          color={darkMode ? AppColors.dark: AppColors.white}
         />
         <svg>
           <defs>

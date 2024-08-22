@@ -9,6 +9,7 @@ import { Handle, Position } from "reactflow";
 import "./DataNode.css";
 import { DataSinkIcon, DataSourceIcon } from "@patternfly/react-icons";
 import { useData } from "../../appLayout/AppContext";
+import { AppColors, AppStrings } from "@utils/constants";
 
 interface DataNodeSelectorProps {
   data: {
@@ -24,7 +25,7 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
     <>
       <div
         className={
-          data.type === "source"
+          data.type === AppStrings.source
             ? `wrapperSource gradientSource`
             : `wrapperDestination gradientDestination`
         }
@@ -34,14 +35,14 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
           style={
             darkMode
               ? {
-                  background: "#292929",
+                  background: AppColors.dark,
                 }
               : {
-                  backgroundColor: "#FFFFFF",
+                  backgroundColor: AppColors.white,
                 }
           }
         >
-          {data.type === "source" && (
+          {data.type === AppStrings.source && (
             <Handle type="source" position={Position.Right} id="smt-input" />
           )}
           <Card
@@ -62,7 +63,7 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
                     }}
                   >
                     <div>
-                      {data.type === "source" ? (
+                      {data.type === AppStrings.source ? (
                         <DataSourceIcon style={{ fontSize: 18 }} />
                       ) : (
                         <DataSinkIcon style={{ fontSize: 18 }} />
@@ -74,7 +75,7 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
               </Bullseye>
             </CardBody>
           </Card>
-          {data.type === "destination" && (
+          {data.type === AppStrings.destination && (
             <Handle type="target" position={Position.Left} id="smt-output" />
           )}
         </div>
