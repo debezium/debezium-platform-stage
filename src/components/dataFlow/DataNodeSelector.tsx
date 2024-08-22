@@ -22,64 +22,63 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
   const { darkMode } = useData();
   return (
     <>
-      <Card
-        ouiaId="BasicCard"
-        isCompact
-        className="pf-v5-u-box-shadow-md"
-        style={{ cursor: "auto" }}
+      <div
+        className={
+          data.type === "source"
+            ? `wrapperSource gradientSource`
+            : `wrapperDestination gradientDestination`
+        }
       >
-        <CardBody style={{ padding: 7 }} className="pf-v5-u-box-shadow-md">
+        <div
+          className="inner"
+          style={
+            darkMode
+              ? {
+                  background: "#292929",
+                }
+              : {
+                  backgroundColor: "#FFFFFF",
+                }
+          }
+        >
           {data.type === "source" && (
             <Handle type="source" position={Position.Right} id="smt-input" />
           )}
-
-          <Bullseye>
-            <Stack>
-              <StackItem
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <div
-                  style={darkMode  ? {
-                    padding: 5,
-                    borderRadius: 10,
-                    backgroundColor: "#4f6c87",
-                    color: "#f2f2f2",
-                    width: 50,
-                  }:{
-                    padding: 5,
-                    borderRadius: 10,
-                    backgroundColor: "#E7F1FA",
-                    width: 50,
-                  }}
-                >
-                  {data.type === "source" ? (
-                    <DataSourceIcon style={{ fontSize: 18 }} />
-                  ) : (
-                    <DataSinkIcon style={{ fontSize: 18 }} />
-                  )}
-                </div>
-              </StackItem>
-              <StackItem
-                style={{
-                  paddingTop: 5,
-                  paddingInlineEnd: 5,
-                  paddingInlineStart: 5,
-                }}
-              >
-                {data.action}
-              </StackItem>
-            </Stack>
-          </Bullseye>
-
+          <Card
+            ouiaId="BasicCard"
+            isCompact
+            isPlain
+            className="pf-v5-u-box-shadow-md"
+            style={{ cursor: "auto" }}
+          >
+            <CardBody style={{ padding: 7 }} className="pf-v5-u-box-shadow-md">
+              <Bullseye>
+                <Stack>
+                  <StackItem
+                    style={{
+                      textAlign: "center",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div>
+                      {data.type === "source" ? (
+                        <DataSourceIcon style={{ fontSize: 18 }} />
+                      ) : (
+                        <DataSinkIcon style={{ fontSize: 18 }} />
+                      )}
+                    </div>
+                  </StackItem>
+                  <StackItem>{data.action}</StackItem>
+                </Stack>
+              </Bullseye>
+            </CardBody>
+          </Card>
           {data.type === "destination" && (
             <Handle type="target" position={Position.Left} id="smt-output" />
           )}
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     </>
   );
 };

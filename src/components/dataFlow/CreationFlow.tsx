@@ -23,14 +23,24 @@ import { PlusIcon } from "@patternfly/react-icons";
 import "./CreationFlow.css";
 import SourcePipelineModel from "./SourcePipelineModel";
 import DestinationPipelineModel from "./DestinationPipelineModel";
+import CustomEdgeDestination from "./CustomEdgeDestination";
+import CustomEdgeSource from "./CustomEdgeSource";
 
-// we define the nodeTypes outside of the component to prevent re-renderings
-// you could also use useMemo inside the component
 const nodeTypes = {
   dataNodeSelector: DataNodeSelector,
   addTransformation: AddTransformationNode,
   dataNode: DataNode,
 };
+
+const edgeTypes = {
+  customEdgeSource: CustomEdgeSource,
+  customEdgeDestination: CustomEdgeDestination,
+};
+
+// const defaultEdgeOptions = {
+//   type: "customEdge",
+//   markerEnd: "edge-circle",
+// };
 
 const proOptions = { hideAttribution: true };
 
@@ -76,7 +86,7 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
           <Button
             variant="link"
             onClick={handleSourceModalToggle}
-            style={{ paddingRight: 5, paddingLeft: 5, fontSize: 12 }}
+            style={{ paddingRight: 10, paddingLeft: 10, fontSize: ".8em" }}
             icon={<PlusIcon />}
             size="sm"
           >
@@ -93,11 +103,14 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
   const transformationGroup = useMemo(() => {
     return {
       id: "transformation_group",
-      data: { label: "Transformation" },
-      position: { x: 330, y: 120 },
+      data: { label: "Group B.A" },
+      position: { x: 330, y: 100 },
       style: {
-        backgroundColor: "rgba(203,213,224, 0.2)",
-        width: 200,
+        boxShadow:
+          "7px 7px 15px rgba(88, 178, 218, 0.3), -7px -7px 15px rgba(165, 200, 45, 0.3)",
+        borderRadius: "10px",
+        border: "1px solid #FFFFFF",
+        width: 210,
         height: 150,
       },
       type: "group",
@@ -113,7 +126,7 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
         sourcePosition: "right",
         targetPosition: "left",
       },
-      position: { x: 40, y: 40 },
+      position: { x: 55, y: 35 },
       targetPosition: "left",
       type: "addTransformation",
       parentId: "transformation_group",
@@ -133,7 +146,7 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
           <Button
             variant="link"
             onClick={handleDestinationModalToggle}
-            style={{ paddingRight: 5, paddingLeft: 5, fontSize: 12 }}
+            style={{ paddingRight: 10, paddingLeft: 10, fontSize: ".8em" }}
             icon={<PlusIcon />}
             size="sm"
           >
@@ -159,14 +172,16 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
       id: "source-add_transformation",
       source: "source",
       target: "add_transformation",
-      animated: true,
+      // animated: true,
+      type: "customEdgeSource",
       sourceHandle: "a",
     },
     {
       id: "add_transformation-destination",
       source: "add_transformation",
       target: "destination",
-      animated: true,
+      // animated: true,
+      type: "customEdgeDestination",
     },
   ];
 
@@ -290,10 +305,12 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        // defaultEdgeOptions={defaultEdgeOptions}
         proOptions={proOptions}
         fitView
-        maxZoom={1.5}
-        minZoom={1.5}
+        maxZoom={1.4}
+        minZoom={1.4}
         panOnDrag={false}
       >
         <Background
@@ -303,6 +320,31 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
           gap={15}
           color={"#F2F9FF"}
         />
+        <svg>
+          <defs>
+            <linearGradient id="edge-gradient-source">
+              <stop offset="0%" stopColor="#a5c82d" />
+              <stop offset="100%" stopColor="#7fc5a5" />
+            </linearGradient>
+            <linearGradient id="edge-gradient-destination">
+              <stop offset="0%" stopColor="#7fc5a5" />
+              <stop offset="100%" stopColor="#58b2da" />
+            </linearGradient>
+
+            {/* <marker
+            id="edge-circle"
+            viewBox="-2.5 -2.5 5 5"
+            refX="0"
+            refY="0"
+            markerUnits="strokeWidth"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto"
+          >
+            <circle stroke="#2a8af6" strokeOpacity="0.75" r="1.5" cx="0" cy="0" />
+          </marker> */}
+          </defs>
+        </svg>
       </ReactFlow>
       <Modal
         isOpen={isSourceModalOpen}
@@ -330,7 +372,7 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
       >
         <ModalHeader
           title="Pipeline destination"
-           className="pipeline_flow-modal_header"
+          className="pipeline_flow-modal_header"
           labelId="modal-with-destination-description-title"
           description="Select a destination to be used in pipeline from the list of already configured destination listed below or configure a new destination by selecting create a new destination radio card."
         />
