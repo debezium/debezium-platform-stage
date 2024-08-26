@@ -19,8 +19,8 @@ const DestinationSelectionList: React.FunctionComponent<
 > = ({ tableType, onSelection }) => {
   const {
     data: destinationList = [],
-    error: destinationError,
-    isLoading: isDestinationLoading,
+    error: _destinationError,
+    isLoading: _isDestinationLoading,
   } = useQuery<Destination[], Error>(
     "destinations",
     () => fetchData<Destination[]>(`${API_URL}/api/destinations`),
@@ -31,8 +31,8 @@ const DestinationSelectionList: React.FunctionComponent<
 
   const {
     data: pipelineList = [],
-    error: pipelineError,
-    isLoading: isPipelineLoading,
+    error: _pipelineError,
+    isLoading: _isPipelineLoading,
   } = useQuery<Pipeline[], Error>(
     "pipelines",
     () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),

@@ -1,7 +1,4 @@
 import React from "react";
-import { Dashboard } from "./pages/Dashboard/Dashboard";
-import { Sources } from "./pages/Source/Sources";
-import { Destinations } from "./pages/Destination/Destinations";
 import { AppBranding } from "./utils/constants";
 import {
   DataProcessorIcon,
@@ -11,19 +8,28 @@ import {
 } from "@patternfly/react-icons";
 import { MigrationIcon as PipelineIcon } from "@patternfly/react-icons";
 import { ServiceCatalogIcon as VaultIcon } from "@patternfly/react-icons";
-import { Transformation } from "./pages/Transformation/Transformation";
-import { DestinationCatalog } from "./pages/Destination/DestinationCatalog";
-import { Vaults } from "./pages/Vault/Vaults";
-import { SourceCatalog } from "./pages/Source/SourceCatalog";
-import { CreateSource } from "./pages/Source/CreateSource";
-import { CreateDestination } from "./pages/Destination/CreateDestination";
-import { Pipelines } from "./pages/Pipeline/Pipelines";
-import { PipelineDesigner } from "./pages/Pipeline/PipelineDesigner";
-import { ConfigurePipeline } from "./pages/Pipeline/ConfigurePipeline";
-import { EditSource } from "./pages/Source/EditSource";
-import { EditDestination } from "./pages/Destination/EditDestination";
-import { PipelineOverview } from "./pages/Pipeline/PipelineOverview";
-import { EditPipeline } from "./pages/Pipeline/EditPipeline";
+import {
+  CreateSource,
+  EditSource,
+  SourceCatalog,
+  Sources,
+} from "./pages/Source";
+import {
+  CreateDestination,
+  DestinationCatalog,
+  Destinations,
+  EditDestination,
+} from "./pages/Destination";
+import {
+  ConfigurePipeline,
+  EditPipeline,
+  PipelineDesigner,
+  PipelineOverview,
+  Pipelines,
+} from "./pages/Pipeline";
+import { Transformation } from "./pages/Transformation";
+import { Vaults } from "./pages/Vault";
+import WelcomePage from "./pages/WelcomePage/WelcomePage";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -45,7 +51,7 @@ export type AppRouteConfig = IAppRoute | IAppRouteGroup;
 
 const routes: AppRouteConfig[] = [
   {
-    component: Dashboard,
+    component: WelcomePage,
     label: "Home",
     icon: <HomeAltIcon style={{ outline: "none" }} />,
     path: "/",

@@ -19,8 +19,8 @@ const SourceSelectionList: React.FunctionComponent<
 > = ({ tableType, onSelection }) => {
   const {
     data: sourceList = [],
-    error: sourceError,
-    isLoading: isSourceLoading,
+    error: _sourceError,
+    isLoading: _isSourceLoading,
   } = useQuery<Source[], Error>(
     "sources",
     () => fetchData<Source[]>(`${API_URL}/api/sources`),
@@ -31,8 +31,8 @@ const SourceSelectionList: React.FunctionComponent<
 
   const {
     data: pipelineList = [],
-    error: pipelineError,
-    isLoading: isPipelineLoading,
+    error: _pipelineError,
+    isLoading: _isPipelineLoading,
   } = useQuery<Pipeline[], Error>(
     "pipelines",
     () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),

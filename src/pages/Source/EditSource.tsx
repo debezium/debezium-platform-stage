@@ -48,7 +48,7 @@ import {
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import { useData } from "../../appLayout/AppContext";
-import { useNotification } from "../../appLayout/NotificationContext";
+import { useNotification } from "../../appLayout/AppNotificationContext";
 
 const EditSource: React.FunctionComponent = () => {
   const navigate = useNavigate();

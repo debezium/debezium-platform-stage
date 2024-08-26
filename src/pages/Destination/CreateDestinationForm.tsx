@@ -41,7 +41,7 @@ import _ from "lodash";
 import { createPost, Destination } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
-import { useNotification } from "../../appLayout/NotificationContext";
+import { useNotification } from "../../appLayout/AppNotificationContext";
 
 type CreateDestinationFormProps = {
   destinationId: string;

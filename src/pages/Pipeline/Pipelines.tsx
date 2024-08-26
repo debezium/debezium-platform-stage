@@ -52,7 +52,7 @@ import { useCallback, useState } from "react";
 import SourceField from "../../components/SourceField";
 import DestinationField from "../../components/DestinationField";
 import ApiError from "../../components/ApiError";
-import { useNotification } from "../../appLayout/NotificationContext";
+import { useNotification } from "../../appLayout/AppNotificationContext";
 
 type DeleteInstance = {
   id: number;
