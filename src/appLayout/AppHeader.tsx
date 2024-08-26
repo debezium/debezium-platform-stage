@@ -20,8 +20,8 @@ import dbz_logo_black from "../assets/color_black_debezium.svg";
 import dbz_svg from "../assets/debezium_logo.png";
 import imgAvatar from "@patternfly/react-core/src/components/assets/avatarImg.svg";
 import { useNavigate } from "react-router-dom";
-import { NotificationProps } from "./AppLayout";
 import { useData } from "./AppContext";
+import { NotificationProps } from "./AppNotificationContext";
 
 interface AppHeaderProps {
   toggleSidebar: () => void;

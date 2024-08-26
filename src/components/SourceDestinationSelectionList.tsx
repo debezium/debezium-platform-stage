@@ -34,8 +34,8 @@ const SourceDestinationSelectionList: React.FunctionComponent<
 > = ({ tableType, data, onSelection }) => {
   const {
     data: pipelineList = [],
-    error: pipelineError,
-    isLoading: isPipelineLoading,
+    error: _pipelineError,
+    isLoading: _isPipelineLoading,
   } = useQuery<Pipeline[], Error>(
     "pipelines",
     () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),

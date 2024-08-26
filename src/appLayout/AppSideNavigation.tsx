@@ -1,12 +1,9 @@
 import {
   PageSidebar,
   PageSidebarBody,
-  Stack,
-  StackItem,
   Nav,
   NavList,
   NavItem,
-  Switch,
   NavExpandable,
 } from "@patternfly/react-core";
 import { MoonIcon, SunIcon } from "@patternfly/react-icons";
@@ -63,7 +60,7 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
     <NavItem
       key={`${route.label}-${index}`}
       id={`${route.label}-${index}`}
-      isActive={route.path === location.pathname}
+      isActive={location.pathname.includes(route.navSection)}
     >
       <NavLink
         to={route.path}
@@ -118,76 +115,46 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
 
   return (
     <PageSidebar style={isSidebarOpen ? {} : { width: "unset" }}>
-      <PageSidebarBody>
-        <Stack>
-          <StackItem>{isSidebarOpen ? Navigation : NavigationClosed}</StackItem>
-          <StackItem isFilled />
-          <StackItem>
-            {isSidebarOpen ? (
-              <Nav style={{ paddingInlineEnd: "unset" }}>
-                <NavList>
-                  <NavItem>
-                    <div
-                      className="pf-v6-c-nav__link"
-                      style={{ cursor: "pointer" }}
-                    >
-                      {isDarkMode ? <SunIcon /> : <MoonIcon />}
-                      Dark mode
-                      <Switch
-                        // style={{ marginLeft: "auto" }}
-                        className="custom-switch"
-                        id="reversed-switch"
-                        aria-label="Switch to dark mode"
-                        isChecked={isDarkMode}
-                        onChange={toggleDarkMode}
-                        isReversed
-                      />
-                    </div>
-                  </NavItem>
-                </NavList>
-              </Nav>
-            ) : (
-              <Nav style={{ paddingInlineEnd: "unset" }}>
-                <NavList>
-                  <NavItem>
-                    <div
-                      className="pf-v6-c-nav__link"
-                      style={{ fontSize: "20px", cursor: "pointer" }}
-                    >
-                      {isDarkMode ? (
-                        <SunIcon onClick={toggleDarkMode} />
-                      ) : (
-                        <MoonIcon onClick={toggleDarkMode} />
-                      )}
-                    </div>
-                  </NavItem>
-                </NavList>
-              </Nav>
-            )}
-          </StackItem>
-          {/* <StackItem>
-            <div className="pf-v6-c-nav">
-              <Split>
-                <SplitItem>
-                  <div className="pf-v6-c-nav__link">
-                    <SunIcon />
-                    Dark mode
-                  </div>
-                </SplitItem>
-                <SplitItem isFilled />
-                <SplitItem>
-                  <Switch
-                    id="reversed-switch"
-                    aria-label="Switch to dark mode"
-                    isChecked={false}
-                    onChange={() => {}}
-                    isReversed
-                  />
-                </SplitItem>
-              </Split>
-            </div>
-          </StackItem> */}
-        </Stack>
+      <PageSidebarBody isFilled={true}>
+        {isSidebarOpen ? Navigation : NavigationClosed}
+      </PageSidebarBody>
+
+      <PageSidebarBody isFilled={false}>
+        {isSidebarOpen ? (
+          <Nav className="pf-v6-c-nav">
+            <NavList>
+              <NavItem onClick={toggleDarkMode}>
+                <div
+                  className="pf-v6-c-nav__link"
+                  style={{ cursor: "pointer" }}
+                >
+                  {isDarkMode ? (
+                    <>
+                      <SunIcon /> Light mode
+                    </>
+                  ) : (
+                    <>
+                      <MoonIcon /> Dark mode
+                    </>
+                  )}
+                </div>
+              </NavItem>
+            </NavList>
+          </Nav>
+        ) : (
+          <Nav className="pf-v6-c-nav">
+            <NavList>
+              <NavItem onClick={toggleDarkMode}>
+                <div
+                  className="pf-v6-c-nav__link"
+                  style={{ fontSize: "20px", cursor: "pointer" }}
+                >
+                  {isDarkMode ? <SunIcon /> : <MoonIcon />}
+                </div>
+              </NavItem>
+            </NavList>
+          </Nav>
+        )}
       </PageSidebarBody>
     </PageSidebar>
   );

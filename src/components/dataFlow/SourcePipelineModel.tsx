@@ -31,7 +31,7 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
 
   const {
     data: sourceList = [],
-    error: sourceError,
+    error: _sourceError,
     isLoading: isSourceLoading,
   } = useQuery<Source[], Error>("sources", () =>
     fetchData<Source[]>(`${API_URL}/api/sources`)

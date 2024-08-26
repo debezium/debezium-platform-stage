@@ -12,20 +12,10 @@ import AppSideNavigation from "./AppSideNavigation";
 import { useLocation } from "react-router-dom";
 import { useData } from "./AppContext";
 // import AppNotification from "./AppNotification";
-import { useNotification } from "./NotificationContext";
+import { useNotification } from "./AppNotificationContext";
 
 interface IAppLayout {
   children: React.ReactNode;
-}
-
-export interface NotificationProps {
-  title: string;
-  srTitle: string;
-  variant: "success" | "danger" | "warning" | "info";
-  key: React.Key;
-  timestamp: string;
-  description: string;
-  isNotificationRead: boolean;
 }
 
 const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
@@ -110,7 +100,6 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         mainContainerId={pageId}
         masthead={
           <AppHeader
-        
             toggleSidebar={toggleSidebar}
             handleNotificationBadgeClick={onNotificationBadgeClick}
             getNotificationBadgeVariant={getNotificationBadgeVariant}

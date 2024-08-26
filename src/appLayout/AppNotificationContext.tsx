@@ -16,20 +16,26 @@ export interface NotificationProps {
   isNotificationRead: boolean;
 }
 
-interface NotificationContextProps {
+interface AppNotificationContextProps {
   notifications: NotificationProps[];
   alerts: React.ReactElement<AlertProps>[];
   isDrawerExpanded: boolean;
-  addNotification: (variant: NotificationProps["variant"], alertHeader: string, alertMessage: string) => void;
+  addNotification: (
+    variant: NotificationProps["variant"],
+    alertHeader: string,
+    alertMessage: string
+  ) => void;
   removeAlert: (key: React.Key) => void;
   setDrawerExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-  setAlerts: React.Dispatch<React.SetStateAction<React.ReactElement<AlertProps>[]>>;
+  setAlerts: React.Dispatch<
+    React.SetStateAction<React.ReactElement<AlertProps>[]>
+  >;
   setNotifications: React.Dispatch<React.SetStateAction<NotificationProps[]>>;
 }
 
-const NotificationContext = createContext<NotificationContextProps | undefined>(
-  undefined
-);
+const AppNotificationContext = createContext<
+  AppNotificationContextProps | undefined
+>(undefined);
 
 const alertTimeout = 8000;
 
@@ -57,7 +63,11 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
-  const addNotification = (variant: NotificationProps["variant"], alertHeader: string, alertMessage: string) => {
+  const addNotification = (
+    variant: NotificationProps["variant"],
+    alertHeader: string,
+    alertMessage: string
+  ) => {
     const variantFormatted = variant.charAt(0).toUpperCase() + variant.slice(1);
     const title = alertHeader;
     const srTitle = variantFormatted + " alert";
@@ -104,7 +114,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <NotificationContext.Provider
+    <AppNotificationContext.Provider
       value={{
         notifications,
         alerts,
@@ -113,16 +123,16 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
         removeAlert,
         setDrawerExpanded,
         setAlerts,
-        setNotifications
+        setNotifications,
       }}
     >
       {children}
-    </NotificationContext.Provider>
+    </AppNotificationContext.Provider>
   );
 };
 
 export const useNotification = () => {
-  const context = useContext(NotificationContext);
+  const context = useContext(AppNotificationContext);
   if (!context) {
     throw new Error(
       "useNotification must be used within a NotificationProvider"

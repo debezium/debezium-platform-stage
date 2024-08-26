@@ -17,8 +17,7 @@ import {
 } from "@patternfly/react-core";
 import { EllipsisVIcon, SearchIcon } from "@patternfly/react-icons";
 import React, { useState } from "react";
-import { NotificationProps } from "./AppLayout";
-
+import { NotificationProps } from "./AppNotificationContext";
 interface AppNotificationProps {
   // Define the props for your component here
   notifications: NotificationProps[];

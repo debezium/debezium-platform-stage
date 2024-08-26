@@ -2,7 +2,6 @@
 import * as React from "react";
 import {
   ActionGroup,
-  Bullseye,
   Button,
   ButtonType,
   Card,
@@ -44,7 +43,7 @@ import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import sourceCatalog from "../../mocks/data/SourceCatalog.json";
 import _ from "lodash";
-import { useNotification } from "../../appLayout/NotificationContext";
+import { useNotification } from "../../appLayout/AppNotificationContext";
 
 type CreateSourceFormProps = {
   sourceId: string;

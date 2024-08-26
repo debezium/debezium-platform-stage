@@ -45,7 +45,7 @@ import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import sourceCatalog from "../../mocks/data/SourceCatalog.json";
 import _ from "lodash";
 import { useData } from "../../appLayout/AppContext";
-import { useNotification } from "../../appLayout/NotificationContext";
+import { useNotification } from "../../appLayout/AppNotificationContext";
 
 const CreateSource: React.FunctionComponent = () => {
   const navigate = useNavigate();

@@ -31,7 +31,7 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
 
   const {
     data: destinationList = [],
-    error: destinationError,
+    error: _destinationError,
     isLoading: isDestinationLoading,
   } = useQuery<Destination[], Error>("destinations", () =>
     fetchData<Destination[]>(`${API_URL}/api/destinations`)

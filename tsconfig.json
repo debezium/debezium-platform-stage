@@ -23,7 +23,12 @@
     "paths": {
       "@appContext/*": ["src/appLayout/*"],
       "@components/*": ["src/components/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@pipelinePage/*": ["src/pages/Pipeline/*"],
+      "@sourcePage/*": ["src/pages/Source/*"],
+      "@destinationPage/*": ["src/pages/Destination/*"],
+      "@vaultPage/*": ["src/pages/Vault/*"],
+      "@transformPage/*": ["src/pages/Transform/*"],
     }
   },
   "include": ["src"],

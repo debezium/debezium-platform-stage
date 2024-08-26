@@ -42,7 +42,7 @@ import { API_URL } from "../utils/constants";
 import { useQuery } from "react-query";
 import { getActivePipelineCount } from "../utils/pipelineUtils";
 import { useNavigate } from "react-router-dom";
-import { useNotification } from "../appLayout/NotificationContext";
+import { useNotification } from "../appLayout/AppNotificationContext";
 
 interface ISourceSinkTableProps {
   tableType: "source" | "destination";
@@ -79,8 +79,8 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
 
   const {
     data: pipelineList = [],
-    error: pipelineError,
-    isLoading: isPipelineLoading,
+    error: _pipelineError,
+    isLoading: _isPipelineLoading,
   } = useQuery<Pipeline[], Error>(
     "pipelines",
     () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),
