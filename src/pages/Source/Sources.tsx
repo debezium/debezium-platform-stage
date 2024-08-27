@@ -192,8 +192,8 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                 }
                 secondaryActions={
                   <>
-                    <Button variant="link">Go to destination</Button>
-                    <Button variant="link">Configure Vaults</Button>
+                    <Button variant="link" onClick={()=>navigateTo('/destination')}>Go to destination</Button>
+                    <Button variant="link" onClick={()=>navigateTo('/vaults')}>Configure Vaults</Button>
                   </>
                 }
               />

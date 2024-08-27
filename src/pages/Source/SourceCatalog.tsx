@@ -17,7 +17,7 @@ import {
   ToolbarItem,
 } from "@patternfly/react-core";
 import { ListIcon, PlusCircleIcon, ThIcon } from "@patternfly/react-icons";
-import sourceCatalog from "../../mocks/data/SourceCatalog.json";
+import sourceCatalog from "../../__mocks__/data/SourceCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
 import "./SourceCatalog.css";
 import { useNavigate } from "react-router-dom";

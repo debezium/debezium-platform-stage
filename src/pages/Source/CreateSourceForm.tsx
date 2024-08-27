@@ -41,7 +41,7 @@ import { useState } from "react";
 import { createPost, Source } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
-import sourceCatalog from "../../mocks/data/SourceCatalog.json";
+import sourceCatalog from "../../__mocks__/data/SourceCatalog.json";
 import _ from "lodash";
 import { useNotification } from "../../appLayout/AppNotificationContext";
 
