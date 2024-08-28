@@ -6,7 +6,7 @@ import {
   PageSection,
   Tile,
 } from "@patternfly/react-core";
-import sourceCatalog from "../../mocks/data/SourceCatalog.json";
+import sourceCatalog from "../../__mocks__/data/SourceCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
 import "./SourceCatalog.css";
 

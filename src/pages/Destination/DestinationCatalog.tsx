@@ -18,7 +18,7 @@ import {
 } from "@patternfly/react-core";
 import "./DestinationCatalog.css";
 import { ListIcon, PlusCircleIcon, ThIcon } from "@patternfly/react-icons";
-import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
+import destinationCatalog from "../../__mocks__/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
 import { useNavigate } from "react-router-dom";
 

@@ -7,7 +7,7 @@ import {
   Tile,
 } from "@patternfly/react-core";
 import "./DestinationCatalog.css";
-import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
+import destinationCatalog from "../../__mocks__/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
 
 export interface IDestinationCatalogGridProps {

@@ -33,7 +33,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@patternfly/react-icons";
-import destinationCatalog from "../../mocks/data/DestinationCatalog.json";
+import destinationCatalog from "../../__mocks__/data/DestinationCatalog.json";
 import ConnectorImage from "../../components/ComponentImage";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CreateDestination.css";
