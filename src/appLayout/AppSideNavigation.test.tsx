@@ -42,6 +42,9 @@ test("renders the side navigation Expanded", () => {
   expectedTexts.forEach((text) => {
     expect(sideNavTexts).toContain(text);
   });
+
+  const darkModeText = screen.getByText("Dark mode");
+  expect(darkModeText).toHaveTextContent("Dark mode");
 });
 
 test("renders the side navigation Collapsed", () => {
