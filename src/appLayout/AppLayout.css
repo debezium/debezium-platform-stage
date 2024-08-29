@@ -1,11 +1,14 @@
 .custom-switch{
 margin-left: auto;
 }
-.custom-app-page .pf-v6-c-drawer__body{
-    /* display: grid;
-    max-height: 100%; */
+.custom-app-page {
+    grid-template-columns: 85px 1fr !important;
 }
 
 .pf-v6-c-page__main-container {
     margin-left: 0 !important;
+}
+.custom-app-page__sidebar-body {
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
 }

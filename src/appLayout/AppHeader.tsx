@@ -1,7 +1,6 @@
 import {
   Masthead,
   MastheadToggle,
-  Button,
   MastheadMain,
   MastheadBrand,
   Brand,
@@ -13,6 +12,8 @@ import {
   Avatar,
   NotificationBadge,
   NotificationBadgeVariant,
+  PageToggleButton,
+  MastheadLogo,
 } from "@patternfly/react-core";
 import { BarsIcon } from "@patternfly/react-icons";
 import React from "react";
@@ -48,58 +49,62 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   };
 
   return (
-    <Masthead>
-      <MastheadToggle>
-        <Button
-          variant="plain"
-          onClick={() => toggleSidebar()}
-          aria-label="Global navigation"
-        >
-          <BarsIcon />
-        </Button>
-      </MastheadToggle>
-      <MastheadMain>
-        <MastheadBrand>
-          <Brand
-            src={!darkMode ? dbz_logo_black : dbz_svg}
-            alt="Debezium Logo"
-            heights={{ default: "36px" }}
-            onClick={() => navigateTo("/")}
-            style={{ cursor: "pointer" }}
-          />
-        </MastheadBrand>
-      </MastheadMain>
-      <MastheadContent>
-        <Toolbar id="masthead-toggle" isStatic isFullHeight>
-          <ToolbarContent>
-            <ToolbarGroup
-              variant="icon-button-group"
-              align={{ default: "alignEnd" }}
+    <>
+      <Masthead>
+        <MastheadMain>
+          <MastheadToggle>
+            <PageToggleButton
+              variant="plain"
+              aria-label="Global navigation"
+              onClick={() => toggleSidebar()}
             >
-              <ToolbarItem>
-                <NotificationBadge
-                  variant={
-                    getNotificationBadgeVariant() as
-                      | NotificationBadgeVariant
-                      | "read"
-                      | "unread"
-                      | "attention"
-                      | undefined
-                  }
-                  onClick={handleNotificationBadgeClick}
-                  aria-label="Notifications"
-                ></NotificationBadge>
-              </ToolbarItem>
-            </ToolbarGroup>
-            <ToolbarItem variant="separator" />
+              <BarsIcon />
+            </PageToggleButton>
+          </MastheadToggle>
+          <MastheadBrand>
+            <MastheadLogo>
+              <Brand
+                src={!darkMode ? dbz_logo_black : dbz_svg}
+                alt="Debezium Logo"
+                heights={{ default: "36px" }}
+                onClick={() => navigateTo("/")}
+                style={{ cursor: "pointer" }}
+              />
+            </MastheadLogo>
+          </MastheadBrand>
+        </MastheadMain>
+        <MastheadContent>
+          <Toolbar id="masthead-toggle" isStatic isFullHeight>
+            <ToolbarContent>
+              <ToolbarGroup
+                variant="action-group-plain"
+                align={{ default: "alignEnd" }}
+              >
+                <ToolbarItem>
+                  <NotificationBadge
+                    variant={
+                      getNotificationBadgeVariant() as
+                        | NotificationBadgeVariant
+                        | "read"
+                        | "unread"
+                        | "attention"
+                        | undefined
+                    }
+                    onClick={handleNotificationBadgeClick}
+                    aria-label="Notifications"
+                  ></NotificationBadge>
+                </ToolbarItem>
+              </ToolbarGroup>
+              <ToolbarItem variant="separator" />
 
-            <ToolbarItem>
-              <Avatar src={imgAvatar} alt="user avatar" />
-            </ToolbarItem>
-          </ToolbarContent>
-        </Toolbar>
-      </MastheadContent>
-    </Masthead>
+              <ToolbarItem>
+                <Avatar src={imgAvatar} alt="user avatar" />
+              </ToolbarItem>
+            </ToolbarContent>
+          </Toolbar>
+        </MastheadContent>
+      </Masthead>
+    </>
   );
 };
 

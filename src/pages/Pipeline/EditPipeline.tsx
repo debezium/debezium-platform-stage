@@ -6,6 +6,7 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Content,
   Flex,
   FlexItem,
   Form,
@@ -19,8 +20,6 @@ import {
   HelperTextItem,
   PageSection,
   Skeleton,
-  Text,
-  TextContent,
   TextInput,
   ToggleGroup,
   ToggleGroupItem,
@@ -244,15 +243,15 @@ const EditPipeline: React.FunctionComponent = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Edit pipeline </Text>
-          <Text component="p">
+        <>
+          <Content component="h1">Edit pipeline </Content>
+          <Content component="p">
             To edit a data pipeline update the fields in below form or use the
             smart editor to update a data pipeline. If you already have a
             configuration file, you can edit the data pipeline by uploading it
             in the smart editor.
-          </Text>
-        </TextContent>
+          </Content>
+        </>
         <Toolbar id="edit-editor-toggle" className="edit-toolbar">
           <ToolbarContent style={{ padding: "0" }}>
             <ToolbarItem>

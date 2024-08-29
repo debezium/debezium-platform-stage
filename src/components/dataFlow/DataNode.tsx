@@ -4,8 +4,8 @@ import {
   Bullseye,
   Stack,
   StackItem,
-  TextContent,
   Tooltip,
+  Content,
 } from "@patternfly/react-core";
 import { Handle, Position } from "reactflow";
 import ConnectorImage from "../ComponentImage";
@@ -116,12 +116,12 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
                       paddingInlineStart: 5,
                     }}
                   >
-                    <TextContent
+                    <Content
                       type="p"
                       style={{ fontSize: "10px", fontWeight: "bold" }}
                     >
                       {data.label}
-                    </TextContent>
+                    </Content>
                   </StackItem>
                 </Stack>
               </Bullseye>

@@ -6,6 +6,7 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Content,
   Form,
   FormContextProvider,
   FormFieldGroup,
@@ -18,8 +19,6 @@ import {
   PageSection,
   Split,
   SplitItem,
-  Text,
-  TextContent,
   TextInput,
   ToggleGroup,
   ToggleGroupItem,
@@ -200,17 +199,15 @@ const CreateDestinationForm: React.FunctionComponent<
                           isRequired
                           fieldId="destination-type-field"
                         >
-                          <TextContent
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
+                          <>
                             <ConnectorImage
                               connectorType={destinationId || ""}
                               size={35}
                             />
-                            <Text component="p" style={{ paddingLeft: "10px" }}>
+                            <Content component="p" style={{ paddingLeft: "10px" }}>
                               {getConnectorTypeName(destinationId || "")}
-                            </Text>
-                          </TextContent>
+                            </Content>
+                          </>
                         </FormGroup>
                         <FormGroup
                           label="Destination name"

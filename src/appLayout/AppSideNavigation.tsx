@@ -114,12 +114,12 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
   );
 
   return (
-    <PageSidebar style={isSidebarOpen ? {} : { width: "unset" }}>
-      <PageSidebarBody isFilled={true}>
+    <PageSidebar style={isSidebarOpen ? {} : { width: "fit-content", maxWidth: "fit-content" }} >
+      <PageSidebarBody isFilled={true} className="custom-app-page__sidebar-body">
         {isSidebarOpen ? Navigation : NavigationClosed}
       </PageSidebarBody>
 
-      <PageSidebarBody isFilled={false}>
+      <PageSidebarBody isFilled={false} className="custom-app-page__sidebar-body">
         {isSidebarOpen ? (
           <Nav className="pf-v6-c-nav">
             <NavList>

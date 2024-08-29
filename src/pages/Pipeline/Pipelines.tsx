@@ -3,6 +3,8 @@ import {
   Bullseye,
   Button,
   Card,
+  Content,
+  ContentVariants,
   debounce,
   EmptyState,
   EmptyStateActions,
@@ -21,10 +23,7 @@ import {
   SearchInput,
   Spinner,
   Switch,
-  Text,
-  TextContent,
   TextInput,
-  TextVariants,
   ToggleGroup,
   Toolbar,
   ToolbarContent,
@@ -158,6 +157,7 @@ const Pipelines: React.FunctionComponent = () => {
     setIsOpen(toggleValue);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onOverviewHandler = (id: number, _name: string) => {
     navigateTo(`/pipeline/pipeline_overview/${id}`);
   };
@@ -167,6 +167,7 @@ const Pipelines: React.FunctionComponent = () => {
     setDeleteInstance({ id: id, name: name });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onEditHandler = (id: number, _name: string) => {
     navigateTo(`/pipeline/pipeline_edit/${id}`);
   };
@@ -216,20 +217,18 @@ const Pipelines: React.FunctionComponent = () => {
       ) : (
         <>
           <PageSection isWidthLimited>
-            <TextContent>
-              <Text component="h1">Pipeline</Text>
+              <Content component="h1">Pipeline</Content>
               {pipelinesLoading || pipelinesList.length > 0 ? (
-                <Text component="p">
+                <Content component="p">
                   Add a pipeline to streams change events from a pipeline
                   database. To start select a connector below once you select a
                   connector you can configure it using form or smart editor
                   option. You can also search the connector by its name or
                   toggle the catalog between the list view or card view.
-                </Text>
+                </Content>
               ) : (
                 <></>
               )}
-            </TextContent>
           </PageSection>
           <PageSection>
             {pipelinesLoading || pipelinesList.length > 0 ? (
@@ -267,11 +266,11 @@ const Pipelines: React.FunctionComponent = () => {
                       </ToggleGroup>
                     </ToolbarItem>
                     <ToolbarGroup
-                      variant="icon-button-group"
+                      // variant="icon-button-group"
                       align={{ default: "alignEnd" }}
                     >
                       <ToolbarItem>
-                        <Text component={TextVariants.small}>
+                        <Content component={ContentVariants.small}>
                           {
                             (searchQuery.length > 0
                               ? searchResult
@@ -279,7 +278,7 @@ const Pipelines: React.FunctionComponent = () => {
                             ).length
                           }{" "}
                           Items
-                        </Text>
+                        </Content>
                       </ToolbarItem>
                     </ToolbarGroup>
                   </ToolbarContent>

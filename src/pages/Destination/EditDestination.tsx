@@ -6,6 +6,7 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Content,
   Form,
   FormContextProvider,
   FormFieldGroup,
@@ -18,8 +19,6 @@ import {
   PageSection,
   Split,
   SplitItem,
-  Text,
-  TextContent,
   TextInput,
   ToggleGroup,
   ToggleGroupItem,
@@ -200,15 +199,15 @@ const EditDestination: React.FunctionComponent = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Edit destination </Text>
-          <Text component="p">
+        <>
+          <Content component="h1">Edit destination </Content>
+          <Content component="p">
             To configure and create a connector fill out the below form or use
             the smart editor to setup a new Destination connector. If you
             already have a configuration file, you can setup a new Destination
             connector by uploading it in the smart editor.
-          </Text>
-        </TextContent>
+          </Content>
+        </>
         <Toolbar id="edit-editor-toggle" className="create_destination-toolbar">
           <ToolbarContent style={{ padding: "0" }}>
             <ToolbarItem>
@@ -262,18 +261,16 @@ const EditDestination: React.FunctionComponent = () => {
                         isRequired
                         fieldId="destination-type-field"
                       >
-                        <TextContent
-                          style={{ display: "flex", alignItems: "center" }}
-                        >
+                        <>
                           <ConnectorImage
                             connectorType={destination?.type ?? ""}
                             size={35}
                           />
 
-                          <Text component="p" style={{ paddingLeft: "10px" }}>
+                          <Content component="p" style={{ paddingLeft: "10px" }}>
                             {getConnectorTypeName(destinationId || "")}
-                          </Text>
-                        </TextContent>
+                          </Content>
+                        </>
                       </FormGroup>
                       <FormGroup
                         label="Destination name"
@@ -332,9 +329,9 @@ const EditDestination: React.FunctionComponent = () => {
                           <FormFieldGroupHeader
                             titleText={{
                               text: (
-                                <Text component="h4">
+                                <Content component="h4">
                                   Configuration properties
-                                </Text>
+                                </Content>
                               ),
                               id: "configuration-properties-group",
                             }}

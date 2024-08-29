@@ -6,8 +6,7 @@ import {
   CardTitle,
   CardBody,
   Divider,
-  Text,
-  TextContent,
+  Content,
 } from "@patternfly/react-core";
 import React, { useCallback, useEffect, useState } from "react";
 import { Destination, fetchData } from "../../apis/apis";
@@ -31,6 +30,7 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
 
   const {
     data: destinationList = [],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     error: _destinationError,
     isLoading: isDestinationLoading,
   } = useQuery<Destination[], Error>("destinations", () =>
@@ -106,26 +106,26 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
       <Divider style={{ marginTop: "10px" }} />
       {isCreateChecked === id2 &&
         (selectedDestination === "" ? (
-          <TextContent style={{ padding: "10px" }}>
-            <Text component="p">
+        //   <TextContent style={{ padding: "10px" }}>
+            <Content component="p">
               <b>
                 Select the type of destination you want to connect from the list
                 below, once you select a connector you can configure it using
                 form or smart editor option.
               </b>
-            </Text>
-          </TextContent>
+            </Content>
+          // </TextContent>
         ) : (
-          <TextContent style={{ padding: "10px" }}>
-            <Text component="p">
+          // <TextContent style={{ padding: "10px" }}>
+            <Content component="p">
               <b>
                 Fill out the below form or use the smart editor to setup a new
                 destination connector. If you already have a configuration file,
                 you can setup a new destination connector by uploading it in the
                 smart editor.
               </b>
-            </Text>
-          </TextContent>
+            </Content>
+          // </TextContent>
         ))}
 
       {isCreateChecked === id1 ? (

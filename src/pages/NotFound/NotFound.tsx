@@ -1,15 +1,14 @@
 import * as React from "react";
 import {
   Button,
+  Content,
+  ContentVariants,
   EmptyState,
   EmptyStateActions,
   EmptyStateBody,
   EmptyStateFooter,
   EmptyStateVariant,
   PageSection,
-  Text,
-  TextContent,
-  TextVariants,
 } from "@patternfly/react-core";
 import { useNavigate } from "react-router-dom";
 import { RouteIcon, TimesCircleIcon } from "@patternfly/react-icons";
@@ -35,16 +34,16 @@ const NotFound: React.FunctionComponent = () => {
         icon={RouteIcon}
       >
         <EmptyStateBody>
-          <TextContent>
-            <Text component="p">
+          <>
+            <Content component="p">
               We didn't find a page that matches the address you navigated to.
-            </Text>
-            <Text component={TextVariants.small}>
+            </Content>
+            <Content component={ContentVariants.small}>
               Please click on the button below to get back to the path, click on
               'Take me home' button to get to the home page or any other page
               from secondary action button.
-            </Text>
-          </TextContent>
+            </Content>
+          </>
         </EmptyStateBody>
         <EmptyStateFooter>
           <Button onClick={() => navigateTo("/")}>Take me home</Button>

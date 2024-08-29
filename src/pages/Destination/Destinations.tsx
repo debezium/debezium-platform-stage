@@ -2,13 +2,12 @@ import * as React from "react";
 import {
   Button,
   Card,
+  Content,
+  ContentVariants,
   EmptyState,
   PageSection,
   SearchInput,
   Spinner,
-  Text,
-  TextContent,
-  TextVariants,
   ToggleGroup,
   Toolbar,
   ToolbarContent,
@@ -89,19 +88,17 @@ const Destinations: React.FunctionComponent = () => {
       ) : (
         <>
           <PageSection isWidthLimited>
-            <TextContent>
-              <Text component="h1">Destination</Text>
+              <Content component="h1">Destination</Content>
               {isLoading || destinationsList.length > 0 ? (
-                <Text component="p">
+                <Content component="p">
                   Lists the available destination to capture the streaming
                   change events from a source database. You can search a
                   destination by its name or sort the list by the count of
                   active pipelines using a destination.
-                </Text>
+                </Content>
               ) : (
                 <></>
               )}
-            </TextContent>
           </PageSection>
 
           <PageSection>
@@ -138,11 +135,10 @@ const Destinations: React.FunctionComponent = () => {
                       </ToggleGroup>
                     </ToolbarItem>
                     <ToolbarGroup
-                      variant="icon-button-group"
                       align={{ default: "alignEnd" }}
                     >
                       <ToolbarItem>
-                        <Text component={TextVariants.small}>
+                        <Content component={ContentVariants.small}>
                           {
                             (searchQuery.length > 0
                               ? searchResult
@@ -150,7 +146,7 @@ const Destinations: React.FunctionComponent = () => {
                             ).length
                           }
                           Items
-                        </Text>
+                        </Content>
                       </ToolbarItem>
                     </ToolbarGroup>
                   </ToolbarContent>

@@ -6,6 +6,7 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Content,
   Form,
   FormContextProvider,
   FormFieldGroup,
@@ -18,8 +19,6 @@ import {
   PageSection,
   Split,
   SplitItem,
-  Text,
-  TextContent,
   TextInput,
   ToggleGroup,
   ToggleGroupItem,
@@ -155,15 +154,13 @@ const CreateSource: React.FunctionComponent = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Create source </Text>
-          <Text component="p">
+          <Content component="h1">Create source </Content>
+          <Content component="p">
             To configure and create a connector fill out the below form or use
             the smart editor to setup a new source connector. If you already
             have a configuration file, you can setup a new source connector by
             uploading it in the smart editor.
-          </Text>
-        </TextContent>
+          </Content>
         <Toolbar id="create-editor-toggle" className="create_source-toolbar">
           <ToolbarContent style={{ padding: "0" }}>
             <ToolbarItem>
@@ -212,17 +209,13 @@ const CreateSource: React.FunctionComponent = () => {
                         isRequired
                         fieldId="source-type-field"
                       >
-                        <TextContent
-                          style={{ display: "flex", alignItems: "center" }}
-                        >
                           <ConnectorImage
                             connectorType={sourceId || ""}
                             size={35}
                           />
-                          <Text component="p" style={{ paddingLeft: "10px" }}>
+                          <Content component="p" style={{ paddingLeft: "10px" }}>
                             {getConnectorTypeName(sourceId || "")}
-                          </Text>
-                        </TextContent>
+                          </Content>
                       </FormGroup>
                       <FormGroup
                         label="Source name"
@@ -281,9 +274,9 @@ const CreateSource: React.FunctionComponent = () => {
                           <FormFieldGroupHeader
                             titleText={{
                               text: (
-                                <Text component="h4">
+                                <Content component="h4">
                                   Configuration properties
-                                </Text>
+                                </Content>
                               ),
                               id: "configuration-properties-group",
                             }}
