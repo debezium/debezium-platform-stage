@@ -1,12 +1,11 @@
 import {
+  Content,
+  ContentVariants,
   EmptyState,
   EmptyStateActions,
   EmptyStateBody,
   EmptyStateFooter,
   EmptyStateVariant,
-  Text,
-  TextContent,
-  TextVariants,
 } from "@patternfly/react-core";
 import { PlusCircleIcon } from "@patternfly/react-icons";
 import { FC, ReactNode } from "react";
@@ -34,10 +33,8 @@ const EmptyStatus: FC<EmptyStatusProps> = ({
       icon={PlusCircleIcon}
     >
       <EmptyStateBody>
-        <TextContent>
-          <Text component="p">{primaryMessage}</Text>
-          <Text component={TextVariants.small}>{secondaryMessage}</Text>
-        </TextContent>
+          <Content component="p">{primaryMessage}</Content>
+          <Content component={ContentVariants.small}>{secondaryMessage}</Content>
       </EmptyStateBody>
       <EmptyStateFooter>
         {primaryAction}

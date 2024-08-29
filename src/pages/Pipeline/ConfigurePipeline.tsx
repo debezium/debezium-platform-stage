@@ -6,6 +6,7 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Content,
   Flex,
   FlexItem,
   Form,
@@ -19,8 +20,6 @@ import {
   HelperTextItem,
   PageSection,
   Skeleton,
-  Text,
-  TextContent,
   TextInput,
   ToggleGroup,
   ToggleGroupItem,
@@ -184,15 +183,15 @@ const ConfigurePipeline: React.FunctionComponent = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Create pipeline </Text>
-          <Text component="p">
+        <>
+          <Content component="h1">Create pipeline </Content>
+          <Content component="p">
             To configure and create a data pipeline fill out the below form or
             use the smart editor to setup a new data pipeline. If you already
             have a configuration file, you can setup a new data pipeline by
             uploading it in the smart editor.
-          </Text>
-        </TextContent>
+          </Content>
+        </>
         <Toolbar id="create-editor-toggle" className="create_pipeline-toolbar">
           <ToolbarContent style={{ padding: "0" }}>
             <ToolbarItem>

@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import {
+  Content,
+  ContentVariants,
   Gallery,
   GalleryItem,
   PageSection,
   SearchInput,
-  Text,
-  TextContent,
-  TextVariants,
   Tile,
   ToggleGroup,
   ToggleGroupItem,
@@ -47,16 +46,14 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Destination</Text>
-          <Text component="p">
+          <Content component="h1">Destination</Content>
+          <Content component="p">
             Add a destination to capture the change data event. To start select
             a connector below once you select a connector you can configure it
             using form or smart editor option. You can also search the connector
             by its name or toggle the catalog between the list view or card
             view.
-          </Text>
-        </TextContent>
+          </Content>
         <Toolbar
           id="toolbar-sticky"
           inset={{ default: "insetNone" }}
@@ -93,11 +90,10 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
             </ToolbarItem>
             {/* <ToolbarItem variant="separator" /> */}
             <ToolbarGroup
-              variant="icon-button-group"
               align={{ default: "alignEnd" }}
             >
               <ToolbarItem>
-                <Text component={TextVariants.small}>12 Items</Text>
+                <Content component={ContentVariants.small}>12 Items</Content>
               </ToolbarItem>
             </ToolbarGroup>
           </ToolbarContent>

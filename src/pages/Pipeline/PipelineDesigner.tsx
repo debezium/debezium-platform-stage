@@ -5,9 +5,8 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Content,
   PageSection,
-  Text,
-  TextContent,
 } from "@patternfly/react-core";
 
 import { useNavigate } from "react-router-dom";
@@ -64,14 +63,12 @@ const PipelineDesigner: React.FunctionComponent = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent>
-          <Text component="h1">Pipeline designer</Text>
-          <Text component="p">
+          <Content component="h1">Pipeline designer</Content>
+          <Content component="p">
             Configure the pipeline by adding an existing source and destination
             or create a new one as per you need. Optionally you can also any
             number of transformation as needed.
-          </Text>
-        </TextContent>
+          </Content>
       </PageSection>
       <PageSection isFilled>
         <Card isFullHeight>

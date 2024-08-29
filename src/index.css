@@ -17,3 +17,7 @@
   --brand-shadow--teal-large: 10px 0 15px rgba(88, 178, 218, 0.3),
     -10px 0 15px rgba(88, 178, 218, 0.3);
 }
+
+.pf-v6-c-page__main-body{
+  height: -webkit-fill-available;
+}

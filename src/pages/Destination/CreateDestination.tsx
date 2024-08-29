@@ -6,6 +6,7 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Content,
   Form,
   FormContextProvider,
   FormFieldGroup,
@@ -18,8 +19,6 @@ import {
   PageSection,
   Split,
   SplitItem,
-  Text,
-  TextContent,
   TextInput,
   ToggleGroup,
   ToggleGroupItem,
@@ -153,15 +152,13 @@ const CreateDestination: React.FunctionComponent = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1">Create Destination </Text>
-          <Text component="p">
+          <Content component="h1">Create Destination </Content>
+          <Content component="p">
             To configure and create a connector fill out the below form or use
             the smart editor to setup a new destination connector. If you
             already have a configuration file, you can setup a new destination
             connector by uploading it in the smart editor.
-          </Text>
-        </TextContent>
+          </Content>
         <Toolbar
           id="create-editor-toggle"
           className="create_destination-toolbar"
@@ -211,17 +208,15 @@ const CreateDestination: React.FunctionComponent = () => {
                         isRequired
                         fieldId="destination-type-field"
                       >
-                        <TextContent
-                          style={{ display: "flex", alignItems: "center" }}
-                        >
+                        <>
                           <ConnectorImage
                             connectorType={destinationId || ""}
                             size={35}
                           />
-                          <Text component="p" style={{ paddingLeft: "10px" }}>
+                          <Content component="p" style={{ paddingLeft: "10px" }}>
                             {getConnectorTypeName(destinationId || "")}
-                          </Text>
-                        </TextContent>
+                          </Content>
+                        </>
                       </FormGroup>
                       <FormGroup
                         label="Destination name"

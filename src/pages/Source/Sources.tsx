@@ -2,14 +2,13 @@ import * as React from "react";
 import {
   Button,
   Card,
+  Content,
+  ContentVariants,
   debounce,
   EmptyState,
   PageSection,
   SearchInput,
   Spinner,
-  Text,
-  TextContent,
-  TextVariants,
   ToggleGroup,
   Toolbar,
   ToolbarContent,
@@ -93,23 +92,23 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
       ) : (
         <>
           <PageSection isWidthLimited>
-            <TextContent>
-              <Text component="h1">Source</Text>
+              <Content component="h1">Source</Content>
               {isLoading || sourcesList.length > 0 ? (
-                <Text component="p">
+                <Content component="p">
                   Lists the available sources configured in the cluster
                   streaming change events from a source database. You can search
                   a source by its name or sort the list by the count of active
                   pipelines using a source.
-                </Text>
+                </Content>
               ) : (
                 <></>
               )}
-            </TextContent>
           </PageSection>
           <PageSection>
             {isLoading || sourcesList.length > 0 ? (
-              <Card style={{ paddingTop: "15px" }}>
+              <Card 
+              style={{ paddingTop: "15px" }}
+              >
                 <Toolbar
                   id="toolbar-sticky"
                   style={{
@@ -141,11 +140,10 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                       </ToggleGroup>
                     </ToolbarItem>
                     <ToolbarGroup
-                      variant="icon-button-group"
                       align={{ default: "alignEnd" }}
                     >
                       <ToolbarItem>
-                        <Text component={TextVariants.small}>
+                        <Content component={ContentVariants.small}>
                           {
                             (searchQuery.length > 0
                               ? searchResult
@@ -153,7 +151,7 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                             ).length
                           }{" "}
                           Items
-                        </Text>
+                        </Content>
                       </ToolbarItem>
                     </ToolbarGroup>
                   </ToolbarContent>

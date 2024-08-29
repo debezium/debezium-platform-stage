@@ -4,10 +4,9 @@ import {
   CardTitle,
   CardBody,
   Divider,
-  Text,
-  TextContent,
   Flex,
   FlexItem,
+  Content,
 } from "@patternfly/react-core";
 import React, { useCallback, useEffect, useState } from "react";
 import { fetchData, Source } from "../../apis/apis";
@@ -31,6 +30,7 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
 
   const {
     data: sourceList = [],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     error: _sourceError,
     isLoading: isSourceLoading,
   } = useQuery<Source[], Error>("sources", () =>
@@ -104,27 +104,23 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
       <Divider style={{ marginTop: "10px" }} />
       {isCreateChecked === id2 &&
         (selectedSource === "" ? (
-          <TextContent style={{ padding: "10px" }}>
-            <Text component="p">
+            <Content component="p">
               <b>
                 {" "}
                 Select the type of source you want to connect from the list
                 below, once you select a connector you can configure it using
                 form or smart editor option.
               </b>
-            </Text>
-          </TextContent>
+            </Content>
         ) : (
-          <TextContent style={{ padding: "10px" }}>
-            <Text component="p">
+            <Content component="p">
               <b>
                 Fill out the below form or use the smart editor to setup a new
                 source connector. If you already have a configuration file, you
                 can setup a new source connector by uploading it in the smart
                 editor.
               </b>
-            </Text>
-          </TextContent>
+            </Content>
         ))}
 
       {isCreateChecked === id1 ? (

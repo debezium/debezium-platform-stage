@@ -5,11 +5,10 @@ import {
   EmptyState,
   EmptyStateVariant,
   EmptyStateBody,
-  Text,
-  TextContent,
   EmptyStateFooter,
   EmptyStateActions,
   Button,
+  Content,
 } from "@patternfly/react-core";
 
 interface ApiErrorProps {
@@ -38,10 +37,7 @@ const ApiError: React.FC<ApiErrorProps> = ({ errorType, errorMsg, secondaryActio
           icon={ExclamationCircleIcon}
         >
           <EmptyStateBody>
-            <TextContent>
-              <Text component="p">{"Error: " + errorMsg}</Text>
-              {/* <Text component={TextVariants.small}>{" secondary"}</Text> */}
-            </TextContent>
+              <Content component="p">{"Error: " + errorMsg}</Content>
           </EmptyStateBody>
           <EmptyStateFooter>
             <Button variant="primary" icon={<RedoIcon />} onClick={refresh}>

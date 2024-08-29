@@ -6,6 +6,7 @@ import {
   ButtonType,
   Card,
   CardBody,
+  Content,
   Form,
   FormContextProvider,
   FormFieldGroup,
@@ -18,8 +19,6 @@ import {
   PageSection,
   Split,
   SplitItem,
-  Text,
-  TextContent,
   TextInput,
   ToggleGroup,
   ToggleGroupItem,
@@ -201,17 +200,13 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                           isRequired
                           fieldId="source-type-field"
                         >
-                          <TextContent
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
                             <ConnectorImage
                               connectorType={sourceId || ""}
                               size={35}
                             />
-                            <Text component="p" style={{ paddingLeft: "10px" }}>
+                            <Content component="p" style={{ paddingLeft: "10px" }}>
                               {getConnectorTypeName(sourceId || "")}
-                            </Text>
-                          </TextContent>
+                            </Content>
                         </FormGroup>
                         <FormGroup
                           label="Source name"
@@ -269,9 +264,9 @@ const CreateSourceForm: React.FunctionComponent<CreateSourceFormProps> = ({
                             <FormFieldGroupHeader
                               titleText={{
                                 text: (
-                                  <Text component="h4">
+                                  <Content component="h4">
                                     Configuration properties
-                                  </Text>
+                                  </Content>
                                 ),
                                 id: "configuration-properties-group",
                               }}

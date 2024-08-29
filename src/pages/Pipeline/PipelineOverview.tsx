@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   CardTitle,
+  Content,
   DescriptionList,
   DescriptionListDescription,
   DescriptionListGroup,
@@ -12,8 +13,6 @@ import {
   GridItem,
   PageSection,
   Skeleton,
-  Text,
-  TextContent,
 } from "@patternfly/react-core";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -142,14 +141,12 @@ const PipelineOverview: React.FunctionComponent = () => {
   return (
     <>
       <PageSection isWidthLimited>
-        <TextContent style={{ marginBlockEnd: "10px" }}>
-          <Text component="h1"> {pipeline?.name}</Text>
-          <Text component="p">
+          <Content component="h1"> {pipeline?.name}</Content>
+          <Content component="p">
             Connector overview for {pipeline?.name} pipeline, this provide the
             list of essential metrics and details. Configured source and
             destination of the pipeline. Pipeline log and composition.
-          </Text>
-        </TextContent>
+          </Content>
       </PageSection>
       <PageSection isWidthLimited>
         <Grid hasGutter>
@@ -282,17 +279,15 @@ const PipelineOverview: React.FunctionComponent = () => {
                       {isSourceFetchLoading ? (
                         <Skeleton screenreaderText="Loading contents" />
                       ) : (
-                        <TextContent
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
+                        <>
                         <ConnectorImage
                           connectorType={source?.type || ""}
                           size={25}
                         />
-                        <Text component="p" style={{ paddingLeft: "10px" }}>
+                        <Content component="p" style={{ paddingLeft: "10px" }}>
                           {getConnectorTypeName(source?.type || "")}
-                        </Text>
-                      </TextContent>
+                        </Content>
+                      </>
                       )}
                     </DescriptionListDescription>
                   </DescriptionListGroup>
@@ -342,17 +337,15 @@ const PipelineOverview: React.FunctionComponent = () => {
                       {isDestinationFetchLoading ? (
                         <Skeleton screenreaderText="Loading contents" />
                       ) : (
-                        <TextContent
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
+                        <>
                         <ConnectorImage
                           connectorType={destination?.type || ""}
                           size={25}
                         />
-                        <Text component="p" style={{ paddingLeft: "10px" }}>
+                        <Content component="p" style={{ paddingLeft: "10px" }}>
                           {getConnectorTypeName(destination?.type || "")}
-                        </Text>
-                      </TextContent>
+                        </Content>
+                      </>
                       )}
                     </DescriptionListDescription>
                   </DescriptionListGroup>

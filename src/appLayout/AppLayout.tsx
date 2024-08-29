@@ -96,7 +96,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   return (
     <>
       <Page
-        className="custom-app-page"
+        className={sidebarOpen ? "" : "custom-app-page"}
         mainContainerId={pageId}
         masthead={
           <AppHeader
@@ -108,6 +108,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         }
         sidebar={<AppSideNavigation isSidebarOpen={sidebarOpen} />}
         isManagedSidebar
+        isContentFilled
         breadcrumb={
           location.pathname.split("/").length <= 2 ? undefined : (
             <AppBreadcrumb />
