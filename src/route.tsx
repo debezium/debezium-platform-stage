@@ -4,7 +4,6 @@ import {
   DataProcessorIcon,
   DataSinkIcon,
   DataSourceIcon,
-  HomeAltIcon,
 } from "@patternfly/react-icons";
 import { MigrationIcon as PipelineIcon } from "@patternfly/react-icons";
 import { ServiceCatalogIcon as VaultIcon } from "@patternfly/react-icons";
@@ -29,7 +28,6 @@ import {
 } from "./pages/Pipeline";
 import { Transformation } from "./pages/Transformation";
 import { Vaults } from "./pages/Vault";
-import WelcomePage from "./pages/WelcomePage/WelcomePage";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -50,15 +48,52 @@ export interface IAppRouteGroup {
 export type AppRouteConfig = IAppRoute | IAppRouteGroup;
 
 const routes: AppRouteConfig[] = [
+  // {
+  //   component: WelcomePage,
+  //   label: "Home",
+  //   icon: <HomeAltIcon style={{ outline: "none" }} />,
+  //   path: "/",
+  //   navSection: "home",
+  //   title: `${AppBranding} | Home`,
+  // },
   {
-    component: WelcomePage,
-    label: "Home",
-    icon: <HomeAltIcon style={{ outline: "none" }} />,
+    component: Pipelines,
     path: "/",
-    navSection: "home",
-    title: `${AppBranding} | Home`,
+    navSection: "pipeline",
+    title: `${AppBranding} | Pipeline`,
   },
-
+  {
+    component: Pipelines,
+    label: "Pipeline",
+    icon: <PipelineIcon style={{ outline: "none" }} />,
+    path: "/pipeline",
+    navSection: "pipeline",
+    title: `${AppBranding} | Pipeline`,
+  },
+  {
+    component: PipelineOverview,
+    path: "/pipeline/pipeline_overview/:pipelineId",
+    navSection: "pipeline",
+    title: `${AppBranding} | Pipeline`,
+  },
+  {
+    component: EditPipeline,
+    path: "/pipeline/pipeline_edit/:pipelineId",
+    navSection: "pipeline",
+    title: `${AppBranding} | Pipeline`,
+  },
+  {
+    component: PipelineDesigner,
+    path: "/pipeline/pipeline_designer",
+    navSection: "pipeline",
+    title: `${AppBranding} | Pipeline`,
+  },
+  {
+    component: ConfigurePipeline,
+    path: "/pipeline/pipeline_designer/create_pipeline",
+    navSection: "pipeline",
+    title: `${AppBranding} | Pipeline`,
+  },
   {
     component: Sources,
     label: "Source",
@@ -126,38 +161,6 @@ const routes: AppRouteConfig[] = [
     path: "/vaults",
     navSection: "vaults",
     title: `${AppBranding} | Vaults`,
-  },
-  {
-    component: Pipelines,
-    label: "Pipeline",
-    icon: <PipelineIcon style={{ outline: "none" }} />,
-    path: "/pipeline",
-    navSection: "pipeline",
-    title: `${AppBranding} | Pipeline`,
-  },
-  {
-    component: PipelineOverview,
-    path: "/pipeline/pipeline_overview/:pipelineId",
-    navSection: "pipeline",
-    title: `${AppBranding} | Pipeline`,
-  },
-  {
-    component: EditPipeline,
-    path: "/pipeline/pipeline_edit/:pipelineId",
-    navSection: "pipeline",
-    title: `${AppBranding} | Pipeline`,
-  },
-  {
-    component: PipelineDesigner,
-    path: "/pipeline/pipeline_designer",
-    navSection: "pipeline",
-    title: `${AppBranding} | Pipeline`,
-  },
-  {
-    component: ConfigurePipeline,
-    path: "/pipeline/pipeline_designer/create_pipeline",
-    navSection: "pipeline",
-    title: `${AppBranding} | Pipeline`,
   },
 ];
 

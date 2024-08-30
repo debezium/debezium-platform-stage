@@ -176,9 +176,10 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                 primaryMessage=' No source is configure for this cluster yet. To streams change
             events from a source database you can configure a source by click
             the "Add source" button.'
-                secondaryMessage="This text has overridden a css component variable to demonstrate
-            how to apply customizations using PatternFly's global
-            variable API."
+            //     secondaryMessage="This text has overridden a css component variable to demonstrate
+            // how to apply customizations using PatternFly's global
+            // variable API."
+            secondaryMessage=""
                 primaryAction={
                   <Button
                     variant="primary"

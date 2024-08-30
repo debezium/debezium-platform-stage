@@ -58,6 +58,10 @@ const ConfigurePipeline: React.FunctionComponent = () => {
     navigate(url);
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const { navigationCollapsed } = useData();
 
   const [editorSelected, setEditorSelected] = useState("form-editor");
@@ -69,8 +73,7 @@ const ConfigurePipeline: React.FunctionComponent = () => {
   const [, setSourceError] = useState<string | null>(null);
 
   const [destination, setDestination] = useState<Destination>();
-  const [, setIsDestinationLoading] =
-    useState<boolean>(true);
+  const [, setIsDestinationLoading] = useState<boolean>(true);
   const [, setDestinationError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -400,11 +403,8 @@ const ConfigurePipeline: React.FunctionComponent = () => {
                 >
                   Create pipeline
                 </Button>
-                <Button
-                  variant="link"
-                  onClick={() => navigateTo("/pipeline/pipeline_designer")}
-                >
-                  Back to catalog
+                <Button variant="link" onClick={handleGoBack}>
+                  Back
                 </Button>
               </ActionGroup>
             </PageSection>
