@@ -81,24 +81,34 @@ const Destinations: React.FunctionComponent = () => {
   return (
     <>
       {error ? (
-        <ApiError errorType="large" errorMsg={error.message} secondaryActions={ <>
-          <Button variant="link"  onClick={()=>navigateTo("/source")}>Go to source</Button>
-          <Button variant="link"  onClick={()=>navigateTo("/pipeline")}>Go to pipeline</Button>
-        </>} />
+        <ApiError
+          errorType="large"
+          errorMsg={error.message}
+          secondaryActions={
+            <>
+              <Button variant="link" onClick={() => navigateTo("/source")}>
+                Go to source
+              </Button>
+              <Button variant="link" onClick={() => navigateTo("/pipeline")}>
+                Go to pipeline
+              </Button>
+            </>
+          }
+        />
       ) : (
         <>
           <PageSection isWidthLimited>
-              <Content component="h1">Destination</Content>
-              {isLoading || destinationsList.length > 0 ? (
-                <Content component="p">
-                  Lists the available destination to capture the streaming
-                  change events from a source database. You can search a
-                  destination by its name or sort the list by the count of
-                  active pipelines using a destination.
-                </Content>
-              ) : (
-                <></>
-              )}
+            <Content component="h1">Destination</Content>
+            {isLoading || destinationsList.length > 0 ? (
+              <Content component="p">
+                Lists the available destination to capture the streaming change
+                events from a source database. You can search a destination by
+                its name or sort the list by the count of active pipelines using
+                a destination.
+              </Content>
+            ) : (
+              <></>
+            )}
           </PageSection>
 
           <PageSection>
@@ -134,9 +144,7 @@ const Destinations: React.FunctionComponent = () => {
                         </Button>
                       </ToggleGroup>
                     </ToolbarItem>
-                    <ToolbarGroup
-                      align={{ default: "alignEnd" }}
-                    >
+                    <ToolbarGroup align={{ default: "alignEnd" }}>
                       <ToolbarItem>
                         <Content component={ContentVariants.small}>
                           {
@@ -174,9 +182,7 @@ const Destinations: React.FunctionComponent = () => {
                 primaryMessage=' No Destination is configure for this cluster yet. To capture the streaming change
               events from a source database you can configure a Destination by click
               the "Add Destination" button.'
-                secondaryMessage="This text has overridden a css component variable to demonstrate
-              how to apply customizations using PatternFly's global
-              variable API."
+                secondaryMessage=""
                 primaryAction={
                   <Button
                     variant="primary"

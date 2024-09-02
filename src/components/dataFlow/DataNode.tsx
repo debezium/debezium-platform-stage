@@ -80,7 +80,7 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
             isPlain
             isCompact
             className="pf-v5-u-box-shadow-md"
-            style={{ cursor: "auto" }}
+            style={{ cursor: "auto", minWidth: 110 }}
           >
             <CardBody style={{ padding: 7 }} className="pf-v5-u-box-shadow-md">
               <Bullseye>

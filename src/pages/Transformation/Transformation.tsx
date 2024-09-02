@@ -14,7 +14,7 @@ const Transformation: React.FunctionComponent<ITransformationProps> = () => {
   const { darkMode } = useData();
   return (
     <>
-      <PageSection style={{ position: "relative" }}>
+      <PageSection style={{ position: "relative" }} isFilled>
         <div
           className="transformation_overlay"
           style={darkMode ? { background: "rgba(41, 41, 41, 0.6)" } : {}}
