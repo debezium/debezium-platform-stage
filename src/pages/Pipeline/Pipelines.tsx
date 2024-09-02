@@ -223,7 +223,7 @@ const Pipelines: React.FunctionComponent = () => {
       ) : (
         <>
           {pipelinesLoading ? (
-            <EmptyState titleText="Loading" headingLevel="h4" icon={Spinner} />
+            <EmptyState titleText="Loading..." headingLevel="h4" icon={Spinner} />
           ) : (
             <>
               {pipelinesList.length > 0 ? (

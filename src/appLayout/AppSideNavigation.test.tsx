@@ -26,15 +26,14 @@ test("renders the side navigation Expanded", () => {
     </MemoryRouter>
   );
   const sideNavItems = screen.getAllByRole("link");
-  expect(sideNavItems).toHaveLength(6);
+  expect(sideNavItems).toHaveLength(5);
 
   const expectedTexts = [
-    "Home",
+    "Pipeline",
     "Source",
     "Transformation",
     "Destination",
     "Vaults",
-    "Pipeline",
   ];
 
   const sideNavTexts = sideNavItems.map((item) => item.textContent);
@@ -54,7 +53,7 @@ test("renders the side navigation Collapsed", () => {
     </MemoryRouter>
   );
   const sideNavItems = screen.getAllByRole("link");
-  expect(sideNavItems).toHaveLength(6);
+  expect(sideNavItems).toHaveLength(5);
 
   const sideNavTexts = sideNavItems.map((item) => item.textContent);
   expect(sideNavTexts.join("")).equal("");
