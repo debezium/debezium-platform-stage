@@ -9,10 +9,18 @@ Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/
 
 # debezium-platform-stage
 
+![Debezium Stage UI](https://github.com/user-attachments/assets/8888e4cb-2275-40a6-8c03-819c1020c868)
+_Debezium Stage UI screenshot _.
+
 This repository contains the web-based UI for the Debezium management platform which can be used to orchestrate and control Debezium deployments. The Platform stage UI is a React+Typescript-based Single Page Application built with Vite. [debezium-platform-conductor](https://github.com/debezium/debezium-platform-conductor) is the back-end component for Debezium management platform.
 
-<img width="1728" alt="image" src="https://github.com/user-attachments/assets/8888e4cb-2275-40a6-8c03-819c1020c868">
-
+<iframe width="560" height="315" 
+    src="https://github.com/user-attachments/assets/32a359a1-6f85-4795-a168-e06bb726242c" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+</iframe>
+_Debezium Stage UI _.
 This project is under active development, any contributions are very welcome.
 
 ## Requirements
@@ -32,19 +40,22 @@ yarn && yarn dev
 
 Stage UI will be available on [http://localhost:3000](http://localhost:3000)  
 
-## Running UI app with backend via docker
+## Running UI app with backend
 
-### DEV Infrastructure with Docker-Compose
+### DEV Infrastructure
 
 ```bash
 git clone https://github.com/debezium/debezium-platform-stage
 cd debezium-platform-stage
 ```
 
-You can set up a running DEV infrastructure with debezium-platform-conductor and Postgres using docker compose:
+You can set up a running DEV infrastructure with debezium-platform-conductor and Postgres compose.yml:
 
 ```
-## start containers
+## start containers (using podman)
+$ podman compose up -d
+
+(using docker)
 $ docker compose up -d
 ```
     
@@ -57,6 +68,10 @@ Platform Stage UI will be available on [http://localhost:3000](http://localhost:
 later stop running containers.
 
 ```
+(using podman)
+$ podman compose down
+
+(using docker)
 $ docker compose down
 
 ```
