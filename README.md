@@ -9,19 +9,19 @@ Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/
 
 # debezium-platform-stage
 
-![Debezium Stage UI](https://github.com/user-attachments/assets/8888e4cb-2275-40a6-8c03-819c1020c868)
-_Debezium Stage UI screenshot _.
+![Debezium Stage UI](src/assets/Stage.gif)  
+*Debezium Stage UI.*
 
 This repository contains the web-based UI for the Debezium management platform which can be used to orchestrate and control Debezium deployments. The Platform stage UI is a React+Typescript-based Single Page Application built with Vite. [debezium-platform-conductor](https://github.com/debezium/debezium-platform-conductor) is the back-end component for Debezium management platform.
 
-<iframe width="560" height="315" 
-    src="https://github.com/user-attachments/assets/32a359a1-6f85-4795-a168-e06bb726242c" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen>
-</iframe>
-_Debezium Stage UI _.
+<img width="1728" alt="Debezium Stage UI Screenshot" src="https://github.com/user-attachments/assets/3f4622a5-0584-4891-9200-28da56d1c05d">
+
+<br>
+
+*Debezium Stage UI Screenshot.*
+
 This project is under active development, any contributions are very welcome.
+
 
 ## Requirements
 node (version 20.x.x or higher) and yarn (version 1.22.x or higher).
