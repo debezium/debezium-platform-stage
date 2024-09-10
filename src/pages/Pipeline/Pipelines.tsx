@@ -28,12 +28,17 @@ import {
   Toolbar,
   ToolbarContent,
   ToolbarGroup,
-  ToolbarItem,
+  ToolbarItem
 } from "@patternfly/react-core";
 import { PlusIcon, SearchIcon } from "@patternfly/react-icons";
 // import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
-import { Pipeline, deleteResource, fetchData } from "../../apis/apis";
+import {
+  Pipeline,
+  deleteResource,
+  fetchData,
+  fetchFile
+} from "../../apis/apis";
 import {
   Table,
   Thead,
@@ -42,12 +47,12 @@ import {
   Tbody,
   Td,
   ActionsColumn,
-  IAction,
+  IAction
 } from "@patternfly/react-table";
 import _ from "lodash";
 import { useQuery } from "react-query";
 import { API_URL } from "../../utils/constants";
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import SourceField from "../../components/SourceField";
 import DestinationField from "../../components/DestinationField";
 import ApiError from "../../components/ApiError";
@@ -73,10 +78,12 @@ const Pipelines: React.FunctionComponent = () => {
 
   const { addNotification } = useNotification();
 
+  const [isLogLoading, setIsLogLoading] = useState<boolean>(false);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [deleteInstance, setDeleteInstance] = useState<DeleteInstance>({
     id: 0,
-    name: "",
+    name: ""
   });
   const [deleteInstanceName, setDeleteInstanceName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -88,16 +95,20 @@ const Pipelines: React.FunctionComponent = () => {
     onSearch?.("");
   };
 
+  const logAction = (): ReactNode => {
+    return isLogLoading ? <>Downloading...</> : <>Download Logs</>;
+  };
+
   const {
     data: pipelinesList = [],
     error: pipelinesError,
-    isLoading: pipelinesLoading,
+    isLoading: pipelinesLoading
   } = useQuery<Pipeline[], Error>(
     "pipelines",
     () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),
     {
       refetchInterval: 7000,
-      onSuccess: (data) => {
+      onSuccess: data => {
         if (searchQuery.length > 0) {
           const filteredPipeline = _.filter(data, function (o) {
             return o.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -106,9 +117,40 @@ const Pipelines: React.FunctionComponent = () => {
         } else {
           setSearchResult(data);
         }
-      },
+      }
     }
   );
+
+  const downloadLogFile = async (pipelineId: string, pipelineName: string) => {
+    setIsLogLoading(true);
+
+    // Fetch the file as a Blob
+    const response = await fetchFile(`${API_URL}/pipeline/${pipelineId}/logs`);
+
+    if ("error" in response) {
+      addNotification(
+        "danger",
+        `Download Failed log for ${pipelineName}`,
+        `Failed to download logs: ${response.error}`
+      );
+    } else {
+      // Create a URL for the Blob
+      const url = window.URL.createObjectURL(response);
+
+      // Create a link element and click it to trigger the download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "pipeline.log";
+      document.body.appendChild(a);
+      a.click();
+
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }
+
+    setIsLogLoading(false);
+  };
 
   const handleDelete = async (id: number) => {
     setIsLoading(true);
@@ -173,29 +215,37 @@ const Pipelines: React.FunctionComponent = () => {
     navigateTo(`/pipeline/pipeline_edit/${id}`);
   };
 
+  const onLogHandler = (id: number, name: string) => {
+    downloadLogFile("" + id, name);
+  };
+
   const rowActions = (actionData: ActionData): IAction[] => [
     {
       title: "Pause",
-      isDisabled: true,
+      isDisabled: true
     },
     {
       title: "Resume",
-      isDisabled: true,
+      isDisabled: true
     },
     {
       title: "Overview",
-      onClick: () => onOverviewHandler(actionData.id, actionData.name),
+      onClick: () => onOverviewHandler(actionData.id, actionData.name)
+    },
+    {
+      title: logAction(),
+      onClick: () => onLogHandler(actionData.id, actionData.name)
     },
     { isSeparator: true },
     {
       title: "Edit",
-      onClick: () => onEditHandler(actionData.id, actionData.name),
+      onClick: () => onEditHandler(actionData.id, actionData.name)
     },
 
     {
       title: "Delete",
-      onClick: () => onDeleteHandler(actionData.id, actionData.name),
-    },
+      onClick: () => onDeleteHandler(actionData.id, actionData.name)
+    }
   ];
 
   return (
@@ -223,7 +273,11 @@ const Pipelines: React.FunctionComponent = () => {
       ) : (
         <>
           {pipelinesLoading ? (
-            <EmptyState titleText="Loading..." headingLevel="h4" icon={Spinner} />
+            <EmptyState
+              titleText="Loading..."
+              headingLevel="h4"
+              icon={Spinner}
+            />
           ) : (
             <>
               {pipelinesList.length > 0 ? (
@@ -245,7 +299,7 @@ const Pipelines: React.FunctionComponent = () => {
                         id="toolbar-sticky"
                         style={{
                           marginRight: "1px",
-                          marginLeft: "1px",
+                          marginLeft: "1px"
                         }}
                         className="custom-toolbar"
                         isSticky
@@ -374,7 +428,7 @@ const Pipelines: React.FunctionComponent = () => {
                                   <ActionsColumn
                                     items={rowActions({
                                       id: instance.id,
-                                      name: instance.name,
+                                      name: instance.name
                                     })}
                                   />
                                 </Td>
@@ -415,9 +469,8 @@ const Pipelines: React.FunctionComponent = () => {
                 </>
               ) : (
                 <div>
-                   <PipelineEmpty />
+                  <PipelineEmpty />
                 </div>
-               
               )}
             </>
           )}
