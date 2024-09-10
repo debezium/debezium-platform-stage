@@ -87,9 +87,9 @@ export const createPost = async <T,>(
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
@@ -116,9 +116,9 @@ export const editPut = async <T,>(
     const response = await fetch(url, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
@@ -144,8 +144,8 @@ export const deleteResource = async <T,>(
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
 
     if (!response.ok) {
@@ -155,7 +155,7 @@ export const deleteResource = async <T,>(
 
     let data: T;
     if (response.status === 204) {
-      data = {} as T; 
+      data = {} as T;
     } else {
       data = await response.json();
     }
@@ -191,9 +191,9 @@ export const deleteData = async (url: string): Promise<void> => {
   const response = await fetch(url, {
     method: "DELETE",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
       // Add any additional headers if needed
-    },
+    }
   });
 
   if (!response.ok) {
@@ -210,7 +210,7 @@ export const useDeleteData = () => {
       onSuccess: () => {
         // Invalidate and refetch the data after deletion
         queryClient.invalidateQueries("pipelinesDelete");
-      },
+      }
     }
   );
 };
@@ -273,5 +273,25 @@ export const fetchDataWithPolling = async <T,>(
   } catch (error) {
     console.error("Error fetching data:", error);
     return { error: "An error occurred while fetching data" };
+  }
+};
+
+export const fetchFile = async (
+  url: string
+): Promise<Blob | { error: string }> => {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      const errorMsg = `Failed to fetch file: ${response.statusText}`;
+      return { error: errorMsg };
+    }
+
+    // Return the response as a Blob
+    const blob = await response.blob();
+    return blob;
+  } catch (error) {
+    console.error("Error fetching file:", error);
+    return { error: "An error occurred while fetching the file" };
   }
 };

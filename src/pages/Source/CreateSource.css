@@ -7,16 +7,12 @@
 }
 
 .custom-page-section .pf-v6-c-page__main-body{
-     
     max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth) !important;
-
 }
 
 
 .create_source-toolbar {
     padding-top: var(--pf-t--global--spacer--md) !important;
-   
-
 }
 
 .create_source-toolbar .pf-v6-c-toolbar__content {
