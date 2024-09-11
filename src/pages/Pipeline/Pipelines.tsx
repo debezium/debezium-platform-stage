@@ -204,7 +204,7 @@ const Pipelines: React.FunctionComponent = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onOverviewHandler = (id: number, _name: string) => {
-    navigateTo(`/pipeline/pipeline_overview/${id}`);
+    navigateTo(`/pipeline/${id}`);
   };
 
   const onDeleteHandler = (id: number, name: string) => {
