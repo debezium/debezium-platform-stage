@@ -76,7 +76,7 @@ const AppBreadcrumb: React.FC = () => {
             {generateBreadcrumbItem("#", "Pipeline designer", true)}
           </BreadcrumbGenerator>
         );
-      case route.match("/pipeline/pipeline_overview/[^/]+") !== null:
+      case route.match("/pipeline/[^/]+") !== null:
         return (
           <BreadcrumbGenerator>
             {generateBreadcrumbItem("/pipeline", "Pipeline")}

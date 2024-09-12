@@ -23,7 +23,7 @@ import {
   ConfigurePipeline,
   EditPipeline,
   PipelineDesigner,
-  PipelineOverview,
+  PipelineDetails,
   Pipelines,
 } from "./pages/Pipeline";
 import { Transformation } from "./pages/Transformation";
@@ -71,8 +71,8 @@ const routes: AppRouteConfig[] = [
     title: `${AppBranding} | Pipeline`,
   },
   {
-    component: PipelineOverview,
-    path: "/pipeline/pipeline_overview/:pipelineId",
+    component: PipelineDetails,
+    path: "/pipeline/:pipelineId",
     navSection: "pipeline",
     title: `${AppBranding} | Pipeline`,
   },

@@ -1,49 +1,38 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from "react";
+import ConnectorImage from "@components/ComponentImage";
+import CompositionFlow from "@components/dataFlow/CompositionFlow";
 import {
+  ChartDonutUtilization,
+  Chart,
+  ChartVoronoiContainer,
+  ChartThemeColor,
+  ChartAxis,
+  ChartGroup,
+  ChartBar,
+} from "@patternfly/react-charts";
+import {
+  Grid,
+  GridItem,
   Card,
   CardBody,
   CardTitle,
-  Content,
   DescriptionList,
-  DescriptionListDescription,
   DescriptionListGroup,
   DescriptionListTerm,
-  Grid,
-  GridItem,
-  PageSection,
+  DescriptionListDescription,
   Skeleton,
+  Content,
 } from "@patternfly/react-core";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-  Destination,
-  fetchDataTypeTwo,
-  Pipeline,
-  Source,
-} from "../../apis/apis";
-import { API_URL } from "../../utils/constants";
+import { API_URL } from "@utils/constants";
+import { getConnectorTypeName } from "@utils/helpers";
+import { FC, useEffect, useState } from "react";
+import { Pipeline, Source, Destination, fetchDataTypeTwo } from "src/apis/apis";
 import comingSoonImage from "../../assets/comingSoon.png";
 
-import {
-  Chart,
-  ChartAxis,
-  ChartBar,
-  ChartDonutUtilization,
-  ChartGroup,
-  ChartThemeColor,
-  ChartVoronoiContainer,
-} from "@patternfly/react-charts";
-import "./PipelineOverview.css";
-import ConnectorImage from "../../components/ComponentImage";
-import { getConnectorTypeName } from "../../utils/helpers";
-import CompositionFlow from "../../components/dataFlow/CompositionFlow";
+type PipelineOverviewProp = {
+  pipelineId: string;
+};
 
-const PipelineOverview: React.FunctionComponent = () => {
-  // const navigate = useNavigate();
-  const { pipelineId } = useParams<{ pipelineId: string }>();
-
-  // const [logs, setLogs] = useState<string[]>([]);
+const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
   const [pipeline, setPipeline] = useState<Pipeline>();
   const [source, setSource] = useState<Source>();
   const [destination, setDestination] = useState<Destination>();
@@ -72,23 +61,6 @@ const PipelineOverview: React.FunctionComponent = () => {
 
     fetchPipeline();
   }, [pipelineId]);
-
-  // useEffect(() => {
-  //   const socket = new WebSocket(`${API_URL}/api/pipelines/${pipelineId}/logs/stream`);
-
-  //   socket.onmessage = (event) => {
-  //     setLogs((prevLogs) => [...prevLogs, event.data]);
-  //   };
-
-  //   socket.onerror = (error) => {
-  //     console.error('WebSocket error:', error);
-  //     setError('WebSocket connection error');
-  //   };
-
-  //   return () => {
-  //     socket.close();
-  //   };
-  // }, [pipelineId]);
 
   useEffect(() => {
     const fetchSource = async () => {
@@ -139,245 +111,231 @@ const PipelineOverview: React.FunctionComponent = () => {
   }
 
   return (
-    <>
-      <PageSection isWidthLimited>
-          <Content component="h1"> {pipeline?.name}</Content>
-          <Content component="p">
-            Connector overview for {pipeline?.name} pipeline, this provide the
-            list of essential metrics and details. Configured source and
-            destination of the pipeline. Pipeline log and composition.
-          </Content>
-      </PageSection>
-      <PageSection isWidthLimited>
-        <Grid hasGutter>
-          <GridItem span={12}>
-            <Card ouiaId="BasicCard">
-              {/* <CardTitle>Metric</CardTitle> */}
-              <CardBody>
-                <Grid hasGutter>
-                  <GridItem span={4} style={{borderRight: "1px solid #D2D2D2"}}>
-                    <Card
-                      ouiaId="BasicCard"
-                      isPlain
-                      style={{ position: "relative" }}
+    <Grid hasGutter>
+      <GridItem span={12}>
+        <Card ouiaId="BasicCard">
+          <CardBody>
+            <Grid hasGutter>
+              <GridItem span={4} style={{ borderRight: "1px solid #D2D2D2" }}>
+                <Card
+                  ouiaId="BasicCard"
+                  isPlain
+                  style={{ position: "relative" }}
+                >
+                  <div className="overlay">
+                    <img src={comingSoonImage} alt="Coming Soon" />
+                  </div>
+                  <CardTitle>Queue usage</CardTitle>
+                  <CardBody>
+                    <ChartDonutUtilization
+                      ariaDesc="Queue utilization"
+                      ariaTitle="Queue utilization"
+                      constrainToVisibleArea
+                      data={{ x: "GBps capacity", y: 45 }}
+                      labels={({ datum }) =>
+                        datum.x ? `${datum.x}: ${datum.y}%` : null
+                      }
+                      legendData={[
+                        { name: `Storage capacity: 45%` },
+                        { name: "Unused: 55%" },
+                      ]}
+                      legendOrientation="vertical"
+                      name="queue-usage"
+                      padding={{
+                        bottom: 20,
+                        left: 20,
+                        right: 225, // Adjusted to accommodate legend
+                        top: 20,
+                      }}
+                      title={`45%`}
+                      thresholds={[{ value: 60 }, { value: 90 }]}
+                      width={435}
+                    />
+                  </CardBody>
+                </Card>
+              </GridItem>
+              <GridItem span={8}>
+                <Card
+                  ouiaId="BasicCard"
+                  isPlain
+                  style={{ position: "relative" }}
+                >
+                  <div className="overlay">
+                    <img src={comingSoonImage} alt="Coming Soon" />
+                  </div>
+                  <CardTitle>Events</CardTitle>
+                  <CardBody>
+                    <Chart
+                      ariaDesc="Events chart"
+                      ariaTitle="Events"
+                      containerComponent={<ChartVoronoiContainer />}
+                      domain={{ y: [0, 9000] }}
+                      domainPadding={{ x: [30, 25] }}
+                      height={220}
+                      themeColor={ChartThemeColor.multiOrdered}
+                      name="events-chart"
+                      padding={{
+                        bottom: 60,
+                        left: 60,
+                        right: 30,
+                        top: 20,
+                      }}
+                      width={900}
                     >
-                      <div className="overlay">
-                        <img src={comingSoonImage} alt="Coming Soon" />
-                      </div>
-                      <CardTitle>Queue usage</CardTitle>
-                      <CardBody>
-                        <ChartDonutUtilization
-                          ariaDesc="Queue utilization"
-                          ariaTitle="Queue utilization"
-                          constrainToVisibleArea
-                          data={{ x: "GBps capacity", y: 45 }}
-                          labels={({ datum }) =>
-                            datum.x ? `${datum.x}: ${datum.y}%` : null
-                          }
-                          legendData={[
-                            { name: `Storage capacity: 45%` },
-                            { name: "Unused: 55%" },
+                      <ChartAxis />
+                      <ChartAxis dependentAxis showGrid />
+                      <ChartGroup offset={11} horizontal>
+                        <ChartBar
+                          data={[
+                            { name: "Delete", x: "Delete", y: 400 },
+                            { name: "Update", x: "Update", y: 2000 },
+                            { name: "Insert", x: "Insert", y: 7000 },
                           ]}
-                          legendOrientation="vertical"
-                          name="queue-usage"
-                          padding={{
-                            bottom: 20,
-                            left: 20,
-                            right: 225, // Adjusted to accommodate legend
-                            top: 20,
-                          }}
-                          title={`45%`}
-                          thresholds={[{ value: 60 }, { value: 90 }]}
-                          width={435}
                         />
-                      </CardBody>
-                    </Card>
-                  </GridItem>
-                  <GridItem span={8}>
-                    <Card
-                      ouiaId="BasicCard"
-                      isPlain
-                      style={{ position: "relative" }}
-                    >
-                      <div className="overlay">
-                        <img src={comingSoonImage} alt="Coming Soon" />
-                      </div>
-                      <CardTitle>Events</CardTitle>
-                      <CardBody>
-                        <Chart
-                          ariaDesc="Events chart"
-                          ariaTitle="Events"
-                          containerComponent={<ChartVoronoiContainer />}
-                          domain={{ y: [0, 9000] }}
-                          domainPadding={{ x: [30, 25] }}
-                          height={220}
-                          themeColor={ChartThemeColor.multiOrdered}
-                          name="events-chart"
-                          padding={{
-                            bottom: 60,
-                            left: 60,
-                            right: 30,
-                            top: 20,
-                          }}
-                          width={900}
-                        >
-                          <ChartAxis />
-                          <ChartAxis dependentAxis showGrid />
-                          <ChartGroup offset={11} horizontal>
-                            <ChartBar
-                              data={[
-                                { name: "Delete", x: "Delete", y: 400 },
+                      </ChartGroup>
+                    </Chart>
+                  </CardBody>
+                </Card>
+              </GridItem>
+            </Grid>
+          </CardBody>
+        </Card>
+      </GridItem>
 
-                                { name: "Update", x: "Update", y: 2000 },
-                                { name: "Insert", x: "Insert", y: 7000 },
-                              ]}
-                            />
-                          </ChartGroup>
-                        </Chart>
-                      </CardBody>
-                    </Card>
-                  </GridItem>
-                </Grid>
-              </CardBody>
-            </Card>
-          </GridItem>
+      <GridItem span={3} rowSpan={1}>
+        <Card ouiaId="BasicCard">
+          <CardTitle>Source</CardTitle>
+          <CardBody>
+            <DescriptionList>
+              <DescriptionListGroup>
+                <DescriptionListTerm>Name</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isSourceFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    source?.name
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+              <DescriptionListGroup>
+                <DescriptionListTerm>Type</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isSourceFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    <>
+                      <ConnectorImage
+                        connectorType={source?.type || ""}
+                        size={25}
+                      />
+                      <Content component="p" style={{ paddingLeft: "10px" }}>
+                        {getConnectorTypeName(source?.type || "")}
+                      </Content>
+                    </>
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+              <DescriptionListGroup>
+                <DescriptionListTerm>Description</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isSourceFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    source?.description
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTerm>Schema</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isSourceFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    source?.schema
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+            </DescriptionList>
+          </CardBody>
+        </Card>
+      </GridItem>
+
+      <GridItem span={9} rowSpan={1}>
+        <Card ouiaId="BasicCard" isFullHeight>
+          <CardTitle>Pipeline composition</CardTitle>
+          <CardBody>
+            <CompositionFlow
+              sourceName={source?.name || ""}
+              sourceType={source?.type || ""}
+              destinationName={destination?.name || ""}
+              destinationType={destination?.type || ""}
+            />
+          </CardBody>
+        </Card>
+      </GridItem>
 
 
+      <GridItem span={3} rowSpan={1}>
+        <Card ouiaId="BasicCard">
+          <CardTitle>Destination</CardTitle>
+          <CardBody>
+            <DescriptionList>
+              <DescriptionListGroup>
+                <DescriptionListTerm>Name</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isDestinationFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    destination?.name
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+              <DescriptionListGroup>
+                <DescriptionListTerm>Type</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isDestinationFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    <>
+                      <ConnectorImage
+                        connectorType={destination?.type || ""}
+                        size={25}
+                      />
+                      <Content component="p" style={{ paddingLeft: "10px" }}>
+                        {getConnectorTypeName(destination?.type || "")}
+                      </Content>
+                    </>
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+              <DescriptionListGroup>
+                <DescriptionListTerm>Description</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isDestinationFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    destination?.description
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
 
-          <GridItem span={9} rowSpan={2}>
-            <Card ouiaId="BasicCard" isFullHeight>
-              <CardTitle>Pipeline composition</CardTitle>
-              <CardBody>
-                {/* <div style={{ whiteSpace: "pre-wrap" }}>
-                  {logs.map((log, index) => (
-                    <div key={index}>{log}</div>
-                  ))}
-                </div> */}
-                 <CompositionFlow sourceName={source?.name|| ''} sourceType={source?.type || ""} destinationName={destination?.name || ""} destinationType={destination?.type|| ""}/>
-              </CardBody>
-            </Card>
-          </GridItem>
-
-          <GridItem span={3} rowSpan={1}>
-            <Card ouiaId="BasicCard">
-              <CardTitle>Source</CardTitle>
-              <CardBody>
-                <DescriptionList>
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Name</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isSourceFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        source?.name
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Type</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isSourceFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        <>
-                        <ConnectorImage
-                          connectorType={source?.type || ""}
-                          size={25}
-                        />
-                        <Content component="p" style={{ paddingLeft: "10px" }}>
-                          {getConnectorTypeName(source?.type || "")}
-                        </Content>
-                      </>
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Description</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isSourceFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        source?.description
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Schema</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isSourceFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        source?.schema
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-                </DescriptionList>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem span={3} rowSpan={1}>
-            <Card ouiaId="BasicCard">
-              <CardTitle>Destination</CardTitle>
-              <CardBody>
-                <DescriptionList>
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Name</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isDestinationFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        destination?.name
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Type</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isDestinationFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        <>
-                        <ConnectorImage
-                          connectorType={destination?.type || ""}
-                          size={25}
-                        />
-                        <Content component="p" style={{ paddingLeft: "10px" }}>
-                          {getConnectorTypeName(destination?.type || "")}
-                        </Content>
-                      </>
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Description</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isDestinationFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        destination?.description
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-
-                  <DescriptionListGroup>
-                    <DescriptionListTerm>Schema</DescriptionListTerm>
-                    <DescriptionListDescription>
-                      {isDestinationFetchLoading ? (
-                        <Skeleton screenreaderText="Loading contents" />
-                      ) : (
-                        destination?.schema
-                      )}
-                    </DescriptionListDescription>
-                  </DescriptionListGroup>
-                </DescriptionList>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </Grid>
-      </PageSection>
-    </>
+              <DescriptionListGroup>
+                <DescriptionListTerm>Schema</DescriptionListTerm>
+                <DescriptionListDescription>
+                  {isDestinationFetchLoading ? (
+                    <Skeleton screenreaderText="Loading contents" />
+                  ) : (
+                    destination?.schema
+                  )}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+            </DescriptionList>
+          </CardBody>
+        </Card>
+      </GridItem>
+    </Grid>
   );
 };
 
-export { PipelineOverview };
+export default PipelineOverview;
