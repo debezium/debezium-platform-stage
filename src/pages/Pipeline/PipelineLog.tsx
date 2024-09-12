@@ -7,21 +7,40 @@ import {
 } from "@patternfly/react-core";
 import { DownloadIcon, ExpandIcon } from "@patternfly/react-icons";
 import { LogViewer, LogViewerSearch } from "@patternfly/react-log-viewer";
-import { data } from "@utils/constants";
-import React, { FC } from "react";
+// import { data } from "@utils/constants";
+import { FC, useEffect, useState } from "react";
+import "./PipelineLog.css";
 
 interface PipelineLogProps {
-  // Define any props you need for the component here
+  activeTabKey: number;
 }
 
 // eslint-disable-next-line no-empty-pattern
-const PipelineLog: FC<PipelineLogProps> = ({}) => {
+const PipelineLog: FC<PipelineLogProps> = ({ activeTabKey }) => {
+  const [logs, setLogs] = useState("");
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8080/api/pipelines/1/logs/stream");
+
+    ws.onmessage = (event) => {
+      setLogs((prevLogs) => prevLogs + "\n" + event.data); // Append new logs
+    };
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return () => {
+      ws.close(); // Clean up on component unmount
+    };
+  }, []);
   return (
-    <React.Fragment>
+    <div className="pipeline_log">
       <LogViewer
+        key={activeTabKey}
         hasLineNumbers={true}
-        // height={300}
-        data={data.data1}
+        data={logs}
         theme={"dark"}
         toolbar={
           <Toolbar>
@@ -56,7 +75,7 @@ const PipelineLog: FC<PipelineLogProps> = ({}) => {
           </Toolbar>
         }
       />
-    </React.Fragment>
+    </div>
   );
 };
 

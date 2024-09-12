@@ -114,7 +114,6 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
     <Grid hasGutter>
       <GridItem span={12}>
         <Card ouiaId="BasicCard">
-          {/* <CardTitle>Metric</CardTitle> */}
           <CardBody>
             <Grid hasGutter>
               <GridItem span={4} style={{ borderRight: "1px solid #D2D2D2" }}>
@@ -189,7 +188,6 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                         <ChartBar
                           data={[
                             { name: "Delete", x: "Delete", y: 400 },
-
                             { name: "Update", x: "Update", y: 2000 },
                             { name: "Insert", x: "Insert", y: 7000 },
                           ]}
@@ -200,25 +198,6 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                 </Card>
               </GridItem>
             </Grid>
-          </CardBody>
-        </Card>
-      </GridItem>
-
-      <GridItem span={9} rowSpan={2}>
-        <Card ouiaId="BasicCard" isFullHeight>
-          <CardTitle>Pipeline composition</CardTitle>
-          <CardBody>
-            {/* <div style={{ whiteSpace: "pre-wrap" }}>
-            {logs.map((log, index) => (
-              <div key={index}>{log}</div>
-            ))}
-          </div> */}
-            <CompositionFlow
-              sourceName={source?.name || ""}
-              sourceType={source?.type || ""}
-              destinationName={destination?.name || ""}
-              destinationType={destination?.type || ""}
-            />
           </CardBody>
         </Card>
       </GridItem>
@@ -281,6 +260,22 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
           </CardBody>
         </Card>
       </GridItem>
+
+      <GridItem span={9} rowSpan={1}>
+        <Card ouiaId="BasicCard" isFullHeight>
+          <CardTitle>Pipeline composition</CardTitle>
+          <CardBody>
+            <CompositionFlow
+              sourceName={source?.name || ""}
+              sourceType={source?.type || ""}
+              destinationName={destination?.name || ""}
+              destinationType={destination?.type || ""}
+            />
+          </CardBody>
+        </Card>
+      </GridItem>
+
+
       <GridItem span={3} rowSpan={1}>
         <Card ouiaId="BasicCard">
           <CardTitle>Destination</CardTitle>

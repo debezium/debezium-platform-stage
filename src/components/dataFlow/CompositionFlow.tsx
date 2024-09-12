@@ -13,12 +13,12 @@ import ReactFlow, {
   // Controls,
 } from "reactflow";
 import AddTransformationNode from "./AddTransformationNode";
-import DataNode from "./DataNode";
 import { useData } from "../../appLayout/AppContext";
+import DataNodeComposition from "./DataNodeComposition";
 
 const nodeTypes = {
   addTransformation: AddTransformationNode,
-  dataNode: DataNode,
+  dataNodeComposition: DataNodeComposition,
 };
 
 const proOptions = { hideAttribution: true };
@@ -48,8 +48,8 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         editAction: () => {},
         compositionFlow: true,
       },
-      position: { x: 100, y: 160 },
-      type: "dataNode",
+      position: { x: 50, y: 160 },
+      type: "dataNodeComposition",
       draggable: false,
     }),
     [sourceName, sourceType]
@@ -59,13 +59,13 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
     return {
       id: "transformation_group",
       data: { label: "Transformation" },
-      position: { x: 330, y: 120 },
+      position: { x: 250, y: 140 },
       style: {
         backgroundColor: darkMode
           ? "rgb(21, 21, 21, 0.2)"
           : "rgba(203,213,224, 0.2)",
-        width: 200,
-        height: 150,
+        width: 180,
+        height: 120,
         borderRadius: 10,
       },
       type: "group",
@@ -81,7 +81,7 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         sourcePosition: "right",
         targetPosition: "left",
       },
-      position: { x: 35, y: 30 },
+      position: { x: 35, y: 20 },
       targetPosition: "left",
       type: "addTransformation",
       parentId: "transformation_group",
@@ -100,8 +100,8 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         editAction: () => {},
         compositionFlow: true,
       },
-      position: { x: 650, y: 160 },
-      type: "dataNode",
+      position: { x: 500, y: 160 },
+      type: "dataNodeComposition",
       draggable: false,
     }),
     [destinationName, destinationType]

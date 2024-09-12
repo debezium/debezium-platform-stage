@@ -28,7 +28,7 @@ import {
   Toolbar,
   ToolbarContent,
   ToolbarGroup,
-  ToolbarItem
+  ToolbarItem,
 } from "@patternfly/react-core";
 import { PlusIcon, SearchIcon } from "@patternfly/react-icons";
 // import EmptyStatus from "../../components/EmptyStatus";
@@ -37,7 +37,7 @@ import {
   Pipeline,
   deleteResource,
   fetchData,
-  fetchFile
+  fetchFile,
 } from "../../apis/apis";
 import {
   Table,
@@ -47,7 +47,7 @@ import {
   Tbody,
   Td,
   ActionsColumn,
-  IAction
+  IAction,
 } from "@patternfly/react-table";
 import _ from "lodash";
 import { useQuery } from "react-query";
@@ -83,7 +83,7 @@ const Pipelines: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [deleteInstance, setDeleteInstance] = useState<DeleteInstance>({
     id: 0,
-    name: ""
+    name: "",
   });
   const [deleteInstanceName, setDeleteInstanceName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -96,19 +96,19 @@ const Pipelines: React.FunctionComponent = () => {
   };
 
   const logAction = (): ReactNode => {
-    return isLogLoading ? <>Downloading...</> : <>Download Logs</>;
+    return isLogLoading ? <>Downloading...</> : <>Download logs</>;
   };
 
   const {
     data: pipelinesList = [],
     error: pipelinesError,
-    isLoading: pipelinesLoading
+    isLoading: pipelinesLoading,
   } = useQuery<Pipeline[], Error>(
     "pipelines",
     () => fetchData<Pipeline[]>(`${API_URL}/api/pipelines`),
     {
       refetchInterval: 7000,
-      onSuccess: data => {
+      onSuccess: (data) => {
         if (searchQuery.length > 0) {
           const filteredPipeline = _.filter(data, function (o) {
             return o.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -117,7 +117,7 @@ const Pipelines: React.FunctionComponent = () => {
         } else {
           setSearchResult(data);
         }
-      }
+      },
     }
   );
 
@@ -207,6 +207,11 @@ const Pipelines: React.FunctionComponent = () => {
     navigateTo(`/pipeline/${id}`);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onLogViewHandler = (id: number, _name: string) => {
+    navigateTo(`/pipeline/${id}`);
+  };
+
   const onDeleteHandler = (id: number, name: string) => {
     setIsOpen(true);
     setDeleteInstance({ id: id, name: name });
@@ -217,37 +222,41 @@ const Pipelines: React.FunctionComponent = () => {
     navigateTo(`/pipeline/pipeline_edit/${id}`);
   };
 
-  const onLogHandler = (id: number, name: string) => {
+  const onLogDownloadHandler = (id: number, name: string) => {
     downloadLogFile("" + id, name);
   };
 
   const rowActions = (actionData: ActionData): IAction[] => [
     {
       title: "Pause",
-      isDisabled: true
+      isDisabled: true,
     },
     {
       title: "Resume",
-      isDisabled: true
-    },
-    {
-      title: "Overview",
-      onClick: () => onOverviewHandler(actionData.id, actionData.name)
-    },
-    {
-      title: logAction(),
-      onClick: () => onLogHandler(actionData.id, actionData.name)
+      isDisabled: true,
     },
     { isSeparator: true },
     {
-      title: "Edit",
-      onClick: () => onEditHandler(actionData.id, actionData.name)
+      title: "Overview",
+      onClick: () => onOverviewHandler(actionData.id, actionData.name),
     },
-
+    {
+      title: "View logs",
+      onClick: () => onLogViewHandler(actionData.id, actionData.name),
+    },
+    {
+      title: "Edit pipeline",
+      onClick: () => onEditHandler(actionData.id, actionData.name),
+    },
+    { isSeparator: true },
+    {
+      title: logAction(),
+      onClick: () => onLogDownloadHandler(actionData.id, actionData.name),
+    },
     {
       title: "Delete",
-      onClick: () => onDeleteHandler(actionData.id, actionData.name)
-    }
+      onClick: () => onDeleteHandler(actionData.id, actionData.name),
+    },
   ];
 
   return (
@@ -301,7 +310,7 @@ const Pipelines: React.FunctionComponent = () => {
                         id="toolbar-sticky"
                         style={{
                           marginRight: "1px",
-                          marginLeft: "1px"
+                          marginLeft: "1px",
                         }}
                         className="custom-toolbar"
                         isSticky
@@ -430,7 +439,7 @@ const Pipelines: React.FunctionComponent = () => {
                                   <ActionsColumn
                                     items={rowActions({
                                       id: instance.id,
-                                      name: instance.name
+                                      name: instance.name,
                                     })}
                                   />
                                 </Td>

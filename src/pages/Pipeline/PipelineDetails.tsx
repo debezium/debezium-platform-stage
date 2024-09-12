@@ -105,7 +105,6 @@ const PipelineDetails: React.FunctionComponent = () => {
             title={<TabTitleText>Logs</TabTitleText>}
             tabContentId={`tabContent${1}`}
           />
-
           <Tab
             eventKey={2}
             title={<TabTitleText>Edit</TabTitleText>}
@@ -133,7 +132,7 @@ const PipelineDetails: React.FunctionComponent = () => {
           hidden={1 !== activeTabKey}
         >
           <TabContentBody>
-            <PipelineLog />
+            <PipelineLog activeTabKey={activeTabKey} />
           </TabContentBody>
         </TabContent>
         <TabContent
