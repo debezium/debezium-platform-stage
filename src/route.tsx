@@ -21,7 +21,6 @@ import {
 } from "./pages/Destination";
 import {
   ConfigurePipeline,
-  EditPipeline,
   PipelineDesigner,
   PipelineDetails,
   Pipelines,
@@ -72,16 +71,16 @@ const routes: AppRouteConfig[] = [
   },
   {
     component: PipelineDetails,
-    path: "/pipeline/:pipelineId",
+    path: "/pipeline/:pipelineId/:detailsTab",
     navSection: "pipeline",
     title: `${AppBranding} | Pipeline`,
   },
-  {
-    component: EditPipeline,
-    path: "/pipeline/pipeline_edit/:pipelineId",
-    navSection: "pipeline",
-    title: `${AppBranding} | Pipeline`,
-  },
+  // {
+  //   component: EditPipeline,
+  //   path: "/pipeline/pipeline_edit/:pipelineId",
+  //   navSection: "pipeline",
+  //   title: `${AppBranding} | Pipeline`,
+  // },
   {
     component: PipelineDesigner,
     path: "/pipeline/pipeline_designer",

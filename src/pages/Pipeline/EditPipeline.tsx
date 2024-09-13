@@ -6,7 +6,6 @@ import {
   ButtonType,
   Card,
   CardBody,
-  Content,
   Flex,
   FlexItem,
   Form,
@@ -176,7 +175,10 @@ const EditPipeline: React.FunctionComponent = () => {
       name: values["pipeline-name"],
     };
 
-    const response = await editPut(`${API_URL}/api/pipelines/${pipelineId}`, payload);
+    const response = await editPut(
+      `${API_URL}/api/pipelines/${pipelineId}`,
+      payload
+    );
 
     if (response.error) {
       addNotification(
@@ -242,42 +244,31 @@ const EditPipeline: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited>
-        <>
-          <Content component="h1">Edit pipeline </Content>
-          <Content component="p">
-            To edit a data pipeline update the fields in below form or use the
-            smart editor to update a data pipeline. If you already have a
-            configuration file, you can edit the data pipeline by uploading it
-            in the smart editor.
-          </Content>
-        </>
-        <Toolbar id="edit-editor-toggle" className="edit-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
-            <ToolbarItem>
-              <ToggleGroup aria-label="Toggle between form editor and smart editor">
-                <ToggleGroupItem
-                  icon={<PencilAltIcon />}
-                  text="Form editor"
-                  aria-label="Form editor"
-                  buttonId="form-editor"
-                  isSelected={editorSelected === "form-editor"}
-                  onChange={handleItemClick}
-                />
+      <Toolbar id="edit-editor-toggle" className="edit-toolbar">
+        <ToolbarContent style={{ padding: "0" }}>
+          <ToolbarItem>
+            <ToggleGroup aria-label="Toggle between form editor and smart editor">
+              <ToggleGroupItem
+                icon={<PencilAltIcon />}
+                text="Form editor"
+                aria-label="Form editor"
+                buttonId="form-editor"
+                isSelected={editorSelected === "form-editor"}
+                onChange={handleItemClick}
+              />
 
-                <ToggleGroupItem
-                  icon={<CodeIcon />}
-                  text="Smart editor"
-                  aria-label="Smart editor"
-                  buttonId="smart-editor"
-                  isSelected={editorSelected === "smart-editor"}
-                  onChange={handleItemClick}
-                />
-              </ToggleGroup>
-            </ToolbarItem>
-          </ToolbarContent>
-        </Toolbar>
-      </PageSection>
+              <ToggleGroupItem
+                icon={<CodeIcon />}
+                text="Smart editor"
+                aria-label="Smart editor"
+                buttonId="smart-editor"
+                isSelected={editorSelected === "smart-editor"}
+                onChange={handleItemClick}
+              />
+            </ToggleGroup>
+          </ToolbarItem>
+        </ToolbarContent>
+      </Toolbar>
 
       <FormContextProvider
         initialValues={{

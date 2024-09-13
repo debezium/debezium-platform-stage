@@ -7,12 +7,12 @@ import {
 } from "@patternfly/react-core";
 import { DownloadIcon, ExpandIcon } from "@patternfly/react-icons";
 import { LogViewer, LogViewerSearch } from "@patternfly/react-log-viewer";
-// import { data } from "@utils/constants";
+import { data } from "@utils/constants";
 import { FC, useEffect, useState } from "react";
 import "./PipelineLog.css";
 
 interface PipelineLogProps {
-  activeTabKey: number;
+  activeTabKey: string;
 }
 
 // eslint-disable-next-line no-empty-pattern
@@ -35,12 +35,13 @@ const PipelineLog: FC<PipelineLogProps> = ({ activeTabKey }) => {
       ws.close(); // Clean up on component unmount
     };
   }, []);
+  console.log(logs);
   return (
     <div className="pipeline_log">
       <LogViewer
         key={activeTabKey}
         hasLineNumbers={true}
-        data={logs}
+        data={data.data1}
         theme={"dark"}
         toolbar={
           <Toolbar>
