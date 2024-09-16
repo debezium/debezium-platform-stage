@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
 import {
   Bullseye,
@@ -202,14 +203,12 @@ const Pipelines: React.FunctionComponent = () => {
     setIsOpen(toggleValue);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onOverviewHandler = (id: number, _name: string) => {
-    navigateTo(`/pipeline/${id}`);
+    navigateTo(`/pipeline/${id}/overview`);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onLogViewHandler = (id: number, _name: string) => {
-    navigateTo(`/pipeline/${id}`);
+    navigateTo(`/pipeline/${id}/logs`);
   };
 
   const onDeleteHandler = (id: number, name: string) => {
@@ -217,9 +216,8 @@ const Pipelines: React.FunctionComponent = () => {
     setDeleteInstance({ id: id, name: name });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onEditHandler = (id: number, _name: string) => {
-    navigateTo(`/pipeline/pipeline_edit/${id}`);
+    navigateTo(`/pipeline/${id}/edit`);
   };
 
   const onLogDownloadHandler = (id: number, name: string) => {

@@ -20,7 +20,7 @@
     "@patternfly/react-code-editor": "6.0.0-alpha.105",
     "@patternfly/react-core": "6.0.0-alpha.105",
     "@patternfly/react-icons": "6.0.0-alpha.37",
-    "@patternfly/react-log-viewer": "^5.3.0",
+    "@patternfly/react-log-viewer": "6.0.0-alpha.5",
     "@patternfly/react-styles": "6.0.0-alpha.35",
     "@patternfly/react-table": "6.0.0-alpha.106",
     "@patternfly/react-tokens": "6.0.0-alpha.36",

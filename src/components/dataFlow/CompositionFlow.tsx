@@ -12,13 +12,22 @@ import ReactFlow, {
   Background,
   // Controls,
 } from "reactflow";
-import AddTransformationNode from "./AddTransformationNode";
+// import AddTransformationNode from "./AddTransformationNode";
 import { useData } from "../../appLayout/AppContext";
 import DataNodeComposition from "./DataNodeComposition";
+import DebeziumNode from "./DebeziumNode";
+import CustomEdgeSource from "./CustomEdgeSource";
+import CustomEdgeDestination from "./CustomEdgeDestination";
+import { AppColors } from "@utils/constants";
 
 const nodeTypes = {
-  addTransformation: AddTransformationNode,
+  addTransformation: DebeziumNode,
   dataNodeComposition: DataNodeComposition,
+};
+
+const edgeTypes = {
+  customEdgeSource: CustomEdgeSource,
+  customEdgeDestination: CustomEdgeDestination,
 };
 
 const proOptions = { hideAttribution: true };
@@ -48,30 +57,12 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         editAction: () => {},
         compositionFlow: true,
       },
-      position: { x: 50, y: 160 },
+      position: { x: 40, y: 40 },
       type: "dataNodeComposition",
       draggable: false,
     }),
     [sourceName, sourceType]
   );
-
-  const transformationGroup = useMemo(() => {
-    return {
-      id: "transformation_group",
-      data: { label: "Transformation" },
-      position: { x: 250, y: 140 },
-      style: {
-        backgroundColor: darkMode
-          ? "rgb(21, 21, 21, 0.2)"
-          : "rgba(203,213,224, 0.2)",
-        width: 180,
-        height: 120,
-        borderRadius: 10,
-      },
-      type: "group",
-      draggable: false,
-    };
-  }, []);
 
   const defaultTransformationNode = useMemo(() => {
     return {
@@ -81,11 +72,9 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         sourcePosition: "right",
         targetPosition: "left",
       },
-      position: { x: 35, y: 20 },
+      position: { x: 225, y: 30 },
       targetPosition: "left",
       type: "addTransformation",
-      parentId: "transformation_group",
-      extent: "parent",
       draggable: false,
     };
   }, []);
@@ -100,7 +89,7 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         editAction: () => {},
         compositionFlow: true,
       },
-      position: { x: 500, y: 160 },
+      position: { x: 350, y: 40 },
       type: "dataNodeComposition",
       draggable: false,
     }),
@@ -108,18 +97,8 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
   );
 
   const initialNodes = useMemo(
-    () => [
-      dataSourceNode,
-      transformationGroup,
-      defaultTransformationNode,
-      dataDestinationNode,
-    ],
-    [
-      dataSourceNode,
-      transformationGroup,
-      defaultTransformationNode,
-      dataDestinationNode,
-    ]
+    () => [dataSourceNode, defaultTransformationNode, dataDestinationNode],
+    [dataSourceNode, defaultTransformationNode, dataDestinationNode]
   );
 
   const initialEdges: Edge[] = useMemo(
@@ -128,14 +107,14 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         id: "source-add_transformation",
         source: "source",
         target: "add_transformation",
-        animated: true,
+        type: "customEdgeSource",
         sourceHandle: "a",
       },
       {
         id: "add_transformation-destination",
         source: "add_transformation",
         target: "destination",
-        animated: true,
+        type: "customEdgeDestination",
       },
     ],
     []
@@ -170,20 +149,32 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         proOptions={proOptions}
         fitView
-        maxZoom={1.5}
-        minZoom={1.5}
+        maxZoom={1.4}
+        minZoom={1.4}
         panOnDrag={false}
       >
-        {/* <Controls /> */}
         <Background
           style={{
             borderRadius: "5px",
           }}
           gap={15}
-          color={darkMode ? "#292929" : ""}
+          color={darkMode ? AppColors.dark : AppColors.white}
         />
+        <svg>
+          <defs>
+            <linearGradient id="edge-gradient-source">
+              <stop offset="0%" stopColor="#a5c82d" />
+              <stop offset="100%" stopColor="#7fc5a5" />
+            </linearGradient>
+            <linearGradient id="edge-gradient-destination">
+              <stop offset="0%" stopColor="#7fc5a5" />
+              <stop offset="100%" stopColor="#58b2da" />
+            </linearGradient>
+          </defs>
+        </svg>
       </ReactFlow>
     </>
   );

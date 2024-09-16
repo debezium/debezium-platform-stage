@@ -9,7 +9,7 @@ import {
   Tabs,
   TabTitleText,
 } from "@patternfly/react-core";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchDataTypeTwo, Pipeline } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
@@ -17,17 +17,33 @@ import { API_URL } from "../../utils/constants";
 import "./PipelineDetails.css";
 import PipelineLog from "./PipelineLog";
 import PipelineOverview from "./PipelineOverview";
+import { EditPipeline } from "./EditPipeline";
 
 const PipelineDetails: React.FunctionComponent = () => {
-  const { pipelineId } = useParams<{ pipelineId: string }>();
+  const { pipelineId, detailsTab } = useParams<{
+    pipelineId: string;
+    detailsTab: string;
+  }>();
 
-  const [activeTabKey, setActiveTabKey] = React.useState(0);
+  const navigate = useNavigate();
+
+  const [activeTabKey, setActiveTabKey] = React.useState("overview");
 
   const [pipeline, setPipeline] = useState<Pipeline>();
 
   const [isFetchLoading, setIsFetchLoading] = useState<boolean>(true);
 
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (detailsTab === "overview") {
+      setActiveTabKey;
+    } else if (detailsTab === "logs") {
+      setActiveTabKey("logs");
+    } else if (detailsTab === "edit") {
+      setActiveTabKey("edit");
+    }
+  }, [detailsTab]);
 
   useEffect(() => {
     const fetchPipeline = async () => {
@@ -48,26 +64,13 @@ const PipelineDetails: React.FunctionComponent = () => {
     fetchPipeline();
   }, [pipelineId]);
 
-  // useEffect(() => {
-  //   const socket = new WebSocket(`${API_URL}/api/pipelines/${pipelineId}/logs/stream`);
-
-  //   socket.onmessage = (event) => {
-  //     setLogs((prevLogs) => [...prevLogs, event.data]);
-  //   };
-
-  //   socket.onerror = (error) => {
-  //     console.error('WebSocket error:', error);
-  //     setError('WebSocket connection error');
-  //   };
-
-  //   return () => {
-  //     socket.close();
-  //   };
-  // }, [pipelineId]);
-
-  // Toggle currently active tab
+  // Toggle currently active tab and update the URL
   const handleTabClick = (_event: any, tabIndex: string | number) => {
-    setActiveTabKey(tabIndex as number);
+    const selectedTab = tabIndex as string;
+    setActiveTabKey(selectedTab);
+
+    // Update the URL without reloading the page
+    navigate(`/pipeline/${pipelineId}/${selectedTab}`);
   };
 
   if (isFetchLoading) {
@@ -96,53 +99,59 @@ const PipelineDetails: React.FunctionComponent = () => {
           id="open-tabs-example-tabs-list"
         >
           <Tab
-            eventKey={0}
+            eventKey={"overview"}
             title={<TabTitleText>Overview</TabTitleText>}
-            tabContentId={`tabContent${0}`}
+            tabContentId={`tabContent${"overview"}`}
           />
           <Tab
-            eventKey={1}
-            title={<TabTitleText>Logs</TabTitleText>}
-            tabContentId={`tabContent${1}`}
+            eventKey={"logs"}
+            title={<TabTitleText>Pipeline logs</TabTitleText>}
+            tabContentId={`tabContent${"logs"}`}
           />
           <Tab
-            eventKey={2}
-            title={<TabTitleText>Edit</TabTitleText>}
-            tabContentId={`tabContent${2}`}
+            eventKey={"edit"}
+            title={<TabTitleText>Edit pipeline</TabTitleText>}
+            tabContentId={`tabContent${"edit"}`}
           />
         </Tabs>
       </PageSection>
       <PageSection isWidthLimited>
         <TabContent
-          key={0}
-          eventKey={0}
-          id={`tabContent${0}`}
+          key={"overview"}
+          eventKey={"overview"}
+          id={`tabContent${"overview"}`}
           activeKey={activeTabKey}
-          hidden={0 !== activeTabKey}
+          hidden={"overview" !== activeTabKey}
         >
           <TabContentBody>
             <PipelineOverview pipelineId={pipelineId || ""} />
           </TabContentBody>
         </TabContent>
         <TabContent
-          key={1}
-          eventKey={1}
-          id={`tabContent${1}`}
+          key={"logs"}
+          eventKey={"logs"}
+          id={`tabContent${"logs"}`}
           activeKey={activeTabKey}
-          hidden={1 !== activeTabKey}
+          hidden={"logs" !== activeTabKey}
         >
           <TabContentBody>
-            <PipelineLog activeTabKey={activeTabKey} />
+            <PipelineLog
+              activeTabKey={activeTabKey}
+              pipelineId={pipelineId}
+              pipelineName={pipeline?.name || ""}
+            />
           </TabContentBody>
         </TabContent>
         <TabContent
-          key={2}
-          eventKey={2}
-          id={`tabContent${2}`}
+          key={"edit"}
+          eventKey={"edit"}
+          id={`tabContent${"edit"}`}
           activeKey={activeTabKey}
-          hidden={2 !== activeTabKey}
+          hidden={"edit" !== activeTabKey}
         >
-          <TabContentBody>Edit pipeline</TabContentBody>
+          <TabContentBody>
+            <EditPipeline />
+          </TabContentBody>
         </TabContent>
       </PageSection>
     </>

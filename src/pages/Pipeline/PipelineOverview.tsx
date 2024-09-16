@@ -261,7 +261,7 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
         </Card>
       </GridItem>
 
-      <GridItem span={9} rowSpan={1}>
+      <GridItem span={6} rowSpan={1}>
         <Card ouiaId="BasicCard" isFullHeight>
           <CardTitle>Pipeline composition</CardTitle>
           <CardBody>
