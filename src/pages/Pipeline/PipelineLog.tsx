@@ -8,13 +8,13 @@ import {
 } from "@patternfly/react-core";
 import { DownloadIcon, ExpandIcon } from "@patternfly/react-icons";
 import { LogViewer, LogViewerSearch } from "@patternfly/react-log-viewer";
-import { data, LOG_URL } from "@utils/constants";
+import { LOG_URL } from "@utils/constants";
 import { FC, useEffect, useState } from "react";
 import "./PipelineLog.css";
 import { useNotification } from "@appContext/AppNotificationContext";
 import { fetchFile } from "src/apis/apis";
 
-// Extend the Document interface to include legacy fullscreen methods and properties.
+// Extend the Document interface
 interface ExtendedDocument extends Document {
   mozFullScreenElement?: Element | null;
   webkitFullscreenElement?: Element | null;
@@ -23,7 +23,7 @@ interface ExtendedDocument extends Document {
   msExitFullscreen?: () => void;
 }
 
-// Extend the HTMLElement interface to include legacy request fullscreen methods.
+// Extend the HTMLElement interface
 interface ExtendedHTMLElement extends HTMLElement {
   mozRequestFullScreen?: () => Promise<void>;
   webkitRequestFullScreen?: (keyboardInput?: number) => Promise<void>;
@@ -94,10 +94,7 @@ const PipelineLog: FC<PipelineLogProps> = ({
         `Failed to download logs: ${response.error}`
       );
     } else {
-      // Create a URL for the Blob
       const url = window.URL.createObjectURL(response);
-
-      // Create a link element and click it to trigger the download
       const a = document.createElement("a");
       a.href = url;
       a.download = "pipeline.log";
@@ -216,7 +213,7 @@ const PipelineLog: FC<PipelineLogProps> = ({
       </ToolbarContent>
     </Toolbar>
   );
-  console.log(logs);
+  // console.log(logs);
 
   return (
     <div className="pipeline_log">
@@ -225,7 +222,7 @@ const PipelineLog: FC<PipelineLogProps> = ({
         // Fix with Patternfly team to be able to include id in LogViewer
         // id="pipeline-log-view"
         hasLineNumbers={true}
-        data={data.data1}
+        data={logs}
         theme={"light"}
         toolbar={logViewToolbar}
         height={(isFullScreen && "100%") || "calc(100vh - 350px)"}
