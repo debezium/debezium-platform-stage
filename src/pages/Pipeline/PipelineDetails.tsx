@@ -135,7 +135,11 @@ const PipelineDetails: React.FunctionComponent = () => {
           hidden={"logs" !== activeTabKey}
         >
           <TabContentBody>
-            <PipelineLog activeTabKey={activeTabKey} />
+            <PipelineLog
+              activeTabKey={activeTabKey}
+              pipelineId={pipelineId}
+              pipelineName={pipeline?.name || ""}
+            />
           </TabContentBody>
         </TabContent>
         <TabContent

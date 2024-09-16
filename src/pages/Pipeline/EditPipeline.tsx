@@ -453,7 +453,6 @@ const EditPipeline: React.FunctionComponent = () => {
                   isLanguageLabelVisible
                   isMinimapVisible
                   language={Language.yaml}
-                  // code="your code goes here"
                   height="450px"
                   // className="custom-card-body"
                 />
