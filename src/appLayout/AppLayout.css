@@ -2,7 +2,7 @@
 margin-left: auto;
 }
 .custom-app-page {
-    grid-template-columns: 85px 1fr !important;
+    grid-template-columns: 100px 1fr !important;
 }
 
 .pf-v6-c-page__main-container {
