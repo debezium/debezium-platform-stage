@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import { useData } from "./AppContext";
 // import AppNotification from "./AppNotification";
 import { useNotification } from "./AppNotificationContext";
+import AppNotification from "./AppNotification";
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -33,7 +34,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     addNotification,
     setDrawerExpanded,
     setAlerts,
-    // setNotifications,
+    setNotifications,
   } = useNotification();
 
   const [overflowMessage, setOverflowMessage] = useState<string>("");
@@ -116,14 +117,14 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
         groupProps={{
           stickyOnBreakpoint: { default: "top" },
         }}
-        // notificationDrawer={
-        //   <AppNotification
-        //     notifications={notifications}
-        //     setNotifications={setNotifications}
-        //     setDrawerExpanded={setDrawerExpanded}
-        //   />
-        // }
-        // isNotificationDrawerExpanded={isDrawerExpanded}
+        notificationDrawer={
+          <AppNotification
+            notifications={notifications}
+            setNotifications={setNotifications}
+            setDrawerExpanded={setDrawerExpanded}
+          />
+        }
+        isNotificationDrawerExpanded={isDrawerExpanded}
       >
         {children}
       </Page>

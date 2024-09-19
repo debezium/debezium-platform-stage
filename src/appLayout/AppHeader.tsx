@@ -56,7 +56,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
             <PageToggleButton
               variant="plain"
               aria-label="Global navigation"
-              onClick={() => toggleSidebar()}
+              onClick={toggleSidebar}
             >
               <BarsIcon />
             </PageToggleButton>

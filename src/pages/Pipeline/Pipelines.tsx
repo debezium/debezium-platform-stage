@@ -292,7 +292,7 @@ const Pipelines: React.FunctionComponent = () => {
               {pipelinesList.length > 0 ? (
                 <>
                   <PageSection isWidthLimited>
-                    <Content component="h1">Pipeline</Content>
+                    <Content component={ContentVariants.h1}>Pipeline</Content>
                     <Content component="p">
                       Add a pipeline to streams change events from a pipeline
                       database. To start select a connector below once you

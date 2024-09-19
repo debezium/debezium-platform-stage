@@ -195,7 +195,7 @@ const CreateSource: React.FunctionComponent = () => {
               isWidthLimited={editorSelected === "form-editor"}
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0" }}
+              style={{ paddingTop: "0", paddingBottom: "40px" }}
               className={navigationCollapsed ? "custom-page-section" : ""}
               // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
               // className="custom-card-body"
