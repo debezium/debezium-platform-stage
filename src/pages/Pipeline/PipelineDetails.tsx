@@ -86,9 +86,9 @@ const PipelineDetails: React.FunctionComponent = () => {
       <PageSection isWidthLimited>
         <Content component="h1"> {pipeline?.name}</Content>
         <Content component="p">
-          Connector overview for {pipeline?.name} pipeline, this provide the
-          list of essential metrics and details. Configured source and
-          destination of the pipeline. Pipeline log and composition.
+          Pipeline overview for {pipeline?.name} with list of essential metrics,
+          composition (source & destination) details, pipeline logs and option
+          to edit pipeline.
         </Content>
       </PageSection>
       <PageSection type="tabs" isWidthLimited>
@@ -115,7 +115,7 @@ const PipelineDetails: React.FunctionComponent = () => {
           />
         </Tabs>
       </PageSection>
-      <PageSection isWidthLimited>
+      <PageSection isWidthLimited isFilled>
         <TabContent
           key={"overview"}
           eventKey={"overview"}
@@ -148,8 +148,9 @@ const PipelineDetails: React.FunctionComponent = () => {
           id={`tabContent${"edit"}`}
           activeKey={activeTabKey}
           hidden={"edit" !== activeTabKey}
+          className="pipeline-details__tab-error"
         >
-          <TabContentBody>
+          <TabContentBody className="pipeline-details__tab-error">
             <EditPipeline />
           </TabContentBody>
         </TabContent>

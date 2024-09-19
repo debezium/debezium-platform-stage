@@ -244,31 +244,33 @@ const EditPipeline: React.FunctionComponent = () => {
 
   return (
     <>
-      <Toolbar id="edit-editor-toggle" className="edit-toolbar">
-        <ToolbarContent style={{ padding: "0" }}>
-          <ToolbarItem>
-            <ToggleGroup aria-label="Toggle between form editor and smart editor">
-              <ToggleGroupItem
-                icon={<PencilAltIcon />}
-                text="Form editor"
-                aria-label="Form editor"
-                buttonId="form-editor"
-                isSelected={editorSelected === "form-editor"}
-                onChange={handleItemClick}
-              />
+      <PageSection isWidthLimited padding={{ md: "noPadding" }}>
+        <Toolbar id="edit-editor-toggle" className="edit-toolbar">
+          <ToolbarContent style={{ padding: "0" }}>
+            <ToolbarItem>
+              <ToggleGroup aria-label="Toggle between form editor and smart editor">
+                <ToggleGroupItem
+                  icon={<PencilAltIcon />}
+                  text="Form editor"
+                  aria-label="Form editor"
+                  buttonId="form-editor"
+                  isSelected={editorSelected === "form-editor"}
+                  onChange={handleItemClick}
+                />
 
-              <ToggleGroupItem
-                icon={<CodeIcon />}
-                text="Smart editor"
-                aria-label="Smart editor"
-                buttonId="smart-editor"
-                isSelected={editorSelected === "smart-editor"}
-                onChange={handleItemClick}
-              />
-            </ToggleGroup>
-          </ToolbarItem>
-        </ToolbarContent>
-      </Toolbar>
+                <ToggleGroupItem
+                  icon={<CodeIcon />}
+                  text="Smart editor"
+                  aria-label="Smart editor"
+                  buttonId="smart-editor"
+                  isSelected={editorSelected === "smart-editor"}
+                  onChange={handleItemClick}
+                />
+              </ToggleGroup>
+            </ToolbarItem>
+          </ToolbarContent>
+        </Toolbar>
+      </PageSection>
 
       <FormContextProvider
         initialValues={{
@@ -282,7 +284,7 @@ const EditPipeline: React.FunctionComponent = () => {
               isWidthLimited={editorSelected === "form-editor"}
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0" }}
+              style={{ paddingTop: "0", paddingLeft: "0", paddingRight: "0" }}
               // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
               className={navigationCollapsed ? "pipeline-page-section" : ""}
             >
