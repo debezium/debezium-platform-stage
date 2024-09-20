@@ -3,11 +3,8 @@ import * as React from "react";
 import {
   Content,
   ContentVariants,
-  Gallery,
-  GalleryItem,
   PageSection,
   SearchInput,
-  Tile,
   ToggleGroup,
   ToggleGroupItem,
   Toolbar,
@@ -15,11 +12,9 @@ import {
   ToolbarGroup,
   ToolbarItem,
 } from "@patternfly/react-core";
-import "./DestinationCatalog.css";
-import { ListIcon, PlusCircleIcon, ThIcon } from "@patternfly/react-icons";
-import destinationCatalog from "../../__mocks__/data/DestinationCatalog.json";
-import ConnectorImage from "../../components/ComponentImage";
+import { ListIcon, ThIcon } from "@patternfly/react-icons";
 import { useNavigate } from "react-router-dom";
+import { CatalogGrid } from "@components/CatalogGrid";
 
 export interface ISinkProps {
   sampleProp?: string;
@@ -39,21 +34,20 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
     setIsSelected(id);
   };
 
-  const onCardClick = (destinationId: string) => {
+  const onDestinationSelection = (destinationId: string) => {
     navigate(`/destination/create_destination/${destinationId}`);
   };
 
   return (
     <>
       <PageSection isWidthLimited>
-          <Content component="h1">Destination</Content>
-          <Content component="p">
-            Add a destination to capture the change data event. To start select
-            a connector below once you select a connector you can configure it
-            using form or smart editor option. You can also search the connector
-            by its name or toggle the catalog between the list view or card
-            view.
-          </Content>
+        <Content component="h1">Destination</Content>
+        <Content component="p">
+          Add a destination to capture the change data event. To start select a
+          connector below once you select a connector you can configure it using
+          form or smart editor option. You can also search the connector by its
+          name or toggle the catalog between the list view or card view.
+        </Content>
         <Toolbar
           id="toolbar-sticky"
           inset={{ default: "insetNone" }}
@@ -88,10 +82,7 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
                 />
               </ToggleGroup>
             </ToolbarItem>
-            {/* <ToolbarItem variant="separator" /> */}
-            <ToolbarGroup
-              align={{ default: "alignEnd" }}
-            >
+            <ToolbarGroup align={{ default: "alignEnd" }}>
               <ToolbarItem>
                 <Content component={ContentVariants.small}>12 Items</Content>
               </ToolbarItem>
@@ -99,39 +90,11 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
           </ToolbarContent>
         </Toolbar>
       </PageSection>
-
-      <PageSection>
-        <Gallery hasGutter className="custom-gallery">
-          {destinationCatalog.map((item) => (
-            <GalleryItem  key={item.id}>
-              <Tile
-               
-                style={{ width: "100%" }}
-                title={item.name}
-                icon={<ConnectorImage connectorType={item.id} />}
-                isStacked
-                isDisplayLarge
-                isSelected={false}
-                onClick={() => onCardClick(item.id)}
-              >
-                {item.description}
-              </Tile>
-            </GalleryItem>
-          ))}
-          <GalleryItem>
-            <Tile
-              style={{ width: "100%" }}
-              title="Request new source"
-              icon={<PlusCircleIcon color="#0066CC" />}
-              isStacked
-              isDisplayLarge
-              isSelected={false}
-            >
-              Fill our a form to request a new source.
-            </Tile>
-          </GalleryItem>
-        </Gallery>
-      </PageSection>
+      <CatalogGrid
+        onCardSelect={onDestinationSelection}
+        catalogType="destination"
+        isAddButtonVisible={true}
+      />
     </>
   );
 };

@@ -43,6 +43,7 @@ import { API_URL } from "../../utils/constants";
 import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
 import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/AppNotificationContext";
+import PageHeader from "@components/PageHeader";
 
 const CreateDestination: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -128,12 +129,6 @@ const CreateDestination: React.FunctionComponent = () => {
 
   const handleCreateDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
-    // TODO - Remove after demo: Add a 2-second delay
-    // setTimeout(async () => {
-    //   await createNewDestination(values);
-    //   setIsLoading(false);
-    //   navigateTo("/destination");
-    // }, 2000);
     await createNewDestination(values);
     setIsLoading(false);
     navigateTo("/destination");
@@ -151,18 +146,15 @@ const CreateDestination: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited>
-          <Content component="h1">Create Destination </Content>
-          <Content component="p">
-            To configure and create a connector fill out the below form or use
+      <PageHeader
+        title="Create Destination"
+        description="To configure and create a connector fill out the below form or use
             the smart editor to setup a new destination connector. If you
             already have a configuration file, you can setup a new destination
-            connector by uploading it in the smart editor.
-          </Content>
-        <Toolbar
-          id="create-editor-toggle"
-          className="create_destination-toolbar"
-        >
+            connector by uploading it in the smart editor."
+      />
+      <PageSection className="create_destination-toolbar">
+        <Toolbar id="create-editor-toggle">
           <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form and smart editor">
@@ -192,12 +184,12 @@ const CreateDestination: React.FunctionComponent = () => {
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited={editorSelected === "form-editor"}
+              isWidthLimited
               isCenterAligned
               isFilled
               style={{ paddingTop: "0", paddingBottom: "40px" }}
               // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              className={navigationCollapsed ? "custom-page-section" : ""}
+              className={(navigationCollapsed && editorSelected === "form-editor") ? "custom-page-section" : ""}
             >
               {editorSelected === "form-editor" ? (
                 <Card className="custom-card-body">
@@ -213,7 +205,10 @@ const CreateDestination: React.FunctionComponent = () => {
                             connectorType={destinationId || ""}
                             size={35}
                           />
-                          <Content component="p" style={{ paddingLeft: "10px" }}>
+                          <Content
+                            component="p"
+                            style={{ paddingLeft: "10px" }}
+                          >
                             {getConnectorTypeName(destinationId || "")}
                           </Content>
                         </>
@@ -336,15 +331,18 @@ const CreateDestination: React.FunctionComponent = () => {
                   </CardBody>
                 </Card>
               ) : (
-                <CodeEditor
-                  isUploadEnabled
-                  isDownloadEnabled
+            
+                  <CodeEditor
+                    isUploadEnabled
+                    isDownloadEnabled
                   isCopyEnabled
                   isLanguageLabelVisible
                   isMinimapVisible
                   language={Language.yaml}
                   height="450px"
                 />
+              
+              
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>

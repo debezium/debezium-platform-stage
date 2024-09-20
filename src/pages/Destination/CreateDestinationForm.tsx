@@ -127,12 +127,6 @@ const CreateDestinationForm: React.FunctionComponent<
 
   const handleCreateDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
-    // TODO - Remove after demo: Add a 2-second delay
-    // setTimeout(async () => {
-    //   await createNewDestination(values);
-    //   setIsLoading(false);
-    //   navigateTo("/destination");
-    // }, 2000);
     await createNewDestination(values);
     setIsLoading(false);
   };

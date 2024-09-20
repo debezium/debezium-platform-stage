@@ -28,20 +28,20 @@ const AppSideNavigation: React.FC<AppSideNavigationProps> = ({
   );
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    setDarkMode(!isDarkMode);
-    localStorage.setItem(
-      "themeMode",
-      JSON.stringify(!isDarkMode ? "dark" : "light")
-    );
-    document.body.classList.toggle("pf-v6-theme-dark");
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    setDarkMode(newDarkMode);
+    localStorage.setItem("themeMode", newDarkMode ? "dark" : "light");
+    document.documentElement.classList.toggle("pf-v6-theme-dark");
   };
 
   useEffect(() => {
-    if (localStorage.getItem("themeMode") === "dark") {
-      document.body.classList.add("pf-v6-theme-dark");
+    const storedThemeMode = localStorage.getItem("themeMode");
+    if (storedThemeMode === "dark") {
+      setDarkMode(storedThemeMode === "dark");
+      document.documentElement.classList.add("pf-v6-theme-dark");
     }
-  }, []);
+  }, [setDarkMode]);
 
   const renderNavItem = (route: IAppRoute, index: number) => (
     <NavItem

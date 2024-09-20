@@ -3,11 +3,8 @@ import * as React from "react";
 import {
   Content,
   ContentVariants,
-  Gallery,
-  GalleryItem,
   PageSection,
   SearchInput,
-  Tile,
   ToggleGroup,
   ToggleGroupItem,
   Toolbar,
@@ -15,11 +12,9 @@ import {
   ToolbarGroup,
   ToolbarItem,
 } from "@patternfly/react-core";
-import { ListIcon, PlusCircleIcon, ThIcon } from "@patternfly/react-icons";
-import sourceCatalog from "../../__mocks__/data/SourceCatalog.json";
-import ConnectorImage from "../../components/ComponentImage";
-import "./SourceCatalog.css";
+import { ListIcon, ThIcon } from "@patternfly/react-icons";
 import { useNavigate } from "react-router-dom";
+import { CatalogGrid } from "@components/CatalogGrid";
 
 export interface ISinkProps {
   sampleProp?: string;
@@ -40,20 +35,20 @@ const SourceCatalog: React.FunctionComponent<ISinkProps> = () => {
     setIsSelected(id);
   };
 
-  const onCardClick = (sourceId: string) => {
+  const onSourceSelection = (sourceId: string) => {
     navigate(`/source/create_source/${sourceId}`);
   };
 
   return (
     <>
       <PageSection isWidthLimited>
-          <Content component="h1">Source catalog</Content>
-          <Content component="p">
-            Select the type of source you want to connect from the list below,
-            once you select a connector you can configure it using form or smart
-            editor option. You can also search the connector by its name or
-            toggle the catalog between the list view or card view.
-          </Content>
+        <Content component="h1">Source catalog</Content>
+        <Content component="p">
+          Select the type of source you want to connect from the list below,
+          once you select a connector you can configure it using form or smart
+          editor option. You can also search the connector by its name or toggle
+          the catalog between the list view or card view.
+        </Content>
         <Toolbar
           id="toolbar-sticky"
           inset={{ default: "insetNone" }}
@@ -89,9 +84,7 @@ const SourceCatalog: React.FunctionComponent<ISinkProps> = () => {
               </ToggleGroup>
             </ToolbarItem>
             {/* <ToolbarItem variant="separator" /> */}
-            <ToolbarGroup
-              align={{ default: "alignEnd" }}
-            >
+            <ToolbarGroup align={{ default: "alignEnd" }}>
               <ToolbarItem>
                 <Content component={ContentVariants.small}>12 Items</Content>
               </ToolbarItem>
@@ -100,38 +93,11 @@ const SourceCatalog: React.FunctionComponent<ISinkProps> = () => {
         </Toolbar>
       </PageSection>
 
-      <PageSection>
-        <Gallery hasGutter className="custom-gallery">
-          {sourceCatalog.map((item) => (
-            <GalleryItem key={item.id}>
-              <Tile
-               
-                style={{ width: "100%" }}
-                title={item.name}
-                icon={<ConnectorImage connectorType={item.id} />}
-                isStacked
-                isDisplayLarge
-                isSelected={false}
-                onClick={() => onCardClick(item.id)}
-              >
-                {item.description}
-              </Tile>
-            </GalleryItem>
-          ))}
-          <GalleryItem>
-            <Tile
-              style={{ width: "100%" }}
-              title="Request new source"
-              icon={<PlusCircleIcon color="#0066CC" />}
-              isStacked
-              isDisplayLarge
-              isSelected={false}
-            >
-              Fill our a form to request a new source.
-            </Tile>
-          </GalleryItem>
-        </Gallery>
-      </PageSection>
+      <CatalogGrid
+        onCardSelect={onSourceSelection}
+        catalogType="source"
+        isAddButtonVisible={true}
+      />
     </>
   );
 };

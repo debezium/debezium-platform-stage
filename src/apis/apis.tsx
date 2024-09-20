@@ -87,9 +87,9 @@ export const createPost = async <T,>(
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -116,9 +116,9 @@ export const editPut = async <T,>(
     const response = await fetch(url, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -144,8 +144,8 @@ export const deleteResource = async <T,>(
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
@@ -191,9 +191,9 @@ export const deleteData = async (url: string): Promise<void> => {
   const response = await fetch(url, {
     method: "DELETE",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
       // Add any additional headers if needed
-    }
+    },
   });
 
   if (!response.ok) {
@@ -210,7 +210,7 @@ export const useDeleteData = () => {
       onSuccess: () => {
         // Invalidate and refetch the data after deletion
         queryClient.invalidateQueries("pipelinesDelete");
-      }
+      },
     }
   );
 };

@@ -130,12 +130,6 @@ const CreateSource: React.FunctionComponent = () => {
 
   const handleCreateSource = async (values: Record<string, string>) => {
     setIsLoading(true);
-     // TODO - Remove after demo: Add a 2-second delay
-    // setTimeout(async () => {
-    //   await createNewSource(values);
-    //   setIsLoading(false);
-    //   navigateTo("/source");
-    // }, 2000);
     await createNewSource(values);
     setIsLoading(false);
     navigateTo("/source");

@@ -10,11 +10,11 @@ import {
 } from "@patternfly/react-core";
 import React, { useCallback, useEffect, useState } from "react";
 import { fetchData, Source } from "../../apis/apis";
-import { SourceCatalogGrid } from "../../pages/Source/SourceCatalogGrid";
 import { CreateSourceForm } from "../../pages/Source/CreateSourceForm";
 import { API_URL } from "../../utils/constants";
 import { useQuery } from "react-query";
 import SourceDestinationSelectionList from "../../components/SourceDestinationSelectionList";
+import { CatalogGrid } from "@components/CatalogGrid";
 
 type SourcePipelineModelProps = {
   onSourceSelection: (source: Source) => void;
@@ -104,23 +104,23 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
       <Divider style={{ marginTop: "10px" }} />
       {isCreateChecked === id2 &&
         (selectedSource === "" ? (
-            <Content component="p">
-              <b>
-                {" "}
-                Select the type of source you want to connect from the list
-                below, once you select a connector you can configure it using
-                form or smart editor option.
-              </b>
-            </Content>
+          <Content component="p">
+            <b>
+              {" "}
+              Select the type of source you want to connect from the list below,
+              once you select a connector you can configure it using form or
+              smart editor option.
+            </b>
+          </Content>
         ) : (
-            <Content component="p">
-              <b>
-                Fill out the below form or use the smart editor to setup a new
-                source connector. If you already have a configuration file, you
-                can setup a new source connector by uploading it in the smart
-                editor.
-              </b>
-            </Content>
+          <Content component="p">
+            <b>
+              Fill out the below form or use the smart editor to setup a new
+              source connector. If you already have a configuration file, you
+              can setup a new source connector by uploading it in the smart
+              editor.
+            </b>
+          </Content>
         ))}
 
       {isCreateChecked === id1 ? (
@@ -130,7 +130,11 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
           onSelection={onSourceSelection}
         />
       ) : selectedSource === "" ? (
-        <SourceCatalogGrid selectSource={selectSource} />
+        <CatalogGrid
+          onCardSelect={selectSource}
+          catalogType="source"
+          isAddButtonVisible={false}
+        />
       ) : (
         <CreateSourceForm
           sourceId={selectedSource}
