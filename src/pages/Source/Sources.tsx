@@ -24,6 +24,7 @@ import { useQuery } from "react-query";
 import { API_URL } from "../../utils/constants";
 import SourceSinkTable from "../../components/SourceSinkTable";
 import ApiError from "../../components/ApiError";
+import "./source.css";
 
 export interface ISourceProps {
   sampleProp?: string;
@@ -106,15 +107,9 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
           </PageSection>
           <PageSection>
             {isLoading || sourcesList.length > 0 ? (
-              <Card 
-              style={{ paddingTop: "15px" }}
-              >
+              <Card className="source-card">
                 <Toolbar
                   id="toolbar-sticky"
-                  style={{
-                    marginRight: "1px",
-                    marginLeft: "1px",
-                  }}
                   className="custom-toolbar"
                   isSticky
                 >

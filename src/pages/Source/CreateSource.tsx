@@ -146,7 +146,7 @@ const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
 
   return (
     <>
-    {modelLoaded &&  <PageHeader
+    { !modelLoaded &&  <PageHeader
           title="Create source"
           description="To configure and create a connector fill out the below form or use the
           smart editor to setup a new source connector. If you already have a
@@ -192,14 +192,13 @@ const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
               }
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0", paddingBottom: "40px" }}
               className={
                 (modelLoaded && editorSelected === "form-editor") ||
                 (!modelLoaded &&
                   navigationCollapsed &&
                   editorSelected === "form-editor")
-                  ? "custom-page-section"
-                  : ""
+                  ? "custom-page-section create_source-page_section"
+                  : "create_source-page_section"
               }
             >
               {editorSelected === "form-editor" ? (
@@ -228,7 +227,7 @@ const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup className="create_source-footer">
                 <Button
                   variant="primary"
                   isLoading={isLoading}

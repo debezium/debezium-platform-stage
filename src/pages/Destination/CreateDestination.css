@@ -10,7 +10,16 @@
   max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth) !important;
 }
 
+.create_destination-page_section {
+  padding-top: 0 !important;
+  padding-bottom: 40px !important;
+}
+
 .create_destination-toolbar {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+}
+
+.create_destination-footer {
+  margin-top: 0 !important;
 }

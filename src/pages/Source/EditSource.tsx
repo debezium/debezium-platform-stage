@@ -4,36 +4,15 @@ import {
   ActionGroup,
   Button,
   ButtonType,
-  Card,
-  CardBody,
-  Content,
-  Form,
   FormContextProvider,
-  FormFieldGroup,
-  FormFieldGroupHeader,
-  FormGroup,
-  FormHelperText,
-  Grid,
-  HelperText,
-  HelperTextItem,
   PageSection,
-  Split,
-  SplitItem,
-  TextInput,
   ToggleGroup,
   ToggleGroupItem,
   Toolbar,
   ToolbarContent,
   ToolbarItem,
 } from "@patternfly/react-core";
-import {
-  PencilAltIcon,
-  CodeIcon,
-  PlusIcon,
-  TrashIcon,
-  ExclamationCircleIcon,
-} from "@patternfly/react-icons";
-import ConnectorImage from "../../components/ComponentImage";
+import { PencilAltIcon, CodeIcon } from "@patternfly/react-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CreateSource.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
@@ -45,9 +24,11 @@ import {
   SourceConfig,
 } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
+import { convertMapToObject } from "../../utils/helpers";
 import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/AppNotificationContext";
+import SourceSinkForm from "@components/SourceSinkForm";
+import PageHeader from "@components/PageHeader";
 
 const EditSource: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -168,12 +149,6 @@ const EditSource: React.FunctionComponent = () => {
 
   const handleEditSource = async (values: Record<string, string>) => {
     setIsLoading(true);
-    // TODO - Remove after demo: Add a 2-second delay
-    // setTimeout(async () => {
-    //   await editSource(values);
-    //   setIsLoading(false);
-    //   navigateTo("/source");
-    // }, 2000);
     await editSource(values);
     setIsLoading(false);
     navigateTo("/source");
@@ -199,16 +174,16 @@ const EditSource: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited>
-          <Content component="h1">Edit source </Content>
-          <Content component="p">
-            To configure and create a connector fill out the below form or use
-            the smart editor to setup a new source connector. If you already
-            have a configuration file, you can setup a new source connector by
-            uploading it in the smart editor.
-          </Content>
-        <Toolbar id="edit-editor-toggle" className="create_source-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
+      <PageHeader
+        title="Edit source"
+        description="To configure and create a connector fill out the below form or use the
+          smart editor to setup a new source connector. If you already have a
+          configuration file, you can setup a new source connector by uploading
+          it in the smart editor."
+      />
+      <PageSection className="create_source-toolbar">
+        <Toolbar id="create-editor-toggle">
+          <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form editor and smart editor">
                 <ToggleGroupItem
@@ -243,168 +218,29 @@ const EditSource: React.FunctionComponent = () => {
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited={editorSelected === "form-editor"}
+              isWidthLimited
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0" }}
-              className={navigationCollapsed ? "custom-page-section" : ""}
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              // className="custom-card-body"
+              className={
+                navigationCollapsed && editorSelected === "form-editor"
+                  ? "custom-page-section create_source-page_section"
+                  : "create_source-page_section"
+              }
             >
               {editorSelected === "form-editor" ? (
-                <Card className="custom-card-body">
-                  <CardBody isFilled>
-                    <Form isWidthLimited>
-                      <FormGroup
-                        label="Source type"
-                        isRequired
-                        fieldId="source-type-field"
-                      >
-                          <ConnectorImage
-                            connectorType={source?.type ?? ""}
-                            size={35}
-                          />
-
-                          <Content component="p" style={{ paddingLeft: "10px" }}>
-                            {getConnectorTypeName(sourceId || "")}
-                          </Content>
-                      </FormGroup>
-                      <FormGroup
-                        label="Source name"
-                        isRequired
-                        fieldId="source-name-field"
-                      >
-                        <TextInput
-                          id="source-name"
-                          aria-label="Source name"
-                          onChange={(_event, value) => {
-                            setValue("source-name", value);
-                            setError("source-name", undefined);
-                          }}
-                          value={getValue("source-name")}
-                          validated={
-                            errors["source-name"] ? "error" : "default"
-                          }
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem
-                              variant={
-                                errors["source-name"] ? "error" : "default"
-                              }
-                              {...(errors["source-name"] && {
-                                icon: <ExclamationCircleIcon />,
-                              })}
-                            >
-                              {errors["source-name"]}
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-                      <FormGroup
-                        label="Description"
-                        fieldId="descriptions-field"
-                      >
-                        <TextInput
-                          id="descriptions"
-                          aria-label="Source description"
-                          onChange={(_event, value) =>
-                            setValue("descriptions", value)
-                          }
-                          value={getValue("descriptions")}
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem>
-                              Add a one liner to describe your source or where
-                              you plan to capture.
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-
-                      <FormFieldGroup
-                        // className="custom-form-group"
-                        header={
-                          <FormFieldGroupHeader
-                            titleText={{
-                              text: (
-                                <Content component="h4">
-                                  Configuration properties
-                                </Content>
-                              ),
-                              id: "configuration-properties-group",
-                            }}
-                            titleDescription="Enter the both key and value pair to configure a property"
-                            actions={
-                              <>
-                                <Button
-                                  variant="secondary"
-                                  icon={<PlusIcon />}
-                                  onClick={handleAddProperty}
-                                >
-                                  Add property
-                                </Button>
-                              </>
-                            }
-                          />
-                        }
-                      >
-                        {Array.from(properties.keys()).map((key) => (
-                          <Split hasGutter key={key}>
-                            <SplitItem isFilled>
-                              <Grid hasGutter md={6}>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`configuration-properties-key-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    placeholder="Key"
-                                    id={`configuration-properties-key-${key}`}
-                                    name={`configuration-properties-key-${key}`}
-                                    value={properties.get(key)?.key || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "key", value)
-                                    }
-                                  />
-                                </FormGroup>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`configuration-properties-value-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    id={`configuration-properties-value-${key}`}
-                                    placeholder="Value"
-                                    name={`configuration-properties-value-${key}`}
-                                    value={properties.get(key)?.value || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "value", value)
-                                    }
-                                  />
-                                </FormGroup>
-                              </Grid>
-                            </SplitItem>
-                            <SplitItem>
-                              <Button
-                                variant="plain"
-                                aria-label="Remove property"
-                                onClick={() => handleDeleteProperty(key)}
-                              >
-                                <TrashIcon />
-                              </Button>
-                            </SplitItem>
-                          </Split>
-                        ))}
-                      </FormFieldGroup>
-                    </Form>
-                  </CardBody>
-                </Card>
+                <SourceSinkForm
+                  ConnectorId={sourceId || ""}
+                  dataType={source?.type || ""}
+                  connectorType="source"
+                  properties={properties}
+                  setValue={setValue}
+                  getValue={getValue}
+                  setError={setError}
+                  errors={errors}
+                  handleAddProperty={handleAddProperty}
+                  handleDeleteProperty={handleDeleteProperty}
+                  handlePropertyChange={handlePropertyChange}
+                />
               ) : (
                 <CodeEditor
                   isUploadEnabled
@@ -418,7 +254,7 @@ const EditSource: React.FunctionComponent = () => {
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup>
                 <Button
                   variant="primary"
                   // onClick={handleCreateSource}

@@ -51,11 +51,6 @@ const DestinationCatalog: React.FunctionComponent<ISinkProps> = () => {
         <Toolbar
           id="toolbar-sticky"
           inset={{ default: "insetNone" }}
-          style={{
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingTop: "5px",
-          }}
           className="custom-toolbar"
           isSticky
         >

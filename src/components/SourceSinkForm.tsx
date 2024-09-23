@@ -21,6 +21,7 @@ import ConnectorImage from "./ComponentImage";
 
 interface SourceSinkFormProps {
   ConnectorId: string;
+  dataType?: string;
   connectorType: "source" | "destination";
   properties: Map<string, { key: string; value: string }>;
   setValue: (key: string, value: string) => void;
@@ -37,6 +38,7 @@ interface SourceSinkFormProps {
 }
 const SourceSinkForm = ({
   ConnectorId,
+  dataType,
   connectorType,
   properties,
   setValue,
@@ -58,9 +60,9 @@ const SourceSinkForm = ({
             fieldId={`${connectorType}-type-field`}
           >
             <>
-              <ConnectorImage connectorType={ConnectorId || ""} size={35} />
+              <ConnectorImage connectorType={dataType || ConnectorId || ""} size={35} />
               <Content component="p" style={{ paddingLeft: "10px" }}>
-                {getConnectorTypeName(ConnectorId || "")}
+                {getConnectorTypeName(dataType || ConnectorId || "")}
               </Content>
             </>
           </FormGroup>

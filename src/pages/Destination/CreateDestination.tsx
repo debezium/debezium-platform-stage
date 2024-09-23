@@ -191,14 +191,13 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
               }
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0", paddingBottom: "40px" }}
               className={
                 (modelLoaded && editorSelected === "form-editor") ||
                 (!modelLoaded &&
                   navigationCollapsed &&
                   editorSelected === "form-editor")
-                  ? "custom-page-section"
-                  : ""
+                  ? "custom-page-section create_destination-page_section"
+                  : "create_destination-page_section"
               }
             >
               {editorSelected === "form-editor" ? (
@@ -227,7 +226,7 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup className="create_destination-footer">
                 <Button
                   variant="primary"
                   isLoading={isLoading}
@@ -249,7 +248,10 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
                   Create destination
                 </Button>
                 {modelLoaded ? (
-                  <Button variant="link" onClick={() => selectDestination && selectDestination("")}>
+                  <Button
+                    variant="link"
+                    onClick={() => selectDestination && selectDestination("")}
+                  >
                     Back
                   </Button>
                 ) : (
