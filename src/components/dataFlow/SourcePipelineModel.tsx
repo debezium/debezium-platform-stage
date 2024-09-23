@@ -10,11 +10,11 @@ import {
 } from "@patternfly/react-core";
 import React, { useCallback, useEffect, useState } from "react";
 import { fetchData, Source } from "../../apis/apis";
-import { CreateSourceForm } from "../../pages/Source/CreateSourceForm";
 import { API_URL } from "../../utils/constants";
 import { useQuery } from "react-query";
 import SourceDestinationSelectionList from "../../components/SourceDestinationSelectionList";
 import { CatalogGrid } from "@components/CatalogGrid";
+import { CreateSource } from "@sourcePage/CreateSource";
 
 type SourcePipelineModelProps = {
   onSourceSelection: (source: Source) => void;
@@ -136,8 +136,9 @@ const SourcePipelineModel: React.FC<SourcePipelineModelProps> = ({
           isAddButtonVisible={false}
         />
       ) : (
-        <CreateSourceForm
-          sourceId={selectedSource}
+        <CreateSource
+          modelLoaded={true}
+          selectedId={selectedSource}
           selectSource={selectSource}
           onSelection={onSourceSelection}
         />

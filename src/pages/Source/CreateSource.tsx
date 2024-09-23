@@ -4,51 +4,49 @@ import {
   ActionGroup,
   Button,
   ButtonType,
-  Card,
-  CardBody,
-  Content,
-  Form,
   FormContextProvider,
-  FormFieldGroup,
-  FormFieldGroupHeader,
-  FormGroup,
-  FormHelperText,
-  Grid,
-  HelperText,
-  HelperTextItem,
   PageSection,
-  Split,
-  SplitItem,
-  TextInput,
   ToggleGroup,
   ToggleGroupItem,
   Toolbar,
   ToolbarContent,
   ToolbarItem,
 } from "@patternfly/react-core";
-import {
-  PencilAltIcon,
-  CodeIcon,
-  PlusIcon,
-  TrashIcon,
-  ExclamationCircleIcon,
-} from "@patternfly/react-icons";
-import ConnectorImage from "../../components/ComponentImage";
+import { PencilAltIcon, CodeIcon } from "@patternfly/react-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CreateSource.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import { useState } from "react";
 import { createPost, Source } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
+import { convertMapToObject } from "../../utils/helpers";
 import sourceCatalog from "../../__mocks__/data/SourceCatalog.json";
 import _ from "lodash";
 import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/AppNotificationContext";
+import SourceSinkForm from "@components/SourceSinkForm";
+import PageHeader from "@components/PageHeader";
 
-const CreateSource: React.FunctionComponent = () => {
+interface CreateSourceProps {
+  modelLoaded?: boolean;
+  selectedId?: string;
+  selectSource?: (sourceId: string) => void;
+  onSelection?: (selection: Source) => void;
+}
+
+const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
+  modelLoaded,
+  selectedId,
+  selectSource,
+  onSelection,
+}) => {
   const navigate = useNavigate();
-  const { sourceId } = useParams<{ sourceId: string }>();
+
+  const sourceIdParam = useParams<{ sourceId: string }>();
+  const sourceIdModel = selectedId;
+  const sourceId = modelLoaded
+    ? sourceIdModel
+    : sourceIdParam.sourceId;
 
   const navigateTo = (url: string) => {
     navigate(url);
@@ -120,6 +118,7 @@ const CreateSource: React.FunctionComponent = () => {
         `Failed to create ${(response.data as Source).name}: ${response.error}`
       );
     } else {
+      modelLoaded && onSelection && onSelection(response.data as Source);
       addNotification(
         "success",
         `Create successful`,
@@ -132,7 +131,7 @@ const CreateSource: React.FunctionComponent = () => {
     setIsLoading(true);
     await createNewSource(values);
     setIsLoading(false);
-    navigateTo("/source");
+    !modelLoaded && navigateTo("/source");
   };
 
   const handleItemClick = (
@@ -147,16 +146,17 @@ const CreateSource: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited>
-          <Content component="h1">Create source </Content>
-          <Content component="p">
-            To configure and create a connector fill out the below form or use
-            the smart editor to setup a new source connector. If you already
-            have a configuration file, you can setup a new source connector by
-            uploading it in the smart editor.
-          </Content>
-        <Toolbar id="create-editor-toggle" className="create_source-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
+    {modelLoaded &&  <PageHeader
+          title="Create source"
+          description="To configure and create a connector fill out the below form or use the
+          smart editor to setup a new source connector. If you already have a
+          configuration file, you can setup a new source connector by uploading
+          it in the smart editor."
+        />}
+      <PageSection className="create_source-toolbar">
+    
+        <Toolbar id="create-editor-toggle">
+          <ToolbarContent >
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form editor and smart editor">
                 <ToggleGroupItem
@@ -186,164 +186,35 @@ const CreateSource: React.FunctionComponent = () => {
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited={editorSelected === "form-editor"}
+              isWidthLimited={
+                (modelLoaded && editorSelected === "form-editor") ||
+                !modelLoaded
+              }
               isCenterAligned
               isFilled
               style={{ paddingTop: "0", paddingBottom: "40px" }}
-              className={navigationCollapsed ? "custom-page-section" : ""}
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              // className="custom-card-body"
+              className={
+                (modelLoaded && editorSelected === "form-editor") ||
+                (!modelLoaded &&
+                  navigationCollapsed &&
+                  editorSelected === "form-editor")
+                  ? "custom-page-section"
+                  : ""
+              }
             >
               {editorSelected === "form-editor" ? (
-                <Card className="custom-card-body">
-                  <CardBody isFilled>
-                    <Form isWidthLimited>
-                      <FormGroup
-                        label="Source type"
-                        isRequired
-                        fieldId="source-type-field"
-                      >
-                          <ConnectorImage
-                            connectorType={sourceId || ""}
-                            size={35}
-                          />
-                          <Content component="p" style={{ paddingLeft: "10px" }}>
-                            {getConnectorTypeName(sourceId || "")}
-                          </Content>
-                      </FormGroup>
-                      <FormGroup
-                        label="Source name"
-                        isRequired
-                        fieldId="source-name-field"
-                      >
-                        <TextInput
-                          id="source-name"
-                          aria-label="Source name"
-                          onChange={(_event, value) => {
-                            setValue("source-name", value);
-                            setError("source-name", undefined);
-                          }}
-                          value={getValue("source-name")}
-                          validated={
-                            errors["source-name"] ? "error" : "default"
-                          }
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem
-                              variant={
-                                errors["source-name"] ? "error" : "default"
-                              }
-                              {...(errors["source-name"] && {
-                                icon: <ExclamationCircleIcon />,
-                              })}
-                            >
-                              {errors["source-name"]}
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-                      <FormGroup label="Description" fieldId="details-field">
-                        <TextInput
-                          id="details"
-                          aria-label="Source details"
-                          onChange={(_event, value) =>
-                            setValue("details", value)
-                          }
-                          value={getValue("details")}
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem>
-                              Add a one liner to describe your source or where
-                              you plan to capture.
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-
-                      <FormFieldGroup
-                        // className="custom-form-group"
-                        header={
-                          <FormFieldGroupHeader
-                            titleText={{
-                              text: (
-                                <Content component="h4">
-                                  Configuration properties
-                                </Content>
-                              ),
-                              id: "configuration-properties-group",
-                            }}
-                            titleDescription="Enter the both key and value pair to configure a property"
-                            actions={
-                              <>
-                                <Button
-                                  variant="secondary"
-                                  icon={<PlusIcon />}
-                                  onClick={handleAddProperty}
-                                >
-                                  Add property
-                                </Button>
-                              </>
-                            }
-                          />
-                        }
-                      >
-                        {Array.from(properties.keys()).map((key) => (
-                          <Split hasGutter key={key}>
-                            <SplitItem isFilled>
-                              <Grid hasGutter md={6}>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`configuration-properties-key-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    placeholder="Key"
-                                    id={`configuration-properties-key-${key}`}
-                                    name={`configuration-properties-key-${key}`}
-                                    value={properties.get(key)?.key || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "key", value)
-                                    }
-                                  />
-                                </FormGroup>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`configuration-properties-value-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    id={`configuration-properties-value-${key}`}
-                                    placeholder="Value"
-                                    name={`configuration-properties-value-${key}`}
-                                    value={properties.get(key)?.value || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "value", value)
-                                    }
-                                  />
-                                </FormGroup>
-                              </Grid>
-                            </SplitItem>
-                            <SplitItem>
-                              <Button
-                                variant="plain"
-                                aria-label="Remove property"
-                                onClick={() => handleDeleteProperty(key)}
-                              >
-                                <TrashIcon />
-                              </Button>
-                            </SplitItem>
-                          </Split>
-                        ))}
-                      </FormFieldGroup>
-                    </Form>
-                  </CardBody>
-                </Card>
+                <SourceSinkForm
+                  ConnectorId={sourceId || ""}
+                  connectorType="source"
+                  properties={properties}
+                  setValue={setValue}
+                  getValue={getValue}
+                  setError={setError}
+                  errors={errors}
+                  handleAddProperty={handleAddProperty}
+                  handleDeleteProperty={handleDeleteProperty}
+                  handlePropertyChange={handlePropertyChange}
+                />
               ) : (
                 <CodeEditor
                   isUploadEnabled
@@ -360,7 +231,6 @@ const CreateSource: React.FunctionComponent = () => {
               <ActionGroup style={{ marginTop: 0 }}>
                 <Button
                   variant="primary"
-                  // onClick={handleCreateSource}
                   isLoading={isLoading}
                   isDisabled={isLoading}
                   type={ButtonType.submit}
@@ -376,12 +246,19 @@ const CreateSource: React.FunctionComponent = () => {
                 >
                   Create source
                 </Button>
-                <Button
+                {modelLoaded ? (
+                  <Button variant="link" onClick={() => selectSource && selectSource("")}>
+                    Back
+                  </Button>
+                ) : (
+                  <Button
                   variant="link"
                   onClick={() => navigateTo("/source/catalog")}
                 >
                   Back to catalog
                 </Button>
+                )}
+                
               </ActionGroup>
             </PageSection>
           </>

@@ -10,11 +10,12 @@ import {
 } from "@patternfly/react-core";
 import React, { useCallback, useEffect, useState } from "react";
 import { Destination, fetchData } from "../../apis/apis";
-import { CreateDestinationForm } from "../../pages/Destination/CreateDestinationForm";
+// import { CreateDestinationForm } from "../../pages/Destination/CreateDestinationForm";
 import { useQuery } from "react-query";
 import { API_URL } from "../../utils/constants";
 import SourceDestinationSelectionList from "../../components/SourceDestinationSelectionList";
 import { CatalogGrid } from "@components/CatalogGrid";
+import { CreateDestination } from "@destinationPage/CreateDestination";
 
 type DestinationPipelineModelProps = {
   onDestinationSelection: (destination: Destination) => void;
@@ -141,8 +142,9 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
           isAddButtonVisible={false}
         />
       ) : (
-        <CreateDestinationForm
-          destinationId={selectedDestination}
+        <CreateDestination
+          modelLoaded={true}
+          selectedId={selectedDestination}
           selectDestination={selectDestination}
           onSelection={onDestinationSelection}
         />
