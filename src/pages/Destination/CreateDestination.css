@@ -1,25 +1,25 @@
 .custom-form-group {
-    --pf-v6-c-form__field-group--BorderBlockEndWidth: 1px !important;
+  --pf-v6-c-form__field-group--BorderBlockEndWidth: 1px !important;
 }
 
 .custom-card-body {
-    max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth);
+  max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth);
 }
 
-.custom-page-section .pf-v6-c-page__main-body{
-     
-        max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth) !important;
-    
+.custom-page-section .pf-v6-c-page__main-body {
+  max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth) !important;
+}
+
+.create_destination-page_section {
+  padding-top: 0 !important;
+  padding-bottom: 40px !important;
 }
 
 .create_destination-toolbar {
-    padding-top: var(--pf-t--global--spacer--md) !important;
-   
-
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
-.create_destination-toolbar .pf-v6-c-toolbar__content {
-padding: 0 !important;
+.create_destination-footer {
+  margin-top: 0 !important;
 }
-
-

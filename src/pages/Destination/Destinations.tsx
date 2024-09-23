@@ -23,7 +23,9 @@ import _, { debounce } from "lodash";
 import { useQuery } from "react-query";
 import SourceSinkTable from "../../components/SourceSinkTable";
 import ApiError from "../../components/ApiError";
-
+import { useCallback } from "react";
+import "./destination.css";
+import PageHeader from "@components/PageHeader";
 const Destinations: React.FunctionComponent = () => {
   const navigate = useNavigate();
 
@@ -60,7 +62,7 @@ const Destinations: React.FunctionComponent = () => {
     }
   );
 
-  const debouncedSearch = React.useCallback(
+  const debouncedSearch = useCallback(
     debounce((searchQuery: string) => {
       const filteredSource = _.filter(destinationsList, function (o) {
         return o.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -97,29 +99,16 @@ const Destinations: React.FunctionComponent = () => {
         />
       ) : (
         <>
-          <PageSection isWidthLimited>
-            <Content component="h1">Destination</Content>
-            {isLoading || destinationsList.length > 0 ? (
-              <Content component="p">
-                Lists the available destination to capture the streaming change
-                events from a source database. You can search a destination by
-                its name or sort the list by the count of active pipelines using
-                a destination.
-              </Content>
-            ) : (
-              <></>
-            )}
-          </PageSection>
+          <PageHeader title="Destination" description="Lists the available destination to capture the streaming change
+          events from a source database. You can search a destination by
+          its name or sort the list by the count of active pipelines using
+          a destination." />
 
           <PageSection>
             {isLoading || destinationsList.length > 0 ? (
-              <Card style={{ paddingTop: "15px" }}>
+              <Card className="destination-card">
                 <Toolbar
                   id="toolbar-sticky"
-                  style={{
-                    marginRight: "1px",
-                    marginLeft: "1px",
-                  }}
                   className="custom-toolbar"
                   isSticky
                 >
@@ -152,7 +141,7 @@ const Destinations: React.FunctionComponent = () => {
                               ? searchResult
                               : destinationsList
                             ).length
-                          }
+                          }{" "}
                           Items
                         </Content>
                       </ToolbarItem>

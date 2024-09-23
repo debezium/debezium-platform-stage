@@ -4,36 +4,15 @@ import {
   ActionGroup,
   Button,
   ButtonType,
-  Card,
-  CardBody,
-  Content,
-  Form,
   FormContextProvider,
-  FormFieldGroup,
-  FormFieldGroupHeader,
-  FormGroup,
-  FormHelperText,
-  Grid,
-  HelperText,
-  HelperTextItem,
   PageSection,
-  Split,
-  SplitItem,
-  TextInput,
   ToggleGroup,
   ToggleGroupItem,
   Toolbar,
   ToolbarContent,
   ToolbarItem,
 } from "@patternfly/react-core";
-import {
-  PencilAltIcon,
-  CodeIcon,
-  PlusIcon,
-  TrashIcon,
-  ExclamationCircleIcon,
-} from "@patternfly/react-icons";
-import ConnectorImage from "../../components/ComponentImage";
+import { PencilAltIcon, CodeIcon } from "@patternfly/react-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CreateDestination.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
@@ -45,9 +24,11 @@ import {
   fetchDataTypeTwo,
 } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
+import { convertMapToObject } from "../../utils/helpers";
 import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/AppNotificationContext";
+import SourceSinkForm from "@components/SourceSinkForm";
+import PageHeader from "@components/PageHeader";
 
 const EditDestination: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -167,12 +148,6 @@ const EditDestination: React.FunctionComponent = () => {
 
   const handleEditDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
-     // TODO - Remove after demo: Add a 2-second delay
-    // setTimeout(async () => {
-    //   await editDestination(values);
-    //   setIsLoading(false);
-    //   navigateTo("/destination");
-    // }, 2000);
     await editDestination(values);
     setIsLoading(false);
     navigateTo("/destination");
@@ -198,18 +173,17 @@ const EditDestination: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited>
-        <>
-          <Content component="h1">Edit destination </Content>
-          <Content component="p">
-            To configure and create a connector fill out the below form or use
+      <PageHeader
+        title="Edit destination"
+        description=" To configure and create a connector fill out the below form or use
             the smart editor to setup a new Destination connector. If you
             already have a configuration file, you can setup a new Destination
-            connector by uploading it in the smart editor.
-          </Content>
-        </>
-        <Toolbar id="edit-editor-toggle" className="create_destination-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
+            connector by uploading it in the smart editor."
+      />
+
+      <PageSection className="create_destination-toolbar">
+        <Toolbar id="create-editor-toggle">
+          <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form editor and smart editor">
                 <ToggleGroupItem
@@ -244,167 +218,29 @@ const EditDestination: React.FunctionComponent = () => {
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited={editorSelected === "form-editor"}
+              isWidthLimited
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0" }}
-              className={navigationCollapsed ? "custom-page-section" : ""}
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              // className="custom-card-body"
+              className={
+                navigationCollapsed && editorSelected === "form-editor"
+                  ? "custom-page-section create_destination-page_section"
+                  : "create_destination-page_section"
+              }
             >
               {editorSelected === "form-editor" ? (
-                <Card className="custom-card-body">
-                  <CardBody isFilled>
-                    <Form isWidthLimited>
-                      <FormGroup
-                        label="Destination type"
-                        isRequired
-                        fieldId="destination-type-field"
-                      >
-                        <>
-                          <ConnectorImage
-                            connectorType={destination?.type ?? ""}
-                            size={35}
-                          />
-
-                          <Content component="p" style={{ paddingLeft: "10px" }}>
-                            {getConnectorTypeName(destinationId || "")}
-                          </Content>
-                        </>
-                      </FormGroup>
-                      <FormGroup
-                        label="Destination name"
-                        isRequired
-                        fieldId="destination-name-field"
-                      >
-                        <TextInput
-                          id="destination-name"
-                          aria-label="Destination name"
-                          onChange={(_event, value) => {
-                            setValue("destination-name", value);
-                            setError("destination-name", undefined);
-                          }}
-                          value={getValue("destination-name")}
-                          validated={
-                            errors["destination-name"] ? "error" : "default"
-                          }
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem
-                              variant={
-                                errors["destination-name"] ? "error" : "default"
-                              }
-                              {...(errors["destination-name"] && {
-                                icon: <ExclamationCircleIcon />,
-                              })}
-                            >
-                              {errors["destination-name"]}
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-                      <FormGroup label="Details" fieldId="details-field">
-                        <TextInput
-                          id="details"
-                          aria-label="Destination details"
-                          onChange={(_event, value) =>
-                            setValue("details", value)
-                          }
-                          value={getValue("details")}
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem>
-                              Add a one liner to describe your Destination or
-                              where you plan to capture.
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-
-                      <FormFieldGroup
-                        // className="custom-form-group"
-                        header={
-                          <FormFieldGroupHeader
-                            titleText={{
-                              text: (
-                                <Content component="h4">
-                                  Configuration properties
-                                </Content>
-                              ),
-                              id: "configuration-properties-group",
-                            }}
-                            titleDescription="Enter the both key and value pair to configure a property"
-                            actions={
-                              <>
-                                <Button
-                                  variant="secondary"
-                                  icon={<PlusIcon />}
-                                  onClick={handleAddProperty}
-                                >
-                                  Add property
-                                </Button>
-                              </>
-                            }
-                          />
-                        }
-                      >
-                        {Array.from(properties.keys()).map((key) => (
-                          <Split hasGutter key={key}>
-                            <SplitItem isFilled>
-                              <Grid hasGutter md={6}>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`configuration-properties-key-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    placeholder="Key"
-                                    id={`configuration-properties-key-${key}`}
-                                    name={`configuration-properties-key-${key}`}
-                                    value={properties.get(key)?.key || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "key", value)
-                                    }
-                                  />
-                                </FormGroup>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`configuration-properties-value-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    id={`configuration-properties-value-${key}`}
-                                    placeholder="Value"
-                                    name={`configuration-properties-value-${key}`}
-                                    value={properties.get(key)?.value || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "value", value)
-                                    }
-                                  />
-                                </FormGroup>
-                              </Grid>
-                            </SplitItem>
-                            <SplitItem>
-                              <Button
-                                variant="plain"
-                                aria-label="Remove property"
-                                onClick={() => handleDeleteProperty(key)}
-                              >
-                                <TrashIcon />
-                              </Button>
-                            </SplitItem>
-                          </Split>
-                        ))}
-                      </FormFieldGroup>
-                    </Form>
-                  </CardBody>
-                </Card>
+                <SourceSinkForm
+                  ConnectorId={destinationId || ""}
+                  dataType={destination?.type || ""}
+                  connectorType="destination"
+                  properties={properties}
+                  setValue={setValue}
+                  getValue={getValue}
+                  setError={setError}
+                  errors={errors}
+                  handleAddProperty={handleAddProperty}
+                  handleDeleteProperty={handleDeleteProperty}
+                  handlePropertyChange={handlePropertyChange}
+                />
               ) : (
                 <CodeEditor
                   isUploadEnabled
@@ -418,10 +254,9 @@ const EditDestination: React.FunctionComponent = () => {
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup className="create_destination-footer">
                 <Button
                   variant="primary"
-                  // onClick={handleCreateSource}
                   isLoading={isLoading}
                   isDisabled={isLoading}
                   type={ButtonType.submit}

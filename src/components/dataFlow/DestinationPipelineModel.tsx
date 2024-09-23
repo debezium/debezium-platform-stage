@@ -10,11 +10,12 @@ import {
 } from "@patternfly/react-core";
 import React, { useCallback, useEffect, useState } from "react";
 import { Destination, fetchData } from "../../apis/apis";
-import { CreateDestinationForm } from "../../pages/Destination/CreateDestinationForm";
-import { DestinationCatalogGrid } from "../../pages/Destination/DestinationCatalogGrid";
+// import { CreateDestinationForm } from "../../pages/Destination/CreateDestinationForm";
 import { useQuery } from "react-query";
 import { API_URL } from "../../utils/constants";
 import SourceDestinationSelectionList from "../../components/SourceDestinationSelectionList";
+import { CatalogGrid } from "@components/CatalogGrid";
+import { CreateDestination } from "@destinationPage/CreateDestination";
 
 type DestinationPipelineModelProps = {
   onDestinationSelection: (destination: Destination) => void;
@@ -106,25 +107,25 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
       <Divider style={{ marginTop: "10px" }} />
       {isCreateChecked === id2 &&
         (selectedDestination === "" ? (
-        //   <TextContent style={{ padding: "10px" }}>
-            <Content component="p">
-              <b>
-                Select the type of destination you want to connect from the list
-                below, once you select a connector you can configure it using
-                form or smart editor option.
-              </b>
-            </Content>
-          // </TextContent>
+          //   <TextContent style={{ padding: "10px" }}>
+          <Content component="p">
+            <b>
+              Select the type of destination you want to connect from the list
+              below, once you select a connector you can configure it using form
+              or smart editor option.
+            </b>
+          </Content>
         ) : (
+          // </TextContent>
           // <TextContent style={{ padding: "10px" }}>
-            <Content component="p">
-              <b>
-                Fill out the below form or use the smart editor to setup a new
-                destination connector. If you already have a configuration file,
-                you can setup a new destination connector by uploading it in the
-                smart editor.
-              </b>
-            </Content>
+          <Content component="p">
+            <b>
+              Fill out the below form or use the smart editor to setup a new
+              destination connector. If you already have a configuration file,
+              you can setup a new destination connector by uploading it in the
+              smart editor.
+            </b>
+          </Content>
           // </TextContent>
         ))}
 
@@ -135,10 +136,15 @@ const DestinationPipelineModel: React.FC<DestinationPipelineModelProps> = ({
           onSelection={onDestinationSelection}
         />
       ) : selectedDestination === "" ? (
-        <DestinationCatalogGrid selectDestination={selectDestination} />
+        <CatalogGrid
+          onCardSelect={selectDestination}
+          catalogType="destination"
+          isAddButtonVisible={false}
+        />
       ) : (
-        <CreateDestinationForm
-          destinationId={selectedDestination}
+        <CreateDestination
+          modelLoaded={true}
+          selectedId={selectedDestination}
           selectDestination={selectDestination}
           onSelection={onDestinationSelection}
         />

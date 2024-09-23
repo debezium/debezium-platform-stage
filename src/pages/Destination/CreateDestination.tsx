@@ -4,49 +4,47 @@ import {
   ActionGroup,
   Button,
   ButtonType,
-  Card,
-  CardBody,
-  Content,
-  Form,
   FormContextProvider,
-  FormFieldGroup,
-  FormFieldGroupHeader,
-  FormGroup,
-  FormHelperText,
-  Grid,
-  HelperText,
-  HelperTextItem,
   PageSection,
-  Split,
-  SplitItem,
-  TextInput,
   ToggleGroup,
   ToggleGroupItem,
   Toolbar,
   ToolbarContent,
   ToolbarItem,
 } from "@patternfly/react-core";
-import {
-  PencilAltIcon,
-  CodeIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@patternfly/react-icons";
+import { PencilAltIcon, CodeIcon } from "@patternfly/react-icons";
 import destinationCatalog from "../../__mocks__/data/DestinationCatalog.json";
-import ConnectorImage from "../../components/ComponentImage";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CreateDestination.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import _ from "lodash";
 import { createPost, Destination } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { convertMapToObject, getConnectorTypeName } from "../../utils/helpers";
+import { convertMapToObject } from "../../utils/helpers";
 import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/AppNotificationContext";
+import PageHeader from "@components/PageHeader";
+import SourceSinkForm from "@components/SourceSinkForm";
 
-const CreateDestination: React.FunctionComponent = () => {
+interface CreateDestinationProps {
+  modelLoaded?: boolean;
+  selectedId?: string;
+  selectDestination?: (destinationId: string) => void;
+  onSelection?: (selection: Destination) => void;
+}
+
+const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
+  modelLoaded,
+  selectedId,
+  selectDestination,
+  onSelection,
+}) => {
   const navigate = useNavigate();
-  const { destinationId } = useParams<{ destinationId: string }>();
+  const destinationIdParam = useParams<{ destinationId: string }>();
+  const destinationIdModel = selectedId;
+  const destinationId = modelLoaded
+    ? destinationIdModel
+    : destinationIdParam.destinationId;
 
   const navigateTo = (url: string) => {
     navigate(url);
@@ -118,6 +116,7 @@ const CreateDestination: React.FunctionComponent = () => {
         `Failed to create ${(response.data as Destination).name}: ${response.error}`
       );
     } else {
+      modelLoaded && onSelection && onSelection(response.data as Destination);
       addNotification(
         "success",
         `Create successful`,
@@ -128,15 +127,9 @@ const CreateDestination: React.FunctionComponent = () => {
 
   const handleCreateDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
-    // TODO - Remove after demo: Add a 2-second delay
-    // setTimeout(async () => {
-    //   await createNewDestination(values);
-    //   setIsLoading(false);
-    //   navigateTo("/destination");
-    // }, 2000);
     await createNewDestination(values);
     setIsLoading(false);
-    navigateTo("/destination");
+    !modelLoaded && navigateTo("/destination");
   };
 
   const handleItemClick = (
@@ -151,18 +144,18 @@ const CreateDestination: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited>
-          <Content component="h1">Create Destination </Content>
-          <Content component="p">
-            To configure and create a connector fill out the below form or use
+      {!modelLoaded && (
+        <PageHeader
+          title="Create Destination"
+          description="To configure and create a connector fill out the below form or use
             the smart editor to setup a new destination connector. If you
             already have a configuration file, you can setup a new destination
-            connector by uploading it in the smart editor.
-          </Content>
-        <Toolbar
-          id="create-editor-toggle"
-          className="create_destination-toolbar"
-        >
+            connector by uploading it in the smart editor."
+        />
+      )}
+
+      <PageSection className="create_destination-toolbar">
+        <Toolbar id="create-editor-toggle">
           <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form and smart editor">
@@ -192,149 +185,34 @@ const CreateDestination: React.FunctionComponent = () => {
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited={editorSelected === "form-editor"}
+              isWidthLimited={
+                (modelLoaded && editorSelected === "form-editor") ||
+                !modelLoaded
+              }
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0", paddingBottom: "40px" }}
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              className={navigationCollapsed ? "custom-page-section" : ""}
+              className={
+                (modelLoaded && editorSelected === "form-editor") ||
+                (!modelLoaded &&
+                  navigationCollapsed &&
+                  editorSelected === "form-editor")
+                  ? "custom-page-section create_destination-page_section"
+                  : "create_destination-page_section"
+              }
             >
               {editorSelected === "form-editor" ? (
-                <Card className="custom-card-body">
-                  <CardBody isFilled>
-                    <Form isWidthLimited>
-                      <FormGroup
-                        label="Destination type"
-                        isRequired
-                        fieldId="destination-type-field"
-                      >
-                        <>
-                          <ConnectorImage
-                            connectorType={destinationId || ""}
-                            size={35}
-                          />
-                          <Content component="p" style={{ paddingLeft: "10px" }}>
-                            {getConnectorTypeName(destinationId || "")}
-                          </Content>
-                        </>
-                      </FormGroup>
-                      <FormGroup
-                        label="Destination name"
-                        isRequired
-                        fieldId="destination-name-field"
-                      >
-                        <TextInput
-                          id="destination-name"
-                          aria-label="destination name"
-                          onChange={(_event, value) => {
-                            setValue("destination-name", value);
-                            setError("destination-name", undefined);
-                          }}
-                          value={getValue("destination-name")}
-                          validated={
-                            errors["destination-name"] ? "error" : "default"
-                          }
-                        />
-                      </FormGroup>
-                      <FormGroup
-                        label="Description"
-                        fieldId="destination-details-field"
-                      >
-                        <TextInput
-                          id="destination-details"
-                          aria-label="Destination details"
-                          onChange={(_event, value) =>
-                            setValue("details", value)
-                          }
-                          value={getValue("details")}
-                        />
-                        <FormHelperText>
-                          <HelperText>
-                            <HelperTextItem>
-                              Add a one liner to describe your destination or
-                              where you plan to capture.
-                            </HelperTextItem>
-                          </HelperText>
-                        </FormHelperText>
-                      </FormGroup>
-
-                      <FormFieldGroup
-                        header={
-                          <FormFieldGroupHeader
-                            titleText={{
-                              text: "Configuration properties",
-                              id: "field-group-destination-id",
-                            }}
-                            titleDescription="Enter the both key and value pair to configure a property"
-                            actions={
-                              <>
-                                <Button
-                                  variant="secondary"
-                                  icon={<PlusIcon />}
-                                  onClick={handleAddProperty}
-                                >
-                                  Add property
-                                </Button>
-                              </>
-                            }
-                          />
-                        }
-                      >
-                        {Array.from(properties.keys()).map((key) => (
-                          <Split hasGutter key={key}>
-                            <SplitItem isFilled>
-                              <Grid hasGutter md={6}>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`destination-config-props-key-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    placeholder="Key"
-                                    id={`destination-config-props-key-${key}`}
-                                    name={`destination-config-props-key-${key}`}
-                                    value={properties.get(key)?.key || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "key", value)
-                                    }
-                                  />
-                                </FormGroup>
-                                <FormGroup
-                                  label=""
-                                  isRequired
-                                  fieldId={`destination-config-props-value-field-${key}`}
-                                >
-                                  <TextInput
-                                    isRequired
-                                    type="text"
-                                    id={`destination-config-props-value-${key}`}
-                                    placeholder="Value"
-                                    name={`destination-config-props-value-${key}`}
-                                    value={properties.get(key)?.value || ""}
-                                    onChange={(_e, value) =>
-                                      handlePropertyChange(key, "value", value)
-                                    }
-                                  />
-                                </FormGroup>
-                              </Grid>
-                            </SplitItem>
-                            <SplitItem>
-                              <Button
-                                variant="plain"
-                                aria-label="Remove"
-                                onClick={() => handleDeleteProperty(key)}
-                              >
-                                <TrashIcon />
-                              </Button>
-                            </SplitItem>
-                          </Split>
-                        ))}
-                      </FormFieldGroup>
-                    </Form>
-                  </CardBody>
-                </Card>
+                <SourceSinkForm
+                  ConnectorId={destinationId || ""}
+                  connectorType="destination"
+                  properties={properties}
+                  setValue={setValue}
+                  getValue={getValue}
+                  setError={setError}
+                  errors={errors}
+                  handleAddProperty={handleAddProperty}
+                  handleDeleteProperty={handleDeleteProperty}
+                  handlePropertyChange={handlePropertyChange}
+                />
               ) : (
                 <CodeEditor
                   isUploadEnabled
@@ -348,7 +226,7 @@ const CreateDestination: React.FunctionComponent = () => {
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup className="create_destination-footer">
                 <Button
                   variant="primary"
                   isLoading={isLoading}
@@ -369,12 +247,21 @@ const CreateDestination: React.FunctionComponent = () => {
                 >
                   Create destination
                 </Button>
-                <Button
-                  variant="link"
-                  onClick={() => navigateTo("/destination/catalog")}
-                >
-                  Back to catalog
-                </Button>
+                {modelLoaded ? (
+                  <Button
+                    variant="link"
+                    onClick={() => selectDestination && selectDestination("")}
+                  >
+                    Back
+                  </Button>
+                ) : (
+                  <Button
+                    variant="link"
+                    onClick={() => navigateTo("/destination/catalog")}
+                  >
+                    Back to catalog
+                  </Button>
+                )}
               </ActionGroup>
             </PageSection>
           </>
