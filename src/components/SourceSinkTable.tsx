@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Flex,
   FlexItem,
@@ -33,7 +34,6 @@ import {
   DestinationApiResponse,
   Pipeline,
   SourceApiResponse,
-  deleteResource,
   fetchData,
 } from "../apis/apis";
 import { getConnectorTypeName } from "../utils/helpers";
@@ -43,6 +43,7 @@ import { useQuery } from "react-query";
 import { getActivePipelineCount } from "../utils/pipelineUtils";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../appLayout/AppNotificationContext";
+import { useDeleteData } from "src/apis";
 
 interface ISourceSinkTableProps {
   tableType: "source" | "destination";
@@ -89,21 +90,8 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
     }
   );
 
-  const handleDelete = async (id: number, type: string) => {
-    setIsLoading(true);
-    const resourceType = type === "source" ? "sources" : "destinations";
-    const url = `${API_URL}/api/${resourceType}/${id}`;
-    const result = await deleteResource(url);
-
-    if (result.error) {
-      modalToggle(false);
-      setIsLoading(false);
-      addNotification(
-        "danger",
-        `Delete failed`,
-        `Failed to delete ${tableType}: ${result.error}`
-      );
-    } else {
+  const { mutate: deleteData } = useDeleteData({
+    onSuccess: () => {
       modalToggle(false);
       setIsLoading(false);
       addNotification(
@@ -111,7 +99,23 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
         `Delete successful`,
         `${tableType} deleted successfully`
       );
-    }
+    },
+    onError: (error) => {
+      modalToggle(false);
+      setIsLoading(false);
+      addNotification(
+        "danger",
+        `Delete failed`,
+        `Failed to delete ${tableType}: ${error}`
+      );
+    },
+  });
+
+  const handleDelete = async (id: number, type: string) => {
+    setIsLoading(true);
+    const resourceType = type === "source" ? "sources" : "destinations";
+    const url = `${API_URL}/api/${resourceType}/${id}`;
+    deleteData(url);
   };
 
   const onDeleteHandler = (id: number, name: string) => {
@@ -215,12 +219,18 @@ const SourceSinkTable: React.FunctionComponent<ISourceSinkTableProps> = ({
         aria-describedby="modal-box-body-variant"
       >
         <ModalHeader
-          title={<p> Enter <i>"{`${deleteInstance.name}`}"</i> to delete {`${tableType}`}</p>}
+          title={
+            <p>
+              {" "}
+              Enter <i>"{`${deleteInstance.name}`}"</i> to delete{" "}
+              {`${tableType}`}
+            </p>
+          }
           titleIconVariant="warning"
           labelId="delete-modal-title"
         />
         <ModalBody id="modal-box-body-variant">
-          <Form style={{paddingRight: 45}}>
+          <Form style={{ paddingRight: 45 }}>
             <FormGroup isRequired fieldId={`${tableType}-delete-name`}>
               <TextInput
                 id="dalete-name"

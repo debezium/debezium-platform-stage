@@ -24,7 +24,7 @@ import { useQuery } from "react-query";
 import { API_URL } from "../../utils/constants";
 import SourceSinkTable from "../../components/SourceSinkTable";
 import ApiError from "../../components/ApiError";
-import "./source.css";
+import "./Sources.css";
 
 export interface ISourceProps {
   sampleProp?: string;

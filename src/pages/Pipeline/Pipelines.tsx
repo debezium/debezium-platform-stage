@@ -34,12 +34,7 @@ import {
 import { PlusIcon, SearchIcon } from "@patternfly/react-icons";
 // import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
-import {
-  Pipeline,
-  deleteResource,
-  fetchData,
-  fetchFile,
-} from "../../apis/apis";
+import { Pipeline, fetchData, fetchFile } from "../../apis/apis";
 import {
   Table,
   Thead,
@@ -59,6 +54,7 @@ import DestinationField from "../../components/DestinationField";
 import ApiError from "../../components/ApiError";
 import { useNotification } from "../../appLayout/AppNotificationContext";
 import { PipelineEmpty } from "./PipelineEmpty";
+import { useDeleteData } from "src/apis";
 
 type DeleteInstance = {
   id: number;
@@ -155,20 +151,8 @@ const Pipelines: React.FunctionComponent = () => {
     setIsLogLoading(false);
   };
 
-  const handleDelete = async (id: number) => {
-    setIsLoading(true);
-    const url = `${API_URL}/api/pipelines/${id}`;
-    const result = await deleteResource(url);
-
-    if (result.error) {
-      modalToggle(false);
-      setIsLoading(false);
-      addNotification(
-        "danger",
-        `Delete failed`,
-        `Failed to delete pipeline: ${result.error}`
-      );
-    } else {
+  const { mutate: deleteData } = useDeleteData({
+    onSuccess: () => {
       modalToggle(false);
       setIsLoading(false);
       addNotification(
@@ -176,7 +160,23 @@ const Pipelines: React.FunctionComponent = () => {
         `Delete successful`,
         `Pipeline deleted successfully`
       );
-    }
+    },
+    onError: (error) => {
+      modalToggle(false);
+      setIsLoading(false);
+      addNotification(
+        "danger",
+        `Delete failed`,
+        `Failed to delete pipeline: ${error}`
+      );
+    },
+  });
+
+  const handleDelete = async (id: number) => {
+    setIsLoading(true);
+    const url = `${API_URL}/api/pipelines/${id}`;
+
+    deleteData(url);
   };
 
   const debouncedSearch = useCallback(

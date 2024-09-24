@@ -39,7 +39,7 @@ const DestinationField: React.FC<DestinationFieldProps> = ({
     };
 
     fetchDestination();
-  }, []);
+  }, [pipelineDestination.id]);
 
   return (
     <Td dataLabel="Destination" style={{ paddingLeft: "0px" }}>
