@@ -32,7 +32,6 @@ import {
   ToolbarItem,
 } from "@patternfly/react-core";
 import { PlusIcon, SearchIcon } from "@patternfly/react-icons";
-// import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
 import { Pipeline, fetchData, fetchFile } from "../../apis/apis";
 import {
@@ -55,6 +54,8 @@ import ApiError from "../../components/ApiError";
 import { useNotification } from "../../appLayout/AppNotificationContext";
 import { PipelineEmpty } from "./PipelineEmpty";
 import { useDeleteData } from "src/apis";
+import PageHeader from "@components/PageHeader";
+import "./Pipelines.css";
 
 type DeleteInstance = {
   id: number;
@@ -291,25 +292,19 @@ const Pipelines: React.FunctionComponent = () => {
             <>
               {pipelinesList.length > 0 ? (
                 <>
-                  <PageSection isWidthLimited>
-                    <Content component={ContentVariants.h1}>Pipeline</Content>
-                    <Content component="p">
-                      Add a pipeline to streams change events from a pipeline
+                  <PageHeader
+                    title="Pipeline"
+                    description="Add a pipeline to streams change events from a pipeline
                       database. To start select a connector below once you
                       select a connector you can configure it using form or
                       smart editor option. You can also search the connector by
                       its name or toggle the catalog between the list view or
-                      card view.
-                    </Content>
-                  </PageSection>
+                      card view."
+                  />
                   <PageSection>
-                    <Card style={{ paddingTop: "15px" }}>
+                    <Card className="pipeline-card">
                       <Toolbar
                         id="toolbar-sticky"
-                        style={{
-                          marginRight: "1px",
-                          marginLeft: "1px",
-                        }}
                         className="custom-toolbar"
                         isSticky
                       >
@@ -336,10 +331,7 @@ const Pipelines: React.FunctionComponent = () => {
                               </Button>
                             </ToggleGroup>
                           </ToolbarItem>
-                          <ToolbarGroup
-                            // variant="icon-button-group"
-                            align={{ default: "alignEnd" }}
-                          >
+                          <ToolbarGroup align={{ default: "alignEnd" }}>
                             <ToolbarItem>
                               <Content component={ContentVariants.small}>
                                 {
@@ -354,16 +346,6 @@ const Pipelines: React.FunctionComponent = () => {
                           </ToolbarGroup>
                         </ToolbarContent>
                       </Toolbar>
-
-                      {/* {pipelinesLoading ? (
-                        <EmptyState
-                          titleText="Loading"
-                          headingLevel="h4"
-                          icon={Spinner}
-                        />
-                      ) : (
-      
-                      )} */}
                       <Table aria-label="Compact Table">
                         <Thead>
                           <Tr>
@@ -393,7 +375,7 @@ const Pipelines: React.FunctionComponent = () => {
                                 />
                                 <Td
                                   dataLabel="Phase"
-                                  style={{ paddingLeft: 0, paddingTop: 0 }}
+                                  className="pipeline-phase"
                                 >
                                   <ProgressStepper
                                     aria-label="Basic progress stepper"
@@ -503,7 +485,7 @@ const Pipelines: React.FunctionComponent = () => {
               labelId="delete-modal-title"
             />
             <ModalBody id="modal-box-body-variant">
-              <Form style={{ paddingRight: 45 }}>
+              <Form>
                 <FormGroup isRequired fieldId={`pipeline-delete-name`}>
                   <TextInput
                     id="delete-name"

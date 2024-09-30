@@ -56,8 +56,6 @@ const PipelineEmpty: React.FunctionComponent = () => {
     []
   );
 
-
-
   return (
     <PageSection isFilled>
       <EmptyState
@@ -74,8 +72,8 @@ const PipelineEmpty: React.FunctionComponent = () => {
           </Content>
           <Content component={ContentVariants.small}>
             Add a pipeline to stream change event from a pipeline source
-            database. To create a pipeline, you can select a already
-            configured or add a new source and a destination.
+            database. To create a pipeline, you can select a already configured
+            or add a new source and a destination.
           </Content>
 
           <Card style={{ height: "300px" }} isPlain>
@@ -106,8 +104,12 @@ const PipelineEmpty: React.FunctionComponent = () => {
             </Button>
           </EmptyStateActions>
           <EmptyStateActions>
-            <Button variant="link" onClick={()=>navigateTo("/source")}>Go to source</Button>
-            <Button variant="link" onClick={()=>navigateTo("/destination")}>Go to Destination</Button>
+            <Button variant="link" onClick={() => navigateTo("/source")}>
+              Go to source
+            </Button>
+            <Button variant="link" onClick={() => navigateTo("/destination")}>
+              Go to Destination
+            </Button>
           </EmptyStateActions>
         </EmptyStateFooter>
       </EmptyState>

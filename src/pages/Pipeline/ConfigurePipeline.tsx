@@ -6,7 +6,6 @@ import {
   ButtonType,
   Card,
   CardBody,
-  Content,
   Flex,
   FlexItem,
   Form,
@@ -46,6 +45,7 @@ import {
 } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { useData } from "../../appLayout/AppContext";
+import PageHeader from "@components/PageHeader";
 
 const ConfigurePipeline: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -141,12 +141,6 @@ const ConfigurePipeline: React.FunctionComponent = () => {
 
   const handleCreatePipline = async (values: Record<string, string>) => {
     setIsLoading(true);
-    // TODO - Remove after demo: Add a 2-second delay
-    // setTimeout(async () => {
-    //   await createNewPipline(values);
-    //   setIsLoading(false);
-    //   navigateTo("/pipeline");
-    // }, 2000);
     await createNewPipline(values);
     setIsLoading(false);
     navigateTo("/pipeline");
@@ -185,18 +179,16 @@ const ConfigurePipeline: React.FunctionComponent = () => {
 
   return (
     <>
-      <PageSection isWidthLimited>
-        <>
-          <Content component="h1">Create pipeline </Content>
-          <Content component="p">
-            To configure and create a data pipeline fill out the below form or
+      <PageHeader
+        title="Create pipeline"
+        description="To configure and create a data pipeline fill out the below form or
             use the smart editor to setup a new data pipeline. If you already
             have a configuration file, you can setup a new data pipeline by
-            uploading it in the smart editor.
-          </Content>
-        </>
+            uploading it in the smart editor."
+      />
+      <PageSection className="create_pipeline-toolbar">
         <Toolbar id="create-editor-toggle" className="create_pipeline-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
+          <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form editor and smart editor">
                 <ToggleGroupItem
@@ -229,7 +221,6 @@ const ConfigurePipeline: React.FunctionComponent = () => {
               isWidthLimited={editorSelected === "form-editor"}
               isCenterAligned
               isFilled
-              style={{ paddingTop: "0" }}
               // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
               className={navigationCollapsed ? "pipeline-page-section" : ""}
             >
@@ -382,10 +373,9 @@ const ConfigurePipeline: React.FunctionComponent = () => {
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup className="create_pipeline-footer">
                 <Button
                   variant="primary"
-                  // onClick={handleCreateSource}
                   isLoading={isLoading}
                   isDisabled={isLoading}
                   type={ButtonType.submit}

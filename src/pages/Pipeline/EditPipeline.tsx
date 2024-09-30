@@ -208,7 +208,7 @@ const EditPipeline: React.FunctionComponent = () => {
     <>
       <PageSection isWidthLimited padding={{ md: "noPadding" }}>
         <Toolbar id="edit-editor-toggle" className="edit-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
+          <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form editor and smart editor">
                 <ToggleGroupItem
@@ -423,7 +423,7 @@ const EditPipeline: React.FunctionComponent = () => {
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup className="create_pipeline-footer">
                 <Button
                   variant="primary"
                   // onClick={handleCreateSource}

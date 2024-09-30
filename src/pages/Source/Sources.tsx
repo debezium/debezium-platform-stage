@@ -25,6 +25,7 @@ import { API_URL } from "../../utils/constants";
 import SourceSinkTable from "../../components/SourceSinkTable";
 import ApiError from "../../components/ApiError";
 import "./Sources.css";
+import PageHeader from "@components/PageHeader";
 
 export interface ISourceProps {
   sampleProp?: string;
@@ -86,13 +87,23 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
   return (
     <>
       {error ? (
-        <ApiError errorType="large" errorMsg={error.message} secondaryActions={ <>
-          <Button variant="link"  onClick={()=>navigateTo("/destination")}>Go to destination</Button>
-          <Button variant="link"  onClick={()=>navigateTo("/pipeline")}>Go to pipeline</Button>
-        </>} />
+        <ApiError
+          errorType="large"
+          errorMsg={error.message}
+          secondaryActions={
+            <>
+              <Button variant="link" onClick={() => navigateTo("/destination")}>
+                Go to destination
+              </Button>
+              <Button variant="link" onClick={() => navigateTo("/pipeline")}>
+                Go to pipeline
+              </Button>
+            </>
+          }
+        />
       ) : (
         <>
-          <PageSection isWidthLimited>
+          {/* <PageSection isWidthLimited>
               <Content component="h1">Source</Content>
               {isLoading || sourcesList.length > 0 ? (
                 <Content component="p">
@@ -104,7 +115,14 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
               ) : (
                 <></>
               )}
-          </PageSection>
+          </PageSection> */}
+          <PageHeader
+            title="Source"
+            description="Lists the available sources configured in the cluster
+                  streaming change events from a source database. You can search
+                  a source by its name or sort the list by the count of active
+                  pipelines using a source."
+          />
           <PageSection>
             {isLoading || sourcesList.length > 0 ? (
               <Card className="source-card">
@@ -128,15 +146,13 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                         <Button
                           variant="primary"
                           icon={<PlusIcon />}
-                          onClick={()=>navigateTo("/source/catalog")}
+                          onClick={() => navigateTo("/source/catalog")}
                         >
                           Add source
                         </Button>
                       </ToggleGroup>
                     </ToolbarItem>
-                    <ToolbarGroup
-                      align={{ default: "alignEnd" }}
-                    >
+                    <ToolbarGroup align={{ default: "alignEnd" }}>
                       <ToolbarItem>
                         <Content component={ContentVariants.small}>
                           {
@@ -171,23 +187,30 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
                 primaryMessage=' No source is configure for this cluster yet. To streams change
             events from a source database you can configure a source by click
             the "Add source" button.'
-            //     secondaryMessage="This text has overridden a css component variable to demonstrate
-            // how to apply customizations using PatternFly's global
-            // variable API."
-            secondaryMessage=""
+                secondaryMessage=""
                 primaryAction={
                   <Button
                     variant="primary"
                     icon={<PlusIcon />}
-                    onClick={()=>navigateTo("/source/catalog")}
+                    onClick={() => navigateTo("/source/catalog")}
                   >
                     Add source
                   </Button>
                 }
                 secondaryActions={
                   <>
-                    <Button variant="link" onClick={()=>navigateTo('/destination')}>Go to destination</Button>
-                    <Button variant="link" onClick={()=>navigateTo('/vaults')}>Configure Vaults</Button>
+                    <Button
+                      variant="link"
+                      onClick={() => navigateTo("/destination")}
+                    >
+                      Go to destination
+                    </Button>
+                    <Button
+                      variant="link"
+                      onClick={() => navigateTo("/vaults")}
+                    >
+                      Configure Vaults
+                    </Button>
                   </>
                 }
               />

@@ -27,6 +27,7 @@ import { getConnectorTypeName } from "@utils/helpers";
 import { FC, useEffect, useState } from "react";
 import { Pipeline, Source, Destination, fetchDataTypeTwo } from "src/apis/apis";
 import comingSoonImage from "../../assets/comingSoon.png";
+import "./PipelineOverview.css";
 
 type PipelineOverviewProp = {
   pipelineId: string;
@@ -116,11 +117,11 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
         <Card ouiaId="BasicCard">
           <CardBody>
             <Grid hasGutter>
-              <GridItem span={4} style={{ borderRight: "1px solid #D2D2D2" }}>
+              <GridItem span={4} className="pipeline-overview__card-border">
                 <Card
                   ouiaId="BasicCard"
                   isPlain
-                  style={{ position: "relative" }}
+                  className="pipeline-overview__coming-soon-card"
                 >
                   <div className="overlay">
                     <img src={comingSoonImage} alt="Coming Soon" />
@@ -158,7 +159,7 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                 <Card
                   ouiaId="BasicCard"
                   isPlain
-                  style={{ position: "relative" }}
+                  className="pipeline-overview__coming-soon-card"
                 >
                   <div className="overlay">
                     <img src={comingSoonImage} alt="Coming Soon" />
@@ -228,7 +229,10 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                         connectorType={source?.type || ""}
                         size={25}
                       />
-                      <Content component="p" style={{ paddingLeft: "10px" }}>
+                      <Content
+                        component="p"
+                        className="pipeline-overview__card-description"
+                      >
                         {getConnectorTypeName(source?.type || "")}
                       </Content>
                     </>
@@ -275,7 +279,6 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
         </Card>
       </GridItem>
 
-
       <GridItem span={3} rowSpan={1}>
         <Card ouiaId="BasicCard">
           <CardTitle>Destination</CardTitle>
@@ -302,7 +305,10 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                         connectorType={destination?.type || ""}
                         size={25}
                       />
-                      <Content component="p" style={{ paddingLeft: "10px" }}>
+                      <Content
+                        component="p"
+                        className="pipeline-overview__card-description"
+                      >
                         {getConnectorTypeName(destination?.type || "")}
                       </Content>
                     </>
