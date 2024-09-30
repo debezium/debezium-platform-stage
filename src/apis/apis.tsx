@@ -1,14 +1,6 @@
-import { QueryClient, useMutation, useQueryClient } from "react-query";
-import { API_URL } from "../utils/constants";
-const queryClient = new QueryClient();
+import { QueryClient} from "react-query";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// export const fetchSources = async () => {
-//   const response = await fetch("http://localhost:8080/api/sources", {
-//     mode: "no-cors", // Not recommended for production
-//   });
-//   return response.json();
-// };
+const queryClient = new QueryClient();
 
 export type ApiResponse<T> = {
   data?: T | null;
@@ -81,7 +73,7 @@ export type PipelineApiResponse = Pipeline[];
 
 export const createPost = async <T,>(
   url: string,
-  payload: any
+  payload: unknown
 ): Promise<ApiResponse<T>> => {
   try {
     const response = await fetch(url, {
@@ -110,7 +102,7 @@ export const createPost = async <T,>(
 
 export const editPut = async <T,>(
   url: string,
-  payload: any
+  payload: unknown
 ): Promise<ApiResponse<T>> => {
   try {
     const response = await fetch(url, {
@@ -137,48 +129,6 @@ export const editPut = async <T,>(
   }
 };
 
-export const deleteResource = async <T,>(
-  url: string
-): Promise<ApiResponse<T>> => {
-  try {
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      const errorMsg = `Failed to delete resource: ${response.statusText}`;
-      return { error: errorMsg };
-    }
-
-    let data: T;
-    if (response.status === 204) {
-      data = {} as T;
-    } else {
-      data = await response.json();
-    }
-
-    // Refresh data after resource is deleted
-    queryClient.invalidateQueries("sources");
-    queryClient.invalidateQueries("destinations");
-
-    return { data };
-  } catch (error) {
-    console.error("Error deleting resource:", error);
-    return { error: "An error occurred while deleting resource" };
-  }
-};
-
-// export const fetchSources = async <T,>(): Promise<T> => {
-//   const response = await fetch("/api/sources");
-//   if (!response.ok) {
-//     throw new Error(`Failed to fetch data: ${response.statusText}`);
-//   }
-//   return response.json();
-// };
-
 export const fetchData = async <T,>(url: string): Promise<T> => {
   const response = await fetch(url);
   if (!response.ok) {
@@ -201,20 +151,6 @@ export const deleteData = async (url: string): Promise<void> => {
   }
 };
 
-export const useDeleteData = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<void, Error, string>(
-    (id: string) => deleteData(`${API_URL}/api/pipelines/${id}`),
-    {
-      onSuccess: () => {
-        // Invalidate and refetch the data after deletion
-        queryClient.invalidateQueries("pipelinesDelete");
-      },
-    }
-  );
-};
-
 export const fetchDataTypeTwo = async <T,>(
   url: string
 ): Promise<ApiResponse<T>> => {
@@ -228,48 +164,6 @@ export const fetchDataTypeTwo = async <T,>(
 
     const data = await response.json();
     return { data };
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return { error: "An error occurred while fetching data" };
-  }
-};
-
-export const fetchDataWithPolling = async <T,>(
-  url: string,
-  interval: number = 15000 // Default polling interval of 15 seconds
-): Promise<ApiResponse<T>> => {
-  try {
-    const fetchData = async () => {
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        const errorMsg = `Failed to fetch data: ${response.statusText}`;
-        return { error: errorMsg };
-      }
-
-      const data = await response.json();
-      return { data };
-    };
-
-    const poll = async () => {
-      const result = await fetchData();
-      if (!result.error) {
-        queryClient.setQueryData<T>(url, result.data); // Update query data
-      }
-      setTimeout(poll, interval);
-    };
-
-    // Initial fetch
-    const initialResult = await fetchData();
-    if (initialResult.error) {
-      return initialResult;
-    }
-    queryClient.setQueryData<T>(url, initialResult.data);
-
-    // Start polling
-    setTimeout(poll, interval);
-
-    return initialResult;
   } catch (error) {
     console.error("Error fetching data:", error);
     return { error: "An error occurred while fetching data" };

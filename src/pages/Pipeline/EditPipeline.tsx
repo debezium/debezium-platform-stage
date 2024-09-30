@@ -130,44 +130,6 @@ const EditPipeline: React.FunctionComponent = () => {
     setIsDestinationLoading(false);
   };
 
-  // useEffect(() => {
-  //   const fetchSources = async () => {
-  //     setIsSourceLoading(true);
-  //     const response = await fetchDataTypeTwo<Source>(
-  //       `${API_URL}/api/sources/${pipeline?.source.id}`
-  //     );
-
-  //     if (response.error) {
-  //       setSourceError(response.error);
-  //     } else {
-  //       setSource(response.data as Source);
-  //     }
-
-  //     setIsSourceLoading(false);
-  //   };
-
-  //   fetchSources();
-  // }, [pipeline]);
-
-  // useEffect(() => {
-  //   const fetchDestination = async () => {
-  //     setIsDestinationLoading(true);
-  //     const response = await fetchDataTypeTwo<Destination>(
-  //       API_URL + `/api/destinations/${pipeline?.destination.id}`
-  //     );
-
-  //     if (response.error) {
-  //       setDestinationError(response.error);
-  //     } else {
-  //       setDestination(response.data as Destination);
-  //     }
-
-  //     setIsDestinationLoading(false);
-  //   };
-
-  //   fetchDestination();
-  // }, [pipeline]);
-
   const editPipeline = async (values: Record<string, string>) => {
     const payload = {
       description: values["descriptions"],
@@ -246,7 +208,7 @@ const EditPipeline: React.FunctionComponent = () => {
     <>
       <PageSection isWidthLimited padding={{ md: "noPadding" }}>
         <Toolbar id="edit-editor-toggle" className="edit-toolbar">
-          <ToolbarContent style={{ padding: "0" }}>
+          <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form editor and smart editor">
                 <ToggleGroupItem
@@ -461,7 +423,7 @@ const EditPipeline: React.FunctionComponent = () => {
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup style={{ marginTop: 0 }}>
+              <ActionGroup className="create_pipeline-footer">
                 <Button
                   variant="primary"
                   // onClick={handleCreateSource}

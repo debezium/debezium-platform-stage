@@ -11,10 +11,8 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import "./PipelineDesigner.css";
-// import CompositionFlow from "../../components/dataFlow/CompositionFlow";
 import CreationFlow from "../../components/dataFlow/CreationFlow";
 import { Destination, Source } from "../../apis/apis";
-// import { useData } from "../../appLayout/AppContext";
 
 const PipelineDesigner: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -52,23 +50,19 @@ const PipelineDesigner: React.FunctionComponent = () => {
     []
   );
 
-
-
   const navigateTo = (url: string) => {
-    // setSource(selectedSource!);
-    // setDestination(selectedDestination!);
     navigate(url);
   };
 
   return (
     <>
       <PageSection isWidthLimited>
-          <Content component="h1">Pipeline designer</Content>
-          <Content component="p">
-            Configure the pipeline by adding an existing source and destination
-            or create a new one as per you need. Optionally you can also any
-            number of transformation as needed.
-          </Content>
+        <Content component="h1">Pipeline designer</Content>
+        <Content component="p">
+          Configure the pipeline by adding an existing source and destination or
+          create a new one as per you need. Optionally you can also any number
+          of transformation as needed.
+        </Content>
       </PageSection>
       <PageSection isFilled>
         <Card isFullHeight>
@@ -84,12 +78,14 @@ const PipelineDesigner: React.FunctionComponent = () => {
           </CardBody>
 
           <CardFooter className="custom-card-footer">
-            <ActionGroup style={{ marginTop: 0 }}>
+            <ActionGroup className="create_pipeline-footer">
               <Button
                 variant="primary"
                 isDisabled={!(isSourceConfigured && isDestinationConfigured)}
                 onClick={() =>
-                  navigateTo(`/pipeline/pipeline_designer/create_pipeline?sourceId=${selectedSource?.id}&destinationId=${selectedDestination?.id}`)
+                  navigateTo(
+                    `/pipeline/pipeline_designer/create_pipeline?sourceId=${selectedSource?.id}&destinationId=${selectedDestination?.id}`
+                  )
                 }
               >
                 Configure Pipeline

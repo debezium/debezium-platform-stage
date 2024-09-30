@@ -24,7 +24,7 @@ import { useQuery } from "react-query";
 import SourceSinkTable from "../../components/SourceSinkTable";
 import ApiError from "../../components/ApiError";
 import { useCallback } from "react";
-import "./destination.css";
+import "./Destinations.css";
 import PageHeader from "@components/PageHeader";
 const Destinations: React.FunctionComponent = () => {
   const navigate = useNavigate();
