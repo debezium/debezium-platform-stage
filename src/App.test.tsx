@@ -4,7 +4,7 @@ import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 test("renders the App", () => {
-  const queryClient = new QueryClient(); // Initialize a new QueryClient
+  const queryClient = new QueryClient();
   render(
     <QueryClientProvider client={queryClient}>
       <App />

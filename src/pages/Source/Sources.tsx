@@ -103,19 +103,6 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
         />
       ) : (
         <>
-          {/* <PageSection isWidthLimited>
-              <Content component="h1">Source</Content>
-              {isLoading || sourcesList.length > 0 ? (
-                <Content component="p">
-                  Lists the available sources configured in the cluster
-                  streaming change events from a source database. You can search
-                  a source by its name or sort the list by the count of active
-                  pipelines using a source.
-                </Content>
-              ) : (
-                <></>
-              )}
-          </PageSection> */}
           <PageHeader
             title="Source"
             description="Lists the available sources configured in the cluster

@@ -11,14 +11,12 @@ vi.mock("react-router-dom", () => ({
   useNavigate: () => vi.fn(),
 }));
 
-// Mock the react-query hooks and QueryClient
 vi.mock("react-query", async (importOriginal) => {
   const mod = await importOriginal<typeof import("react-query")>();
   return {
     ...mod,
     useQuery: vi.fn(),
     QueryClient: vi.fn().mockImplementation(() => ({
-      // Add any methods you need to mock from QueryClient
       invalidateQueries: vi.fn(),
     })),
   };
@@ -38,14 +36,12 @@ describe("Pipelines", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Mock useQuery to return pipelines
     vi.mocked(useQuery).mockReturnValue({
       data: mockPipelines,
       error: null,
       isLoading: false,
     } as any);
 
-    // Mock useDeleteData
     vi.mocked(useDeleteData).mockReturnValue({
       mutate: vi.fn(),
     } as any);

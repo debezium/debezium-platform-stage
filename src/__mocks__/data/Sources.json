@@ -5,7 +5,7 @@
       "key": "val"
     },
     "description": "",
-    "name": "test-cass",
+    "name": "test-case",
     "schema": "schema321",
     "type": "io.debezium.connector.cassandra.CassandraConnector",
     "vaults": []
