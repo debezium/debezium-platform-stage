@@ -346,7 +346,7 @@ const Pipelines: React.FunctionComponent = () => {
                           </ToolbarGroup>
                         </ToolbarContent>
                       </Toolbar>
-                      <Table aria-label="Compact Table">
+                      <Table aria-label="Pipeline Table">
                         <Thead>
                           <Tr>
                             <Th key={0}>Name</Th>
