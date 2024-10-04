@@ -44,27 +44,98 @@ const PipelineLog: FC<PipelineLogProps> = ({
 }) => {
   const { addNotification } = useNotification();
 
-  const [logs, setLogs] = useState("");
+  const [logs, setLogs] = useState<string[]>([]);
+  // Set to track unique logs
+  const logSet = new Set<string>();
+
+
   const [isLogLoading, setIsLogLoading] = useState<boolean>(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:8080/api/pipelines/1/logs/stream");
+
+  //   ws.onopen = () => {
+  //     console.log("WebSocket connection opened");
+  //   };
+
+  //   ws.onmessage = (event) => {
+  //     setLogs((prevLogs) => prevLogs + "\n" + event.data); // Append new logs
+  //   };
+  //   ws.onerror = (error) => {
+  //     console.error("WebSocket error:", error);
+  //   };
+  //   ws.onclose = () => {
+  //     console.log("WebSocket connection closed");
+  //   };
+
+  //   return () => {
+  //     if (ws.readyState === WebSocket.OPEN) {
+  //       ws.close();
+  //     }
+  //   };
+  // }, []);
+
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080/api/pipelines/1/logs/stream");
+    let ws: WebSocket;
 
-    ws.onmessage = (event) => {
-      setLogs((prevLogs) => prevLogs + "\n" + event.data); // Append new logs
-    };
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
 
+    // Fetch initial logs via HTTP
+    fetch("http://localhost:8080/api/pipelines/1/logs")
+      .then((response) => response.text())
+      .then((initialLogs) => {
+        const initialLogLines = initialLogs.split("\n");
+
+        // Add initial logs to the set and state
+        initialLogLines.forEach((logLine) => {
+          if (logLine && !logSet.has(logLine)) {
+            logSet.add(logLine);
+          }
+        });
+
+        setLogs((prevLogs) => [...prevLogs, ...initialLogLines]);
+
+        // open WebSocket for real-time updates
+        ws = new WebSocket("ws://localhost:8080/api/pipelines/1/logs/stream");
+
+        ws.onmessage = (event) => {
+          const newLogs = event.data.split("\n");
+
+          const newUniqueLogs = newLogs.filter((logLine: string) => {
+            // Only keep logs that haven't been added
+            return logLine && !logSet.has(logLine);
+          });
+
+          // Add new unique logs to the set and append them to the logs array
+          newUniqueLogs.forEach((logLine: string) => {
+            logSet.add(logLine);
+          });
+
+          if (newUniqueLogs.length > 0) {
+            setLogs((prevLogs) => [...prevLogs, ...newUniqueLogs]);
+          }
+        };
+
+        ws.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
+
+        ws.onclose = () => {
+          console.log("WebSocket connection closed");
+        };
+      })
+      .catch((error) => console.error("Error fetching initial logs:", error));
+
+
+    // Cleanup 
     return () => {
-      ws.close(); // Clean up on component unmount
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+      }
     };
   }, []);
+
+
 
   const downloadLogFile = async (
     pipelineId: string | undefined,
