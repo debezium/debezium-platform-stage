@@ -191,7 +191,7 @@ const Destinations: React.FunctionComponent = () => {
                     </Button>
                     <Button
                       variant="link"
-                      onClick={() => navigateTo("/transformation")}
+                      onClick={() => navigateTo("/transform")}
                     >
                       Add transformation
                     </Button>

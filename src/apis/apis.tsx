@@ -67,6 +67,18 @@ export type Source = {
   id: number;
 };
 
+export type TransformData = {
+  type: string;
+  schema: string;
+  vaults: Vault[];
+  config: SourceConfig;
+  description?: string;
+  name: string;
+  id: number;
+};
+
+export type TransformApiResponse = TransformData[];
+
 export type SourceApiResponse = Source[];
 
 export type PipelineApiResponse = Pipeline[];

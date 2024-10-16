@@ -16,7 +16,7 @@ import ReactFlow, {
 import DataNode from "./DataNode";
 
 import { MdLogin, MdLogout } from "react-icons/md";
-import DataNodeSelector from "./DataNodeSelector";
+import DataNodeSelector from "./DataSelectorNode";
 import { Button, Modal, ModalBody, ModalHeader } from "@patternfly/react-core";
 import { Destination, Source } from "../../apis/apis";
 import { PlusIcon } from "@patternfly/react-icons";

@@ -16,3 +16,7 @@
     max-width: 20%;
     max-height: 20%;
   }
+
+  .transform-card {
+    padding-top: 10px;
+  }

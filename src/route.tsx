@@ -25,8 +25,9 @@ import {
   PipelineDetails,
   Pipelines,
 } from "./pages/Pipeline";
-import { Transformation } from "./pages/Transformation";
+import { Transforms } from "./pages/Transforms";
 import { Vaults } from "./pages/Vault";
+import { CreateTransforms } from "./pages/Transforms/CreateTransforms";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -120,12 +121,18 @@ const routes: AppRouteConfig[] = [
     title: `${AppBranding} | Source`,
   },
   {
-    component: Transformation,
-    label: "Transformation",
+    component: CreateTransforms,
+    path: "/transform/create_transform",
+    navSection: "transform",
+    title: `${AppBranding} | Transform`,
+  },
+  {
+    component: Transforms,
+    label: "Transform",
     icon: <DataProcessorIcon style={{ outline: "none" }} />,
-    path: "/transformation",
-    navSection: "transformation",
-    title: `${AppBranding} | Transformation`,
+    path: "/transform",
+    navSection: "transform",
+    title: `${AppBranding} | Transform`,
   },
   {
     component: Destinations,

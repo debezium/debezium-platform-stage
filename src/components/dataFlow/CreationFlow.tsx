@@ -11,12 +11,12 @@ import ReactFlow, {
   Connection,
   Background,
 } from "reactflow";
-import AddTransformationNode from "./AddTransformationNode";
+import AddTransformationNode from "./TransformAdditionNode";
 
 import DataNode from "./DataNode";
 
 import { MdLogin, MdLogout } from "react-icons/md";
-import DataNodeSelector from "./DataNodeSelector";
+import DataNodeSelector from "./DataSelectorNode";
 import { Button, Modal, ModalBody, ModalHeader } from "@patternfly/react-core";
 import { Destination, Source } from "../../apis/apis";
 import { PlusIcon } from "@patternfly/react-icons";
@@ -127,11 +127,11 @@ const CreationFlow: React.FC<CreationFlowProps> = ({
     return {
       id: "add_transformation",
       data: {
-        label: "Transformation",
+        label: "Transforms",
         sourcePosition: "right",
         targetPosition: "left",
       },
-      position: { x: 55, y: 35 },
+      position: { x: 65, y: 35 },
       targetPosition: "left",
       type: "addTransformation",
       parentId: "transformation_group",

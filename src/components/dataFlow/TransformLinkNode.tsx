@@ -3,23 +3,22 @@ import {
   CardBody,
   Bullseye,
   CardFooter,
-  Button,
+  Content,
 } from "@patternfly/react-core";
 import { Handle, Position } from "reactflow";
-import "./AddTransformationNode.css";
+import "./TransformLinkNode.css";
 
-import { OptimizeIcon, PlusIcon } from "@patternfly/react-icons";
+import { OptimizeIcon } from "@patternfly/react-icons";
 import { useData } from "../../appLayout/AppContext";
 import { AppColors } from "@utils/constants";
 
-interface AddTransformationNodeProps {
+interface TransformLinkNodeProps {
   data: { label: string; sourcePosition: Position; targetPosition: Position };
 }
 
-const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
-  data,
-}) => {
+const TransformLinkNode: React.FC<TransformLinkNodeProps> = ({ data }) => {
   const { darkMode } = useData();
+
   return (
     <>
       <div className="transformationWrapper transformationGradient">
@@ -35,13 +34,16 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
                 }
           }
         >
-          <Handle type="target" id="smt-input" position={data.targetPosition} />
-          <Card
-            ouiaId="BasicCard"
-            isCompact
-            isPlain
-          >
-            <CardBody style={{ paddingBottom: 10 }}>
+          <Handle type="target" id="smt-input" position={data.sourcePosition} />
+          <Card ouiaId="BasicCard" isCompact isPlain>
+            <CardBody
+              style={{
+                paddingTop: 8,
+                paddingBottom: 2,
+                paddingLeft: 10,
+                paddingRight: 10,
+              }}
+            >
               <Bullseye>
                 <div>
                   <OptimizeIcon style={{ fontSize: 15 }} />
@@ -49,24 +51,17 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
               </Bullseye>
             </CardBody>
             <CardFooter
-              style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 10 }}
+              style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 5 }}
             >
-              <Button
-                variant="link"
-                style={{ paddingRight: 5, paddingLeft: 5, fontSize: ".7em" }}
-                size="sm"
-                icon={<PlusIcon />}
-                onClick={() => {}}
-                isDisabled
-              >
+              <Content type="p" style={{ fontSize: "8px", fontWeight: "bold" }}>
                 {data.label}
-              </Button>
+              </Content>
             </CardFooter>
           </Card>
           <Handle
             type="source"
             id="smt-output"
-            position={data.sourcePosition}
+            position={data.targetPosition}
           />
         </div>
       </div>
@@ -74,4 +69,4 @@ const AddTransformationNode: React.FC<AddTransformationNodeProps> = ({
   );
 };
 
-export default AddTransformationNode;
+export default TransformLinkNode;

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { Transformation } from "./Transformation";
+import { Transforms } from "./Transforms";
 import { MemoryRouter } from "react-router-dom";
 import { useData } from "../../appLayout/AppContext";
 
@@ -16,7 +16,7 @@ vi.mock("../../appLayout/AppContext", () => ({
   useData: vi.fn(),
 }));
 
-describe("Transformation Component", () => {
+describe("Transforms Component", () => {
   beforeEach(() => {
     vi.mocked(useData).mockReturnValue({
       darkMode: false,
@@ -26,16 +26,16 @@ describe("Transformation Component", () => {
     });
   });
 
-  it("renders the Transformation component with correct content", () => {
+  it("renders the Transforms component with correct content", () => {
     render(
       <MemoryRouter>
-        <Transformation />
+        <Transforms />
       </MemoryRouter>
     );
 
     expect(screen.getByAltText("Coming Soon")).toBeInTheDocument();
-    expect(screen.getByText("No transformation available")).toBeInTheDocument();
-    expect(screen.getByText("Add Transformation")).toBeInTheDocument();
+    expect(screen.getByText("No transforms available")).toBeInTheDocument();
+    expect(screen.getByText("Add Transforms")).toBeInTheDocument();
     expect(screen.getByText("Go to source")).toBeInTheDocument();
     expect(screen.getByText("Go to destination")).toBeInTheDocument();
     expect(screen.getByText("Go to pipeline")).toBeInTheDocument();

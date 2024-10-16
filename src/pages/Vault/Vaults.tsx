@@ -4,7 +4,6 @@ import { PlusIcon } from "@patternfly/react-icons";
 import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
 import comingSoonImage from "../../assets/comingSoon.png";
-import "../Transformation/Transformation.css";
 import { useData } from "../../appLayout/AppContext";
 
 export interface IVaultsProps {

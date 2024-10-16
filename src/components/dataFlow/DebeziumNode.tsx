@@ -4,9 +4,10 @@ import "./DebeziumNode.css";
 import dbz from "../../assets/debeziumNoText.png";
 import { useData } from "../../appLayout/AppContext";
 import { AppColors } from "@utils/constants";
+// import { Button } from "@patternfly/react-core";
 
 interface DebeziumNodeProps {
-  data: { label: string; sourcePosition: Position; targetPosition: Position };
+  data: { label: string; sourcePosition: Position; targetPosition: Position, handleProcessor: () => void };
 }
 
 const DebeziumNode: React.FC<DebeziumNodeProps> = ({ data }) => {
@@ -16,13 +17,17 @@ const DebeziumNode: React.FC<DebeziumNodeProps> = ({ data }) => {
       <div className="debeziumNodeWrapper debeziumNodeGradient">
         <div
           className="debeziumNodeInner"
+          onClick={data.handleProcessor}
+          
           style={
             darkMode
               ? {
                   background: AppColors.dark,
+                  cursor: "pointer",
                 }
               : {
                   backgroundColor: AppColors.white,
+                  cursor: "pointer",
                 }
           }
         >
@@ -37,8 +42,15 @@ const DebeziumNode: React.FC<DebeziumNodeProps> = ({ data }) => {
             id="smt-output"
             position={data.sourcePosition}
           />
+
+
         </div>
       </div>
+      {/* <foreignObject>
+        <div >
+          <Button variant={"link"} size="sm" onClick={()=>{console.log('clicked')}}>Processor</Button>
+        </div>
+      </foreignObject> */}
     </>
   );
 };

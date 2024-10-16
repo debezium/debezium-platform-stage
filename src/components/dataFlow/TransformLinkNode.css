@@ -3,7 +3,7 @@
   display: flex;
   padding: 1px;
   position: relative;
-  border-radius: 10px;
+  border-radius: 17px;
   flex-grow: 1;
   box-shadow: var(--brand-shadow--light);
 }
