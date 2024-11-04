@@ -86,7 +86,7 @@ const Transforms: React.FunctionComponent<ITransformsProps> = () => {
     error,
     isLoading: isTransformsLoading,
   } = useQuery<TransformData[], Error>(
-    "destinations",
+    "transforms",
     () => fetchData<TransformData[]>(`${API_URL}/api/transforms`),
     {
       refetchInterval: 7000,
@@ -175,10 +175,6 @@ const Transforms: React.FunctionComponent<ITransformsProps> = () => {
 
   return (
     <>
-      {/* <PageSection style={{ position: "relative" }} isFilled>
-
-      </PageSection> */}
-
       <>
         {error ? (
           <PageSection isWidthLimited>
@@ -307,7 +303,7 @@ const Transforms: React.FunctionComponent<ITransformsProps> = () => {
                                   <Bullseye>
                                     <EmptyState
                                       headingLevel="h2"
-                                      titleText="No results found"
+                                      titleText="No matching transform is present."
                                       icon={SearchIcon}
                                       variant={EmptyStateVariant.sm}
                                     >

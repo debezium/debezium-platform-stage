@@ -31,7 +31,7 @@ test("renders the side navigation Expanded", () => {
   const expectedTexts = [
     "Pipeline",
     "Source",
-    "Transforms",
+    "Transform",
     "Destination",
     "Vaults",
   ];
