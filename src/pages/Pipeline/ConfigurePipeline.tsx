@@ -46,6 +46,8 @@ import {
 import { API_URL } from "../../utils/constants";
 import { useData } from "../../appLayout/AppContext";
 import PageHeader from "@components/PageHeader";
+import { useAtom } from 'jotai';
+import { selectedTransformAtom } from "./PipelineDesigner";
 
 const ConfigurePipeline: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -54,6 +56,10 @@ const ConfigurePipeline: React.FunctionComponent = () => {
   const sourceId = params.get("sourceId");
   const destinationId = params.get("destinationId");
 
+  const [selectedTransform] = useAtom(selectedTransformAtom);
+
+  console.log("selectedTransform", selectedTransform)
+
   const navigateTo = (url: string) => {
     navigate(url);
   };
@@ -61,6 +67,8 @@ const ConfigurePipeline: React.FunctionComponent = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+
+
 
   const { navigationCollapsed } = useData();
 
@@ -126,7 +134,7 @@ const ConfigurePipeline: React.FunctionComponent = () => {
         name: destination?.name,
         id: destination?.id,
       },
-      transforms: [],
+      transforms: [...selectedTransform],
       name: values["pipeline-name"],
     };
 

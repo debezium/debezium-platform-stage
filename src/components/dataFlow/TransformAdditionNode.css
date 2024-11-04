@@ -1,9 +1,9 @@
-.transformationWrapper {
+.transformationAdditionWrapper {
   overflow: hidden;
   display: flex;
   padding: 1px;
   position: relative;
-  border-radius: 10px;
+  border-radius: 17px;
   flex-grow: 1;
   box-shadow: var(--brand-shadow--light);
 }
@@ -26,7 +26,7 @@
   border-radius: 100%;
 }
 
-.transformationWrapper.transformationGradient:before {
+.transformationAdditionWrapper.transformationGradient:before {
   content: "";
   background: conic-gradient(
     from -45deg at 50% 50%,
@@ -46,8 +46,8 @@
   }
 }
 
-.transformationInner {
-  border-radius: 9px;
+.transformationAdditionInner {
+  border-radius: 17px;
   display: flex;
   flex-direction: column;
   justify-content: center;

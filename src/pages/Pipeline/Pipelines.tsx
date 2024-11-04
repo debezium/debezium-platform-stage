@@ -57,12 +57,12 @@ import { useDeleteData } from "src/apis";
 import PageHeader from "@components/PageHeader";
 import "./Pipelines.css";
 
-type DeleteInstance = {
+export type DeleteInstance = {
   id: number;
   name: string;
 };
 
-type ActionData = {
+export type ActionData = {
   id: number;
   name: string;
 };

@@ -11,7 +11,7 @@ import { DataSinkIcon, DataSourceIcon } from "@patternfly/react-icons";
 import { useData } from "../../appLayout/AppContext";
 import { AppColors, AppStrings } from "@utils/constants";
 
-interface DataNodeSelectorProps {
+interface DataSelectorNodeProps {
   data: {
     label: string;
     type: string;
@@ -19,7 +19,7 @@ interface DataNodeSelectorProps {
   };
 }
 
-const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
+const DataSelectorNode: React.FC<DataSelectorNodeProps> = ({ data }) => {
   const { darkMode } = useData();
   return (
     <>
@@ -52,7 +52,10 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
             className="pf-v5-u-box-shadow-md"
             style={{ cursor: "auto", width: 110 }}
           >
-            <CardBody style={{ padding: 7 }} className="pf-v5-u-box-shadow-md">
+            <CardBody
+              style={{ padding: "7px" }}
+              className="pf-v5-u-box-shadow-md"
+            >
               <Bullseye>
                 <Stack>
                   <StackItem
@@ -84,4 +87,4 @@ const DataNodeSelector: React.FC<DataNodeSelectorProps> = ({ data }) => {
   );
 };
 
-export default DataNodeSelector;
+export default DataSelectorNode;

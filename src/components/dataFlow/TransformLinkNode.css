@@ -1,14 +1,14 @@
-.debeziumNodeWrapper {
+.transformationWrapper {
   overflow: hidden;
   display: flex;
   padding: 1px;
   position: relative;
-  border-radius: 0 8px 0 8px;
+  border-radius: 0 10px 0 10px;
   flex-grow: 1;
-  box-shadow: var(--brand-shadow);
+  box-shadow: var(--brand-shadow--light) !important;
 }
 
-.debeziumNodeGradient:before {
+.transformationGradient:before {
   content: "";
   position: absolute;
   padding-bottom: calc(100% * 1.41421356237);
@@ -26,7 +26,7 @@
   border-radius: 100%;
 }
 
-.debeziumNodeWrapper.debeziumNodeGradient:before {
+.transformationWrapper.transformationGradient:before {
   content: "";
   background: conic-gradient(
     from -45deg at 50% 50%,
@@ -46,8 +46,9 @@
   }
 }
 
-.debeziumNodeInner {
-  border-radius: 0 7px 0 7px;
+.transformationInner {
+  /* border-radius: 9px; */
+  border-radius: 0 9px 0 9px;
   display: flex;
   flex-direction: column;
   justify-content: center;

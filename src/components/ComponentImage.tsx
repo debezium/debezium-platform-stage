@@ -15,6 +15,7 @@ import kafka from "../assets/kafka.png";
 import infinispan from "../assets/infinispan.png";
 import pubsubLite from "../assets/pub-sub-lite.png";
 import pravega from "../assets/pravega.webp";
+import dbz from "../assets/dbz_logo.png";
 
 interface ConnectorImageProps {
   connectorType: string;
@@ -74,20 +75,15 @@ const ConnectorImage: React.FC<ConnectorImageProps> = ({
     case connectorType.includes("pravega"):
       src = pravega;
       break;
+    case connectorType.includes("debezium"):
+      src = dbz;
+      break;
   }
 
   return size ? (
-    <img
-    src={src}
-    alt={`mongo icon`}
-    style={{ maxHeight: `${size}px` }}
-  />
+    <img src={src} alt={`mongo icon`} style={{ maxHeight: `${size}px` }} />
   ) : (
-    <img
-    src={src}
-    alt={`mongo icon`}
-    style={{ maxHeight: "60px" }}
-  />
+    <img src={src} alt={`mongo icon`} style={{ maxHeight: "60px" }} />
   );
 };
 

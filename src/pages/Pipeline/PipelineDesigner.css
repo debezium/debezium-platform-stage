@@ -10,3 +10,13 @@
 .custom-card-footer .pf-m-action {
     padding: var(--pf-t--global--spacer--md) !important;
 }
+
+.pipeline_designer{
+    padding: 0 !important;
+    gap: 0 !important;
+    width: 100% !important;
+}
+
+.pipeline_designer .pf-v6-c-page__main-body{
+    display: contents !important;
+}
