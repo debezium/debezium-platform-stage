@@ -51,8 +51,8 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
     () => ({
       id: "source",
       data: {
-        connectorType: "io.debezium.connector.mongodb.MongoDbConnector",
-        label: "user-mongodb",
+        connectorType: "io.debezium.connector.postgresql.PostgresConnector",
+        label: "postgres-source",
         type: "source",
         editAction: () => {},
         compositionFlow: true,
@@ -83,8 +83,8 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
     () => ({
       id: "destination",
       data: {
-        connectorType: "infinispan",
-        label: "sink-infinispan",
+        connectorType: "kafka",
+        label: "test-destination",
         type: "destination",
         editAction: () => {},
         compositionFlow: true,

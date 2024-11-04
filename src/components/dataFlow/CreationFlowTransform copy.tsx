@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import ReactFlow, {
   applyNodeChanges,
   applyEdgeChanges,
@@ -59,9 +59,7 @@ interface CreationFlowTransformProps {
   updateSelectedDestination: (destination: Destination) => void;
   updateSelectedTransform: (transform: Transform) => void;
   onToggleDrawer: () => void;
-  isDestinationConfigured: boolean;
   selectedTransform: Transform[];
-  rearrangeTrigger: boolean;
 }
 
 const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
@@ -71,9 +69,7 @@ const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
   updateSelectedDestination,
   updateSelectedTransform,
   onToggleDrawer,
-  isDestinationConfigured,
   selectedTransform,
-  rearrangeTrigger,
 }) => {
   const { darkMode } = useData();
   const [isSourceModalOpen, setIsSourceModalOpen] = useState(false);
@@ -258,35 +254,11 @@ const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
       extent: "parent",
     };
   };
-  const selectedTransformRef = useRef(selectedTransform);
-  selectedTransformRef.current = selectedTransform;
-
-  useEffect(() => {
-    const transformLinkNodes = nodes.filter(
-      (node: any) => node.type === "transformLinkNode"
-    );
-    const updatedTransformLinkNodes = transformLinkNodes.map(
-      (node: any, index: number) => ({
-        ...node,
-        data: {
-          ...node.data,
-          label: selectedTransformRef.current[index].name,
-        },
-      })
-    );
-
-    setNodes((prevNodes: any) => {
-      return [
-        ...prevNodes.filter((node: any) => node.type !== "transformLinkNode"),
-        ...updatedTransformLinkNodes,
-      ];
-    });
-  }, [rearrangeTrigger]);
 
   const handleExpand = useCallback(() => {
-    const linkTransforms = selectedTransformRef.current.map((transform, id) => {
-      const newId = `transform_${id + 1}`;
-      const xPosition = 25 + id * 150;
+    const linkTransforms = selectedTransform.map((transform, id) => {
+      const newId = `transform_${id}`;
+      const xPosition = 25 + (id - 1) * 150;
       const newTransformNode = createNewTransformNode(
         newId,
         xPosition,
@@ -294,112 +266,8 @@ const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
       );
       return newTransformNode;
     });
-    const transformGroupNode = {
-      id: "transform_group",
-      data: {
-        label: "Transform",
-        sourcePosition: "right",
-        targetPosition: "left",
-        onToggleDrawer: onToggleDrawer,
-        handleCollapsed: handleCollapsed,
-      },
-      position: { x: 260, y: 45 },
-      style: {
-        width: 100 + +150 * selectedTransformRef.current.length,
-        height: 80,
-        zIndex: 1,
-      },
-      type: "transformGroupNode",
-    };
-    // console.log(linkTransforms);
-
-    const addTransformNode = {
-      id: "add_transform",
-      data: {
-        label: "SMT2",
-        sourcePosition: "right",
-        targetPosition: "left",
-        action: cardButtonTransform(),
-      },
-      position: { x: 45 + selectedTransformRef.current.length * 150, y: 37 },
-      style: {
-        zIndex: 10,
-      },
-      targetPosition: "left",
-      type: "addTransformNode",
-      parentId: "transform_group",
-      extent: "parent",
-    };
-
-    setNodes((prevNodes: any) => {
-      const dataSelectorDestinationNode = prevNodes.find(
-        (node: any) => node.id === "destination"
-      );
-
-      const updatedDataSelectorDestinationNode = {
-        ...dataSelectorDestinationNode,
-        position: {
-          ...dataSelectorDestinationNode.position,
-          x:
-            dataSelectorDestinationNode.position.x +
-            150 * selectedTransformRef.current.length,
-        },
-      };
-
-      return [
-        ...prevNodes.filter(
-          (node: any) =>
-            node.id !== "transform_selected" && node.id !== "destination"
-        ),
-
-        transformGroupNode,
-        ...linkTransforms,
-        addTransformNode,
-        updatedDataSelectorDestinationNode,
-      ];
-    });
-
-    const newEdge: {
-      id: string;
-      source: string;
-      target: string;
-      type: string;
-    }[] = [];
-    selectedTransformRef.current.map((_transform, id) => {
-      const newId = `transform_${id + 1}`;
-      if (id === 0) {
-        newEdge.push({
-          id: `source-transform_${id + 1}`,
-          source: "source",
-          target: newId,
-          type: "customEdgeSource",
-        });
-      } else {
-        newEdge.push({
-          id: `transform_${id}-transform_${id + 1}`,
-          source: `transform_${id}`,
-          target: newId,
-          type: "customEdgeSource",
-        });
-      }
-    });
-
-    newEdge.push({
-      id: `transform_${selectedTransformRef.current.length}-add_transform`,
-      source: `transform_${selectedTransformRef.current.length}`,
-      target: "add_transform",
-      type: "customEdgeSource",
-    });
-
-    newEdge.push({
-      id: "add_transform-destination",
-      source: "add_transform",
-      target: "destination",
-      type: "customEdgeDestination",
-    });
-
-    setEdges([...newEdge]);
-  }, [cardButtonTransform, onToggleDrawer]);
+    console.log(linkTransforms);
+  }, [selectedTransform]);
 
   const TransformSelectedNode = useMemo(() => {
     return {
@@ -409,43 +277,23 @@ const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
         sourcePosition: "right",
         targetPosition: "left",
         handleExpand: handleExpand,
-        selectedTransform: selectedTransformRef,
       },
       position: { x: 270, y: 50 },
       targetPosition: "left",
       type: "transformSelectedNode",
       draggable: false,
     };
-  }, [handleExpand]);
-
-  const isDestinationConfiguredRef = useRef(isDestinationConfigured);
-  isDestinationConfiguredRef.current = isDestinationConfigured;
+  }, [handleExpand, selectedTransform]);
 
   const handleCollapsed = useCallback(() => {
     setNodes((prevNodes: any) => {
-      const destinationNode = prevNodes.find(
-        (node: any) => node.id === "destination"
-      );
-
-      const updatedDestinationNode = {
-        ...destinationNode,
-        position: {
-          ...dataSelectorDestinationNode.position,
-          x: 480,
-        },
-      };
-
-      const updatedDataSelectorDestinationNode = isDestinationConfiguredRef
-        ? updatedDestinationNode
-        : dataSelectorDestinationNode;
-
       return [
         ...prevNodes.filter(
           (node: any) =>
-            !node.id.includes("transform") && node.id !== "destination"
+            !node.id.includes("transform") || node.id === "destination"
         ),
         TransformSelectedNode,
-        updatedDataSelectorDestinationNode,
+        dataSelectorDestinationNode,
       ];
     });
     setEdges([
@@ -463,11 +311,7 @@ const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
         type: "customEdgeDestination",
       },
     ]);
-  }, [
-    TransformSelectedNode,
-    dataSelectorDestinationNode,
-    isDestinationConfiguredRef,
-  ]);
+  }, [TransformSelectedNode, dataSelectorDestinationNode]);
 
   const transformGroupNode = useMemo(() => {
     return {
@@ -709,7 +553,7 @@ const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
         fitView
         panOnScroll={true}
         panOnScrollMode={PanOnScrollMode.Horizontal}
-        maxZoom={1.4}
+        maxZoom={1.3}
         minZoom={1.1}
         panOnDrag={true}
       >
@@ -794,3 +638,92 @@ const CreationFlowTransform: React.FC<CreationFlowTransformProps> = ({
 };
 
 export default CreationFlowTransform;
+
+
+
+// const handleExpand = useCallback(() => {
+//   const linkTransforms = selectedTransform.map((transform, id) => {
+//     const newId = `transform_${id}`;
+//     const xPosition = 25 + (id - 1) * 150;
+//     const newTransformNode = createNewTransformNode(
+//       newId,
+//       xPosition,
+//       transform.name
+//     );
+//     return newTransformNode;
+//   });
+//   console.log(linkTransforms);
+//   // setNodes((prevNodes: any) => {
+//   //   const dataSelectorDestinationNode = prevNodes.find(
+//   //     (node: any) => node.id === "destination"
+//   //   );
+
+//   //   // const updatedAddTransformNode = {
+//   //   //   ...addTransformNode,
+//   //   //   position: {
+//   //   //     ...addTransformNode.position,
+//   //   //     x: addTransformNode.position.x + 150 * selectedTransform.length,
+//   //   //   },
+//   //   // };
+//   //   const updatedDataSelectorDestinationNode = {
+//   //     ...dataSelectorDestinationNode,
+//   //     position: {
+//   //       ...dataSelectorDestinationNode.position,
+//   //       x:
+//   //         dataSelectorDestinationNode.position.x +
+//   //         150 * selectedTransform.length,
+//   //     },
+//   //   };
+//   //   // const updatedTransformGroupNode = {
+//   //   //   ...transformGroupNode,
+//   //   //   style: {
+//   //   //     ...transformGroupNode.style,
+//   //   //     width:
+//   //   //       transformGroupNode.style.width + 150 * selectedTransform.length,
+//   //   //   },
+//   //   // };
+//   //   return [
+//   //     ...prevNodes.filter(
+//   //       (node: any) =>
+//   //         node.id === "transform_selected" || node.id === "destination"
+//   //     ),
+//   //     // updatedAddTransformNode,
+//   //     // updatedTransformGroupNode,
+//   //     ...linkTransforms,
+//   //     updatedDataSelectorDestinationNode,
+//   //   ];
+//   // });
+
+//   // const newEdge: {
+//   //   id: string;
+//   //   source: string;
+//   //   target: string;
+//   //   type: string;
+//   // }[] = [];
+//   // selectedTransform.map((_transform, id) => {
+//   //   const newId = `transform_${id + 1}`;
+//   //   if (id === 0) {
+//   //     newEdge.push({
+//   //       id: `source-transform_${id + 1}`,
+//   //       source: "source",
+//   //       target: newId,
+//   //       type: "customEdgeSource",
+//   //     });
+//   //   }
+//   //   newEdge.push({
+//   //     id: `transform_${id}--add_transform`,
+//   //     source: `transform_${id}`,
+//   //     target: "add_transform",
+//   //     type: "customEdgeDestination",
+//   //   });
+//   // });
+
+//   // newEdge.push({
+//   //   id: `transform_${selectedTransform.length}-destination`,
+//   //   source: `transform_${selectedTransform.length}`,
+//   //   target: "destination",
+//   //   type: "customEdgeDestination",
+//   // });
+
+//   // setEdges([...newEdge]);
+// }, [selectedTransform]);

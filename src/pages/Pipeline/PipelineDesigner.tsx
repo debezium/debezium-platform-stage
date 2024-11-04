@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
 import {
   ActionGroup,
@@ -22,18 +23,27 @@ import {
   PageSection,
   Tooltip,
 } from "@patternfly/react-core";
-
+import { atom, useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 import "./PipelineDesigner.css";
 // import CreationFlow from "../../components/dataFlow/CreationFlow";
 import { Destination, Source, Transform } from "../../apis/apis";
 import CreationFlowTransform from "@components/dataFlow/CreationFlowTransform";
-import { DragDropSort, DraggableObject } from "@patternfly/react-drag-drop";
+import {
+  DragDropSort,
+  DragDropSortDragEndEvent,
+  DraggableObject,
+} from "@patternfly/react-drag-drop";
 import { TrashIcon } from "@patternfly/react-icons";
+
+// Define Jotai atoms
+export const selectedSourceAtom = atom<Source | undefined>(undefined);
+export const selectedDestinationAtom = atom<Destination | undefined>(undefined);
+export const selectedTransformAtom = atom<Transform[]>([]);
 
 const getItems = (selectedTransform: Transform[]): DraggableObject[] =>
   selectedTransform.map((transform, idx) => ({
-    id: `data-list-${transform.id}-item-${idx}`,
+    id: `${transform.id}=${transform.name}`,
     content: (
       <>
         <DataListItemCells
@@ -49,16 +59,15 @@ const getItems = (selectedTransform: Transform[]): DraggableObject[] =>
           aria-label="Actions"
         >
           <Tooltip content="Delete">
-          <Button
-            onClick={() => {
-              console.log("deleted clicked" + `data-list-item-${idx}`);
-            }}
-            variant="plain"
-            key="delete-action"
-            icon={<TrashIcon />}
-          />
+            <Button
+              onClick={() => {
+                console.log("deleted clicked" + `data-list-item-${idx}`);
+              }}
+              variant="plain"
+              key="delete-action"
+              icon={<TrashIcon />}
+            />
           </Tooltip>
-          
         </DataListAction>
       </>
     ),
@@ -73,13 +82,27 @@ const PipelineDesigner: React.FunctionComponent = () => {
   const [isDestinationConfigured, setIsDestinationConfigured] =
     React.useState(false);
 
-  const [selectedSource, setSelectedSource] = React.useState<Source>();
-  const [selectedDestination, setSelectedDestination] =
-    React.useState<Destination>();
-
-  const [selectedTransform, setSelectedTransform] = React.useState<Transform[]>(
-    []
+  const [selectedSource, setSelectedSource] = useAtom(selectedSourceAtom);
+  const [selectedDestination, setSelectedDestination] = useAtom(
+    selectedDestinationAtom
   );
+  const [selectedTransform, setSelectedTransform] = useAtom(
+    selectedTransformAtom
+  );
+
+  const [rearrangeTrigger, setRearrangeTrigger] = React.useState(false);
+
+  // Function to handle rearrange apply button click
+  const handleRearrangeClick = () => {
+    const updatedTransforms = items.map((item) => {
+      const [id, name] = String(item.id).split("=");
+      return { id: Number(id), name };
+    });
+    setSelectedTransform(updatedTransforms);
+
+    setRearrangeTrigger((prev) => !prev); // Toggle to trigger rearrangement in child
+    onToggleDrawer();
+  };
 
   const [isExpanded, setIsExpanded] = React.useState(false);
   const drawerRef = React.useRef<HTMLDivElement>();
@@ -114,23 +137,49 @@ const PipelineDesigner: React.FunctionComponent = () => {
     []
   );
 
-  const updateSelectedSource = React.useCallback((source: Source) => {
-    setSelectedSource(source);
-  }, []);
+  const updateSelectedSource = React.useCallback(
+    (source: Source) => {
+      setSelectedSource(source);
+    },
+    [setSelectedSource]
+  );
 
   const updateSelectedDestination = React.useCallback(
     (destination: Destination) => {
       setSelectedDestination(destination);
     },
-    []
+    [setSelectedDestination]
   );
 
-  const updateSelectedTransform = React.useCallback((transform: Transform) => {
-    setSelectedTransform((prevTransforms) => [...prevTransforms, transform]);
-  }, []);
+  const updateSelectedTransform = React.useCallback(
+    (transform: Transform) => {
+      setSelectedTransform((prevTransforms) => [...prevTransforms, transform]);
+    },
+    [setSelectedTransform]
+  );
 
   const navigateTo = (url: string) => {
     navigate(url);
+  };
+
+  React.useEffect(() => {
+    setItems(getItems(selectedTransform));
+  }, [selectedTransform]);
+
+  const reArrangeTransform = (
+    _event: DragDropSortDragEndEvent,
+    newItems: DraggableObject[],
+    oldIndex?: number | undefined,
+    newIndex?: number | undefined
+  ) => {
+    setItems(newItems);
+    console.log("newItems", newItems, oldIndex, newIndex);
+    // const updatedTransforms = [...selectedTransform];
+    // if (oldIndex !== undefined && newIndex !== undefined) {
+    //   const [movedItem] = updatedTransforms.splice(oldIndex, 1);
+    //   updatedTransforms.splice(newIndex, 0, movedItem);
+    //   setSelectedTransform(updatedTransforms);
+    // }
   };
 
   const panelContent = (
@@ -151,22 +200,27 @@ const PipelineDesigner: React.FunctionComponent = () => {
         them on specific order for them to be applied.
       </DrawerPanelDescription>
       <DrawerPanelBody style={{ display: "inline-block" }}>
-        {selectedTransform.length === 0 ? <>No transform configured</> : <>
-          <DragDropSort
-          items={items}
-          onDrop={(_, newItems) => {
-            console.log("newItems", newItems);
-            setItems(newItems);
-          }}
-          variant="DataList"
-          overlayProps={{ isCompact: true }}
-        >
-          <DataList aria-label="draggable data list example" isCompact />
-        </DragDropSort>
-        <Button variant="primary" style={{ marginTop: "15px" }}>
-          Apply
-        </Button></>} 
-        
+        {selectedTransform.length === 0 ? (
+          <>No transform configured</>
+        ) : (
+          <>
+            <DragDropSort
+              items={items}
+              onDrop={reArrangeTransform}
+              variant="DataList"
+              overlayProps={{ isCompact: true }}
+            >
+              <DataList aria-label="draggable data list example" isCompact />
+            </DragDropSort>
+            <Button
+              variant="primary"
+              style={{ marginTop: "15px" }}
+              onClick={handleRearrangeClick}
+            >
+              Apply
+            </Button>
+          </>
+        )}
       </DrawerPanelBody>
     </DrawerPanelContent>
   );
@@ -199,6 +253,9 @@ const PipelineDesigner: React.FunctionComponent = () => {
                       updateSelectedDestination={updateSelectedDestination}
                       onToggleDrawer={onToggleDrawer}
                       updateSelectedTransform={updateSelectedTransform}
+                      selectedTransform={selectedTransform}
+                      isDestinationConfigured={isDestinationConfigured}
+                      rearrangeTrigger={rearrangeTrigger}
                     />
                   </CardBody>
 

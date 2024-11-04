@@ -1,5 +1,5 @@
-.transformationWrapper {
-  border-radius: 10px;
+.transformationGroupWrapper {
+  border-radius: 0 10px 0 10px;
   box-shadow: var(--brand-shadow);
 }
 
@@ -21,7 +21,7 @@
 }
 .collapsedDataNodeDestination {
   border-radius: 100%;
-  background-color: #fff;
+  /* background-color: #fff; */
   width: 25px;
   height: 25px;
   left: 5;

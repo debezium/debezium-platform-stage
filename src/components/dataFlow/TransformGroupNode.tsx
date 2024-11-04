@@ -1,7 +1,7 @@
 import { Content, Tooltip } from "@patternfly/react-core";
 import { Position } from "reactflow";
 import "./TransformGroupNode.css";
-import { AngleRightIcon, PencilAltIcon } from "@patternfly/react-icons";
+import { AngleDownIcon, PencilAltIcon } from "@patternfly/react-icons";
 import { AppColors } from "@utils/constants";
 import { useData } from "@appContext/AppContext";
 
@@ -11,6 +11,7 @@ interface TransformGroupNodeProps {
     sourcePosition: Position;
     targetPosition: Position;
     onToggleDrawer: () => void;
+    handleCollapsed: () => void;
   };
 }
 
@@ -20,12 +21,11 @@ const TransformGroupNode: React.FC<TransformGroupNodeProps> = ({ data }) => {
   return (
     <>
       <div
-        onClick={() => {
-          console.log("expand/collapsed clicked");
-        }}
+        onClick={data.handleCollapsed}
+        style={{ cursor: "pointer" }}
         className={"collapsedDataNodeDestination"}
       >
-        <Tooltip content={<div>Collapsed</div>}>
+        <Tooltip content={<div>Collapse</div>}>
           <div
             style={
               darkMode
@@ -37,7 +37,7 @@ const TransformGroupNode: React.FC<TransformGroupNodeProps> = ({ data }) => {
                   }
             }
           >
-            <AngleRightIcon />
+            <AngleDownIcon />
           </div>
         </Tooltip>
       </div>
@@ -59,7 +59,7 @@ const TransformGroupNode: React.FC<TransformGroupNodeProps> = ({ data }) => {
         </Tooltip>
       </div>
 
-      <div className="transformationWrapper " style={{ height: 100 }}>
+      <div className="transformationGroupWrapper " style={{ height: 100 }}>
         {/* <Handle type="target" id="smt-input" position={data.targetPosition} /> */}
 
         <Content

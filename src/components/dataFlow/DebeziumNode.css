@@ -5,7 +5,7 @@
   position: relative;
   border-radius: 0 8px 0 8px;
   flex-grow: 1;
-  box-shadow: var(--brand-shadow--large);
+  box-shadow: var(--brand-shadow);
 }
 
 .debeziumNodeGradient:before {

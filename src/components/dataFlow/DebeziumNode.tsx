@@ -7,7 +7,12 @@ import { AppColors } from "@utils/constants";
 // import { Button } from "@patternfly/react-core";
 
 interface DebeziumNodeProps {
-  data: { label: string; sourcePosition: Position; targetPosition: Position, handleProcessor: () => void };
+  data: {
+    label: string;
+    sourcePosition: Position;
+    targetPosition: Position;
+    handleCollapsed: () => void;
+  };
 }
 
 const DebeziumNode: React.FC<DebeziumNodeProps> = ({ data }) => {
@@ -17,8 +22,6 @@ const DebeziumNode: React.FC<DebeziumNodeProps> = ({ data }) => {
       <div className="debeziumNodeWrapper debeziumNodeGradient">
         <div
           className="debeziumNodeInner"
-          onClick={data.handleProcessor}
-          
           style={
             darkMode
               ? {
@@ -42,8 +45,6 @@ const DebeziumNode: React.FC<DebeziumNodeProps> = ({ data }) => {
             id="smt-output"
             position={data.sourcePosition}
           />
-
-
         </div>
       </div>
       {/* <foreignObject>

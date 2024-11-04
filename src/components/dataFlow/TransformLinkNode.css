@@ -3,9 +3,9 @@
   display: flex;
   padding: 1px;
   position: relative;
-  border-radius: 17px;
+  border-radius: 0 10px 0 10px;
   flex-grow: 1;
-  box-shadow: var(--brand-shadow--light);
+  box-shadow: var(--brand-shadow--light) !important;
 }
 
 .transformationGradient:before {
@@ -47,7 +47,8 @@
 }
 
 .transformationInner {
-  border-radius: 9px;
+  /* border-radius: 9px; */
+  border-radius: 0 9px 0 9px;
   display: flex;
   flex-direction: column;
   justify-content: center;

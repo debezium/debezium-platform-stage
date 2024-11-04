@@ -53,9 +53,19 @@ const TransformLinkNode: React.FC<TransformLinkNodeProps> = ({ data }) => {
             <CardFooter
               style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 5 }}
             >
-              <Content type="p" style={{ fontSize: "8px", fontWeight: "bold" }}>
+                <Content
+                type="p"
+                style={{
+                  fontSize: "8px",
+                  fontWeight: "bold",
+                  maxWidth: "100px",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+                >
                 {data.label}
-              </Content>
+                </Content>
             </CardFooter>
           </Card>
           <Handle
