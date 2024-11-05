@@ -26,9 +26,8 @@ import {
   ToolbarGroup,
   ToolbarItem,
 } from "@patternfly/react-core";
-import { PlusIcon, SearchIcon } from "@patternfly/react-icons";
+import { DataProcessorIcon, PlusIcon, SearchIcon } from "@patternfly/react-icons";
 import EmptyStatus from "../../components/EmptyStatus";
-// import comingSoonImage from "../../assets/comingSoon.png";
 import "./Transforms.css";
 import { useNavigate } from "react-router-dom";
 import { fetchData, TransformData, useDeleteData } from "src/apis";
@@ -50,14 +49,12 @@ import {
 } from "@patternfly/react-table";
 import { ActionData, DeleteInstance } from "@pipelinePage/index";
 import { useNotification } from "@appContext/index";
-// import { useData } from "../../appLayout/AppContext";
 
 export interface ITransformsProps {
   sampleProp?: string;
 }
 
 const Transforms: React.FunctionComponent<ITransformsProps> = () => {
-  // const { darkMode } = useData();
   const navigate = useNavigate();
 
   const navigateTo = (url: string) => {
@@ -127,7 +124,6 @@ const Transforms: React.FunctionComponent<ITransformsProps> = () => {
   const handleDelete = async (id: number) => {
     setIsLoading(true);
     const url = `${API_URL}/api/transforms/${id}`;
-
     deleteData(url);
   };
 
@@ -331,13 +327,14 @@ const Transforms: React.FunctionComponent<ITransformsProps> = () => {
                     </PageSection>
                   </>
                 ) : (
-                  <div>
+                  
                     <EmptyStatus
                       heading="No Transform available"
                       primaryMessage=' No Transform is configure for this cluster yet. To streams change
               events from a Transformation database you can configure a source by click
               the "Add Transform" button.'
                       secondaryMessage=""
+                      icon={DataProcessorIcon as React.ComponentType<unknown>}
                       primaryAction={
                         <Button
                           variant="primary"
@@ -357,7 +354,7 @@ const Transforms: React.FunctionComponent<ITransformsProps> = () => {
                         </>
                       }
                     />
-                  </div>
+                  
                 )}
               </>
             )}

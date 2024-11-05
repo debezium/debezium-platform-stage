@@ -16,6 +16,7 @@ export const useDeleteData = ({
       queryClient.invalidateQueries("pipelines");
       queryClient.invalidateQueries("destinations");
       queryClient.invalidateQueries("sources");
+      queryClient.invalidateQueries("transforms");
 
       // Call the optional onSuccess callback from the component
       if (onSuccess) {

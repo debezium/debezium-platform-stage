@@ -41,27 +41,25 @@ import {
   CodeIcon,
   ExclamationCircleIcon,
   PencilAltIcon,
-  // PlusIcon,
   TimesIcon,
 } from "@patternfly/react-icons";
-// import { selectOptions } from "@testing-library/user-event/dist/cjs/utility/selectOptions.js";
 import * as React from "react";
 import transforms from "../../__mocks__/data/DebeziumTransfroms.json";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createPost } from "src/apis";
+import { createPost, TransformData } from "src/apis";
 import { API_URL } from "@utils/constants";
 import { useNotification } from "@appContext/AppNotificationContext";
 
 export interface ICreateTransformsProps {
-  sampleProp?: string;
+  modelLoaded?: boolean;
+  onSelection?: (selection: TransformData) => void;
 }
 
-const CreateTransforms: React.FunctionComponent<
-  ICreateTransformsProps
-> = () => {
-  // const { darkMode } = useData();
-
+const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
+  modelLoaded,
+  onSelection,
+}) => {
   const navigate = useNavigate();
 
   const navigateTo = (url: string) => {
@@ -114,8 +112,6 @@ const CreateTransforms: React.FunctionComponent<
           .toLowerCase()
           .includes(filterValue.toLowerCase())
       );
-
-      // When no options are found after filtering, display 'No results found'
       if (!newSelectOptions.length) {
         newSelectOptions = [
           {
@@ -125,7 +121,6 @@ const CreateTransforms: React.FunctionComponent<
           },
         ];
       }
-
       // Open the menu when the input value changes and the new value is not empty
       if (!isOpen) {
         setIsOpen(true);
@@ -163,13 +158,9 @@ const CreateTransforms: React.FunctionComponent<
   };
 
   const selectOption = (value: string | number, content: string | number) => {
-    // eslint-disable-next-line no-console
-    console.log("selected", content);
-
     setInputValue(String(content));
     setFilterValue("");
     setSelected(String(value));
-
     closeMenu();
   };
 
@@ -237,7 +228,6 @@ const CreateTransforms: React.FunctionComponent<
       } else {
         indexToFocus = focusedItemIndex + 1;
       }
-
       // Skip disabled options
       while (selectOptions![indexToFocus].isDisabled) {
         indexToFocus++;
@@ -331,25 +321,19 @@ const CreateTransforms: React.FunctionComponent<
   );
 
   const createNewTransform = async (values: Record<string, string>) => {
-    // handleCreateSource(values);
-    // const transformDetails: Record<string, string> = {
-    //   "debezium.transforms": values["transform-name"],
-    //   [`debezium.transforms.${values["transform-name"]}.type`]: selected,
-    // };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { "transform-name": transformName, "description": description, ...restValues } = values;
+    const {
+      "transform-name": transformName,
+      description: description,
+      ...restValues
+    } = values;
     const payload = {
       description: description,
       type: selected,
       schema: "schema321",
       vaults: [],
-      config: {...restValues},
+      config: { ...restValues },
       name: transformName,
     };
-    // const payload = { ...transformDetails, ...restValues };
-
-    console.log("payload", payload);
-
     const response = await createPost(`${API_URL}/api/transforms`, payload);
 
     if (response.error) {
@@ -359,13 +343,13 @@ const CreateTransforms: React.FunctionComponent<
         `Failed to create ${(response.data as any).name}: ${response.error}`
       );
     } else {
-      // modelLoaded && onSelection && onSelection(response.data as any);
+      modelLoaded && onSelection && onSelection(response.data as any);
       addNotification(
         "success",
         `Create successful`,
         `Source "${(response.data as any).name}" created successfully.`
       );
-      navigateTo("/transform");
+      !modelLoaded && navigateTo("/transform");
     }
   };
 
@@ -379,20 +363,14 @@ const CreateTransforms: React.FunctionComponent<
     setEditorSelected(id);
   };
 
-  // const handleCreateSource = async (values: Record<string, string>) => {
-  //   setIsLoading(true);
-  //   console.log("values", values);
-  //   setIsLoading(false);
-  // };
-
   return (
     <>
-      {
+      {!modelLoaded && (
         <PageHeader
           title="Create transform"
           description="Add a transform, Before the messages are delivered to the sink, they can run through a sequence of transformations."
         />
-      }
+      )}
       <PageSection className="create_source-toolbar">
         <Toolbar id="create-editor-toggle">
           <ToolbarContent>
@@ -451,9 +429,7 @@ const CreateTransforms: React.FunctionComponent<
                       >
                         <Select
                           id="transform-class"
-                          // name="transform-class"
                           aria-label="transform-class"
-                          // id="typeahead-select"
                           isOpen={isOpen}
                           selected={selected}
                           onSelect={onSelect}
@@ -526,10 +502,7 @@ const CreateTransforms: React.FunctionComponent<
                         </FormHelperText>
                       </FormGroup>
 
-                      <FormGroup
-                        label="Description"
-                        fieldId="description"
-                      >
+                      <FormGroup label="Description" fieldId="description">
                         <TextInput
                           id="description"
                           name="description"
@@ -550,7 +523,13 @@ const CreateTransforms: React.FunctionComponent<
                                 text: "Transform configuration properties",
                                 id: `field-group-${selected}-id`,
                               }}
-                              titleDescription={<>Configuration properties passed to the transformation with name <i>"{values["transform-name"]}"</i></>}
+                              titleDescription={
+                                <>
+                                  Configuration properties passed to the
+                                  transformation with name{" "}
+                                  <i>"{values["transform-name"]}"</i>
+                                </>
+                              }
                             />
                           }
                         >
@@ -583,7 +562,6 @@ const CreateTransforms: React.FunctionComponent<
                                 }
                               >
                                 {isBoolean ? (
-                                  // For BOOLEAN type, use Switch component
                                   <Switch
                                     id={`debezium.transforms.${transformName}.${key}`}
                                     label="On"
@@ -606,8 +584,7 @@ const CreateTransforms: React.FunctionComponent<
                                       );
                                     }}
                                   />
-                                ) : // For STRING type, use TextInput
-                                dropDown ? (
+                                ) : dropDown ? (
                                   <FormSelect
                                     value={
                                       getValue(
@@ -734,12 +711,14 @@ const CreateTransforms: React.FunctionComponent<
                 >
                   Create transform
                 </Button>
-                <Button
-                  variant="link"
-                  onClick={() => navigateTo("/transform")}
-                >
-                  Back
-                </Button>
+                {modelLoaded && (
+                  <Button
+                    variant="link"
+                    onClick={() => navigateTo("/transform")}
+                  >
+                    Back
+                  </Button>
+                )}
               </ActionGroup>
             </PageSection>
           </>

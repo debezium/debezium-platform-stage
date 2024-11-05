@@ -26,7 +26,7 @@ const TransformSelectionList: React.FunctionComponent<
   ITransformSelectionListProps
 > = ({ data, onSelection }) => {
   const {
-    data: pipelineList = [],
+    data: _pipelineList = [],
     error: _pipelineError,
     isLoading: _isPipelineLoading,
   } = useQuery<Pipeline[], Error>(

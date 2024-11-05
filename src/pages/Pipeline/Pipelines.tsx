@@ -176,7 +176,6 @@ const Pipelines: React.FunctionComponent = () => {
   const handleDelete = async (id: number) => {
     setIsLoading(true);
     const url = `${API_URL}/api/pipelines/${id}`;
-
     deleteData(url);
   };
 

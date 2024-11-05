@@ -29,7 +29,7 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
 
   return (
     <>
-      <div
+    {!data.compositionFlow  && (<div
         onClick={data.editAction}
         className={
           data.type === AppStrings.source
@@ -52,7 +52,8 @@ const DataNode: React.FC<DataNodeProps> = ({ data }) => {
             <PencilAltIcon />
           </div>
         </Tooltip>
-      </div>
+      </div>)}
+      
       <div
         className={
           data.type === AppStrings.source

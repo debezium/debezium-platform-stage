@@ -16,6 +16,7 @@ interface DataSelectorNodeProps {
     label: string;
     type: string;
     action: React.ReactNode;
+    welcomeFlow?: boolean;
   };
 }
 
@@ -73,7 +74,8 @@ const DataSelectorNode: React.FC<DataSelectorNodeProps> = ({ data }) => {
                       )}
                     </div>
                   </StackItem>
-                  <StackItem>{data.action}</StackItem>
+                  {data.welcomeFlow ? (<StackItem>{data.type}</StackItem>): (<StackItem>{data.action}</StackItem>)}
+                  
                 </Stack>
               </Bullseye>
             </CardBody>

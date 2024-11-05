@@ -15,7 +15,7 @@ import {
   ToolbarGroup,
   ToolbarItem,
 } from "@patternfly/react-core";
-import { PlusIcon } from "@patternfly/react-icons";
+import { DataSourceIcon, PlusIcon } from "@patternfly/react-icons";
 import EmptyStatus from "../../components/EmptyStatus";
 import { useNavigate } from "react-router-dom";
 import { Source, fetchData } from "../../apis/apis";
@@ -48,7 +48,7 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
   const {
     data: sourcesList = [],
     error,
-    isLoading,
+    isLoading: isSourceLoading,
   } = useQuery<Source[], Error>(
     "sources",
     () => fetchData<Source[]>(`${API_URL}/api/sources`),
@@ -103,106 +103,113 @@ const Sources: React.FunctionComponent<ISourceProps> = () => {
         />
       ) : (
         <>
-          <PageHeader
-            title="Source"
-            description="Lists the available sources configured in the cluster
+          {isSourceLoading ? (
+            <EmptyState
+              titleText="Loading..."
+              headingLevel="h4"
+              icon={Spinner}
+            />
+          ) : (
+            <>
+              {sourcesList.length > 0 ? (
+                <>
+                  <PageHeader
+                    title="Source"
+                    description="Lists the available sources configured in the cluster
                   streaming change events from a source database. You can search
                   a source by its name or sort the list by the count of active
                   pipelines using a source."
-          />
-          <PageSection>
-            {isLoading || sourcesList.length > 0 ? (
-              <Card className="source-card">
-                <Toolbar
-                  id="toolbar-sticky"
-                  className="custom-toolbar"
-                  isSticky
-                >
-                  <ToolbarContent>
-                    <ToolbarItem>
-                      <SearchInput
-                        aria-label="Items example search input"
-                        placeholder="Find by name"
-                        value={searchQuery}
-                        onChange={(_event, value) => onSearch(value)}
+                  />
+                  <PageSection>
+                    <Card className="source-card">
+                      <Toolbar
+                        id="toolbar-sticky"
+                        className="custom-toolbar"
+                        isSticky
+                      >
+                        <ToolbarContent>
+                          <ToolbarItem>
+                            <SearchInput
+                              aria-label="Items example search input"
+                              placeholder="Find by name"
+                              value={searchQuery}
+                              onChange={(_event, value) => onSearch(value)}
+                              onClear={onClear}
+                            />
+                          </ToolbarItem>
+                          <ToolbarItem>
+                            <ToggleGroup aria-label="Icon variant toggle group">
+                              <Button
+                                variant="primary"
+                                icon={<PlusIcon />}
+                                onClick={() => navigateTo("/source/catalog")}
+                              >
+                                Add source
+                              </Button>
+                            </ToggleGroup>
+                          </ToolbarItem>
+                          <ToolbarGroup align={{ default: "alignEnd" }}>
+                            <ToolbarItem>
+                              <Content component={ContentVariants.small}>
+                                {
+                                  (searchQuery.length > 0
+                                    ? searchResult
+                                    : sourcesList
+                                  ).length
+                                }{" "}
+                                Items
+                              </Content>
+                            </ToolbarItem>
+                          </ToolbarGroup>
+                        </ToolbarContent>
+                      </Toolbar>
+                      <SourceSinkTable
+                        data={
+                          searchQuery.length > 0 ? searchResult : sourcesList
+                        }
+                        tableType="source"
                         onClear={onClear}
                       />
-                    </ToolbarItem>
-                    <ToolbarItem>
-                      <ToggleGroup aria-label="Icon variant toggle group">
-                        <Button
-                          variant="primary"
-                          icon={<PlusIcon />}
-                          onClick={() => navigateTo("/source/catalog")}
-                        >
-                          Add source
-                        </Button>
-                      </ToggleGroup>
-                    </ToolbarItem>
-                    <ToolbarGroup align={{ default: "alignEnd" }}>
-                      <ToolbarItem>
-                        <Content component={ContentVariants.small}>
-                          {
-                            (searchQuery.length > 0
-                              ? searchResult
-                              : sourcesList
-                            ).length
-                          }{" "}
-                          Items
-                        </Content>
-                      </ToolbarItem>
-                    </ToolbarGroup>
-                  </ToolbarContent>
-                </Toolbar>
-                {isLoading ? (
-                  <EmptyState
-                    titleText="Loading"
-                    headingLevel="h4"
-                    icon={Spinner}
-                  />
-                ) : (
-                  <SourceSinkTable
-                    data={searchQuery.length > 0 ? searchResult : sourcesList}
-                    tableType="source"
-                    onClear={onClear}
-                  />
-                )}
-              </Card>
-            ) : (
-              <EmptyStatus
-                heading="No source available"
-                primaryMessage=' No source is configure for this cluster yet. To streams change
+                    </Card>
+                  </PageSection>
+                </>
+              ) : (
+                <EmptyStatus
+                  heading="No source available"
+                  primaryMessage=' No source is configure for this cluster yet. To streams change
             events from a source database you can configure a source by click
             the "Add source" button.'
-                secondaryMessage=""
-                primaryAction={
-                  <Button
-                    variant="primary"
-                    icon={<PlusIcon />}
-                    onClick={() => navigateTo("/source/catalog")}
-                  >
-                    Add source
-                  </Button>
-                }
-                secondaryActions={
-                  <>
+                  secondaryMessage=""
+                  icon={DataSourceIcon as React.ComponentType<unknown>}
+                  primaryAction={
                     <Button
-                      variant="link"
-                      onClick={() => navigateTo("/destination")}
+                      variant="primary"
+                      icon={<PlusIcon />}
+                      onClick={() => navigateTo("/source/catalog")}
                     >
-                      Go to destination
+                      Add source
                     </Button>
-                    <Button
-                      variant="link"
-                      onClick={() => navigateTo("/vaults")}
-                    >
-                      Configure Vaults
-                    </Button>
-                  </>
-                }
-              />
-            )}
-          </PageSection>
+                  }
+                  secondaryActions={
+                    <>
+                      <Button
+                        variant="link"
+                        onClick={() => navigateTo("/destination")}
+                      >
+                        Go to destination
+                      </Button>
+                      <Button
+                        variant="link"
+                        onClick={() => navigateTo("/vaults")}
+                      >
+                        Configure Vaults
+                      </Button>
+                    </>
+                  }
+                />
+              )}
+            </>
+          )}
         </>
       )}
     </>

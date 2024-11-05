@@ -13,7 +13,6 @@ import {
 } from "@patternfly/react-core";
 
 import { useNavigate } from "react-router-dom";
-import { Destination, Source } from "../../apis/apis";
 import WelcomeFlow from "@components/dataFlow/WelcomeFlow";
 
 const PipelineEmpty: React.FunctionComponent = () => {
@@ -22,39 +21,6 @@ const PipelineEmpty: React.FunctionComponent = () => {
   const navigateTo = (url: string) => {
     navigate(url);
   };
-
-  const [isSourceConfigured, setIsSourceConfigured] = React.useState(false);
-  const [isDestinationConfigured, setIsDestinationConfigured] =
-    React.useState(false);
-
-  const [selectedSource, setSelectedSource] = React.useState<Source>();
-  const [selectedDestination, setSelectedDestination] =
-    React.useState<Destination>();
-
-  const updateIfSourceConfigured = React.useCallback(
-    (isConfigured: boolean) => {
-      setIsSourceConfigured(isConfigured);
-    },
-    []
-  );
-
-  const updateIfDestinationConfigured = React.useCallback(
-    (isConfigured: boolean) => {
-      setIsDestinationConfigured(isConfigured);
-    },
-    []
-  );
-
-  const updateSelectedSource = React.useCallback((source: Source) => {
-    setSelectedSource(source);
-  }, []);
-
-  const updateSelectedDestination = React.useCallback(
-    (destination: Destination) => {
-      setSelectedDestination(destination);
-    },
-    []
-  );
 
   return (
     <PageSection isFilled>
@@ -78,14 +44,7 @@ const PipelineEmpty: React.FunctionComponent = () => {
 
           <Card style={{ height: "300px" }} isPlain>
             <CardBody isFilled>
-              <WelcomeFlow
-                updateIfSourceConfigured={updateIfSourceConfigured}
-                updateIfDestinationConfigured={updateIfDestinationConfigured}
-                isSourceConfigured={isSourceConfigured}
-                isDestinationConfigured={isDestinationConfigured}
-                updateSelectedSource={updateSelectedSource}
-                updateSelectedDestination={updateSelectedDestination}
-              />
+              <WelcomeFlow />
             </CardBody>
           </Card>
         </EmptyStateBody>
@@ -93,12 +52,7 @@ const PipelineEmpty: React.FunctionComponent = () => {
           <EmptyStateActions>
             <Button
               variant="primary"
-              isDisabled={!(isSourceConfigured && isDestinationConfigured)}
-              onClick={() =>
-                navigateTo(
-                  `/pipeline/pipeline_designer/create_pipeline?sourceId=${selectedSource?.id}&destinationId=${selectedDestination?.id}`
-                )
-              }
+              onClick={() => navigateTo(`/pipeline/pipeline_designer`)}
             >
               Create your first pipeline
             </Button>
