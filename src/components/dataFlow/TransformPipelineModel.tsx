@@ -9,16 +9,14 @@ import {
   Content,
 } from "@patternfly/react-core";
 import React, { useEffect, useState } from "react";
-import { fetchData, Source, TransformData } from "../../apis/apis";
+import { fetchData, TransformData } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { useQuery } from "react-query";
-// import SourceDestinationSelectionList from "../SourceDestinationSelectionList";
-// import { CatalogGrid } from "@components/CatalogGrid";
-import { CreateSource } from "@sourcePage/CreateSource";
 import TransformSelectionList from "@components/TransformSelectionList";
+import { CreateTransforms } from "src/pages/Transforms";
 
 type TransformPipelineModelProps = {
-  onTransformSelection: (source: Source) => void;
+  onTransformSelection: (source: TransformData) => void;
 };
 
 const TransformPipelineModel: React.FC<TransformPipelineModelProps> = ({
@@ -27,7 +25,6 @@ const TransformPipelineModel: React.FC<TransformPipelineModelProps> = ({
   const id1 = "pipeline-transform-select";
   const id2 = "pipeline-transform-create";
   const [isCreateChecked, setIsCreateChecked] = useState(id1);
-  // const [selectedTransform, setSelectedTransform] = useState<string>("");
 
   const {
     data: transformList = [],
@@ -43,13 +40,6 @@ const TransformPipelineModel: React.FC<TransformPipelineModelProps> = ({
       setIsCreateChecked(id2);
     }
   }, [transformList, isTransformLoading]);
-
-  // const selectTransform = useCallback(
-  //   (transformId: string) => {
-  //     setSelectedTransform(transformId);
-  //   },
-  //   [setSelectedTransform]
-  // );
 
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
     setIsCreateChecked(event.currentTarget.id);
@@ -119,7 +109,10 @@ const TransformPipelineModel: React.FC<TransformPipelineModelProps> = ({
           onSelection={onTransformSelection}
         />
       ) : (
-        <CreateSource modelLoaded={true} onSelection={onTransformSelection} />
+        <CreateTransforms
+          modelLoaded={true}
+          onSelection={onTransformSelection}
+        />
       )}
     </>
   );

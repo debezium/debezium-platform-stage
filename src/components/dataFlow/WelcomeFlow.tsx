@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useMemo, useState } from "react";
 import ReactFlow, {
@@ -17,12 +16,7 @@ import DataNode from "./DataNode";
 
 import { MdLogin, MdLogout } from "react-icons/md";
 import DataNodeSelector from "./DataSelectorNode";
-import { Button, Modal, ModalBody, ModalHeader } from "@patternfly/react-core";
-import { Destination, Source } from "../../apis/apis";
-import { PlusIcon } from "@patternfly/react-icons";
 import "./CreationFlow.css";
-import SourcePipelineModel from "./SourcePipelineModel";
-import DestinationPipelineModel from "./DestinationPipelineModel";
 import CustomEdgeDestination from "./CustomEdgeDestination";
 import CustomEdgeSource from "./CustomEdgeSource";
 import { useData } from "../../appLayout/AppContext";
@@ -42,39 +36,10 @@ const edgeTypes = {
 
 const proOptions = { hideAttribution: true };
 
-interface WelcomeFlowProps {
-  updateIfSourceConfigured: (isConfigured: boolean) => void;
-  updateIfDestinationConfigured: (isConfigured: boolean) => void;
-  isSourceConfigured: boolean;
-  isDestinationConfigured: boolean;
-  updateSelectedSource: (source: Source) => void;
-  updateSelectedDestination: (destination: Destination) => void;
-}
+interface WelcomeFlowProps {}
 
-const WelcomeFlow: React.FC<WelcomeFlowProps> = ({
-  updateIfSourceConfigured,
-  updateIfDestinationConfigured,
-  isSourceConfigured,
-  isDestinationConfigured,
-  updateSelectedSource,
-  updateSelectedDestination,
-}) => {
-
+const WelcomeFlow: React.FC<WelcomeFlowProps> = () => {
   const { darkMode } = useData();
-  
-  const [updatedSourceNodes, setUpdatedSourceNodes] = useState<any>();
-  const [updatedDestinationNodes, setUpdatedDestinationNodes] = useState<any>();
-
-  const [isSourceModalOpen, setIsSourceModalOpen] = useState(false);
-  const [isDestinationModalOpen, setIsDestinationModalOpen] = useState(false);
-
-  const handleSourceModalToggle = useCallback(() => {
-    setIsSourceModalOpen(!isSourceModalOpen);
-  }, [isSourceModalOpen]);
-
-  const handleDestinationModalToggle = useCallback(() => {
-    setIsDestinationModalOpen(!isDestinationModalOpen);
-  }, [isDestinationModalOpen]);
 
   const defaultSourceNode = useMemo(() => {
     return {
@@ -83,23 +48,14 @@ const WelcomeFlow: React.FC<WelcomeFlowProps> = ({
         icon: MdLogout,
         label: "Source",
         type: "source",
-        action: (
-          <Button
-            variant="link"
-            onClick={handleSourceModalToggle}
-            style={{ paddingRight: 10, paddingLeft: 10, fontSize: ".8em" }}
-            icon={<PlusIcon />}
-            size="sm"
-          >
-            Source
-          </Button>
-        ),
+        action: () => {},
+        welcomeFlow: true,
       },
       position: { x: 100, y: 150 },
       type: "dataNodeSelector",
       draggable: false,
     };
-  }, [handleSourceModalToggle]);
+  }, []);
 
   const defaultTransformationNode = useMemo(() => {
     return {
@@ -123,23 +79,14 @@ const WelcomeFlow: React.FC<WelcomeFlowProps> = ({
         icon: MdLogin,
         label: "Destination",
         type: "destination",
-        action: (
-          <Button
-            variant="link"
-            onClick={handleDestinationModalToggle}
-            style={{ paddingRight: 10, paddingLeft: 10, fontSize: ".8em" }}
-            icon={<PlusIcon />}
-            size="sm"
-          >
-            Destination
-          </Button>
-        ),
+        action: () => {},
+        welcomeFlow: true,
       },
       position: { x: 500, y: 150 },
       type: "dataNodeSelector",
       draggable: false,
     };
-  }, [handleDestinationModalToggle]);
+  }, []);
 
   const initialNodes = [
     defaultSourceNode,
@@ -183,93 +130,6 @@ const WelcomeFlow: React.FC<WelcomeFlowProps> = ({
     [setEdges]
   );
 
-  const onSourceSelection = useCallback(
-    (source: Source) => {
-      const selectedSourceNode = {
-        id: "source",
-        data: {
-          connectorType: source.type,
-          label: source.name,
-          type: "source",
-          draggable: false,
-          editAction: () => setIsSourceModalOpen(true),
-        },
-        position: { x: 100, y: 150 },
-        type: "dataNode",
-        draggable: false,
-      };
-      updateIfSourceConfigured(true);
-      setUpdatedSourceNodes(selectedSourceNode);
-      updateSelectedSource(source);
-
-      const destinationNode = isDestinationConfigured
-        ? updatedDestinationNodes
-        : defaultDestinationNode;
-
-      // Update the nodes
-      setNodes([
-        selectedSourceNode,
-        defaultTransformationNode,
-        destinationNode,
-      ]);
-
-      handleSourceModalToggle();
-    },
-    [
-      defaultTransformationNode,
-      defaultDestinationNode,
-      updateIfSourceConfigured,
-      isDestinationConfigured,
-      updatedDestinationNodes,
-      updateSelectedSource,
-      handleSourceModalToggle,
-    ]
-  );
-
-  const onDestinationSelection = useCallback(
-    (destination: Destination) => {
-      const selectedDestinationNode = {
-        id: "destination",
-        data: {
-          connectorType: destination.type,
-          label: destination.name,
-          type: "destination",
-          draggable: false,
-          editAction: () => setIsDestinationModalOpen(true),
-        },
-        position: { x: 500, y: 150 },
-        type: "dataNode",
-        draggable: false,
-      };
-
-      updateIfDestinationConfigured(true);
-      setUpdatedDestinationNodes(selectedDestinationNode);
-      updateSelectedDestination(destination);
-
-      const sourceNode = isSourceConfigured
-        ? updatedSourceNodes
-        : defaultSourceNode;
-
-      // Update the nodes
-      setNodes([
-        sourceNode,
-        defaultTransformationNode,
-        selectedDestinationNode,
-      ]);
-
-      handleDestinationModalToggle();
-    },
-    [
-      defaultTransformationNode,
-      defaultSourceNode,
-      updateIfDestinationConfigured,
-      isSourceConfigured,
-      updatedSourceNodes,
-      updateSelectedDestination,
-      handleDestinationModalToggle,
-    ]
-  );
-
   return (
     <>
       <ReactFlow
@@ -291,7 +151,7 @@ const WelcomeFlow: React.FC<WelcomeFlowProps> = ({
             borderRadius: "5px",
           }}
           gap={15}
-          color={darkMode ? AppColors.dark: AppColors.white}
+          color={darkMode ? AppColors.dark : AppColors.white}
         />
         <svg>
           <defs>
@@ -306,46 +166,6 @@ const WelcomeFlow: React.FC<WelcomeFlowProps> = ({
           </defs>
         </svg>
       </ReactFlow>
-      <Modal
-        isOpen={isSourceModalOpen}
-        onClose={handleSourceModalToggle}
-        aria-labelledby="modal-source-body-with-description"
-        aria-describedby="modal-source-body-with-description"
-      >
-        <ModalHeader
-          title="Pipeline source"
-          className="pipeline_flow-modal_header"
-          labelId="modal-with-source-description-title"
-          description="Select a source to be used in pipeline from the list of already configured source listed below or configure a new source by selecting create a new source radio card."
-        />
-
-        <ModalBody tabIndex={0} id="modal-source-body-with-description">
-          <SourcePipelineModel onSourceSelection={onSourceSelection} />
-        </ModalBody>
-      </Modal>
-
-      <Modal
-        isOpen={isDestinationModalOpen}
-        onClose={handleDestinationModalToggle}
-        aria-labelledby="modal-with-description-title"
-        aria-describedby="modal-box-body-destination-with-description"
-      >
-        <ModalHeader
-          title="Pipeline destination"
-          className="pipeline_flow-modal_header"
-          labelId="modal-with-destination-description-title"
-          description="Select a destination to be used in pipeline from the list of already configured destination listed below or configure a new destination by selecting create a new destination radio card."
-        />
-
-        <ModalBody
-          tabIndex={0}
-          id="modal-box-body-destination-with-description"
-        >
-          <DestinationPipelineModel
-            onDestinationSelection={onDestinationSelection}
-          />
-        </ModalBody>
-      </Modal>
     </>
   );
 };

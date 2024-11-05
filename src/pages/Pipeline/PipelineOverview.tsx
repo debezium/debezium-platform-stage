@@ -224,7 +224,7 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                   {isSourceFetchLoading ? (
                     <Skeleton screenreaderText="Loading contents" />
                   ) : (
-                    <>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <ConnectorImage
                         connectorType={source?.type || ""}
                         size={25}
@@ -235,7 +235,7 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                       >
                         {getConnectorTypeName(source?.type || "")}
                       </Content>
-                    </>
+                    </div>
                   )}
                 </DescriptionListDescription>
               </DescriptionListGroup>
@@ -300,18 +300,19 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                   {isDestinationFetchLoading ? (
                     <Skeleton screenreaderText="Loading contents" />
                   ) : (
-                    <>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                       <ConnectorImage
-                        connectorType={destination?.type || ""}
-                        size={25}
+                      connectorType={destination?.type || ""}
+                      size={25}
                       />
                       <Content
-                        component="p"
-                        className="pipeline-overview__card-description"
+                      component="p"
+                      className="pipeline-overview__card-description"
+                      style={{ marginLeft: '8px' }}
                       >
-                        {getConnectorTypeName(destination?.type || "")}
+                      {getConnectorTypeName(destination?.type || "")}
                       </Content>
-                    </>
+                    </div>
                   )}
                 </DescriptionListDescription>
               </DescriptionListGroup>

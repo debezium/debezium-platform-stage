@@ -3,26 +3,23 @@ import { useCallback, useMemo, useState } from "react";
 import ReactFlow, {
   applyNodeChanges,
   applyEdgeChanges,
-  addEdge,
   NodeChange,
-  Node,
   EdgeChange,
   Edge,
-  Connection,
+  Node,
   Background,
-  // Controls,
+  Position,
 } from "reactflow";
-// import AddTransformationNode from "./AddTransformationNode";
 import { useData } from "../../appLayout/AppContext";
-import DataNodeComposition from "./DataNodeComposition";
 import DebeziumNode from "./DebeziumNode";
 import CustomEdgeSource from "./CustomEdgeSource";
 import CustomEdgeDestination from "./CustomEdgeDestination";
 import { AppColors } from "@utils/constants";
+import DataNode from "./DataNode";
 
 const nodeTypes = {
   addTransformation: DebeziumNode,
-  dataNodeComposition: DataNodeComposition,
+  dataNode: DataNode,
 };
 
 const edgeTypes = {
@@ -51,29 +48,29 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
     () => ({
       id: "source",
       data: {
-        connectorType: "io.debezium.connector.postgresql.PostgresConnector",
-        label: "postgres-source",
+        connectorType: sourceType,
+        label: sourceName,
         type: "source",
         editAction: () => {},
         compositionFlow: true,
       },
       position: { x: 40, y: 40 },
-      type: "dataNodeComposition",
+      type: "dataNode",
       draggable: false,
     }),
     [sourceName, sourceType]
   );
 
-  const defaultTransformationNode = useMemo(() => {
+  const defaultTransformationNode = useMemo((): Node => {
     return {
       id: "add_transformation",
       data: {
         label: "Transformation",
-        sourcePosition: "right",
-        targetPosition: "left",
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
       },
       position: { x: 225, y: 30 },
-      targetPosition: "left",
+      targetPosition: Position.Left,
       type: "addTransformation",
       draggable: false,
     };
@@ -83,20 +80,20 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
     () => ({
       id: "destination",
       data: {
-        connectorType: "kafka",
-        label: "test-destination",
+        connectorType: destinationType,
+        label: destinationName,
         type: "destination",
         editAction: () => {},
         compositionFlow: true,
       },
       position: { x: 350, y: 40 },
-      type: "dataNodeComposition",
+      type: "dataNode",
       draggable: false,
     }),
     [destinationName, destinationType]
   );
 
-  const initialNodes = useMemo(
+  const initialNodes: Node[] = useMemo(
     () => [dataSourceNode, defaultTransformationNode, dataDestinationNode],
     [dataSourceNode, defaultTransformationNode, dataDestinationNode]
   );
@@ -120,24 +117,27 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
     []
   );
 
-  const [nodes, setNodes] = useState<any>(initialNodes);
-  const [edges, setEdges] = useState<any>(initialEdges);
+  const [nodeChanges, setNodeChanges] = useState<NodeChange[]>([]);
+  const [edgeChanges, setEdgeChanges] = useState<EdgeChange[]>([]);
+
+  const nodes = useMemo(
+    () => applyNodeChanges(nodeChanges, initialNodes),
+    [nodeChanges, initialNodes]
+  );
+
+  const edges = useMemo(
+    () => applyEdgeChanges(edgeChanges, initialEdges),
+    [edgeChanges, initialEdges]
+  );
 
   const onNodesChange = useCallback(
-    (changes: NodeChange[]) =>
-      setNodes((nds: Node[]) => applyNodeChanges(changes, nds)),
-    [setNodes]
+    (changes: NodeChange[]) => setNodeChanges((prev) => [...prev, ...changes]),
+    []
   );
+
   const onEdgesChange = useCallback(
-    (changes: EdgeChange[]) =>
-      setEdges((eds: Edge[]) => applyEdgeChanges(changes, eds)),
-    [setEdges]
-  );
-  const onConnect = useCallback(
-    (connection: Connection) => {
-      setEdges((eds: Edge[]) => addEdge(connection, eds));
-    },
-    [setEdges]
+    (changes: EdgeChange[]) => setEdgeChanges((prev) => [...prev, ...changes]),
+    []
   );
 
   return (
@@ -147,7 +147,6 @@ const CompositionFlow: React.FC<CreationFlowProps> = ({
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         proOptions={proOptions}

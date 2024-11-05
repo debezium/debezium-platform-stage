@@ -73,7 +73,7 @@ describe("Sources", () => {
 
     render(<Sources />);
 
-    expect(screen.getByText("Loading")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays error message when API fails", async () => {
