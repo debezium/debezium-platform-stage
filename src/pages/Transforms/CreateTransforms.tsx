@@ -403,11 +403,12 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited={editorSelected === "form-editor"}
+              isWidthLimited={true}
               isCenterAligned
               isFilled
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              className={"pipeline-page-section"}
+              className={
+                editorSelected === "form-editor" ? "pipeline-page-section" : ""
+              }
             >
               {editorSelected === "form-editor" ? (
                 <Card className="pipeline-card-body">
@@ -524,11 +525,18 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
                                 id: `field-group-${selected}-id`,
                               }}
                               titleDescription={
-                                <>
-                                  Configuration properties passed to the
-                                  transformation with name{" "}
-                                  <i>"{values["transform-name"]}"</i>
-                                </>
+                                !values["transform-name"] ? (
+                                  <>
+                                    Enter <i>transform name</i> to enable
+                                    configuration properties.
+                                  </>
+                                ) : (
+                                  <>
+                                    Configuration properties passed to the
+                                    transformation with name
+                                    <i>"{values["transform-name"]}"</i>
+                                  </>
+                                )
                               }
                             />
                           }

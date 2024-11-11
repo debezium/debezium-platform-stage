@@ -44,9 +44,8 @@ import {
   Source,
 } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
-import { useData } from "../../appLayout/AppContext";
 import PageHeader from "@components/PageHeader";
-import { useAtom } from 'jotai';
+import { useAtom } from "jotai";
 import { selectedTransformAtom } from "./PipelineDesigner";
 
 const ConfigurePipeline: React.FunctionComponent = () => {
@@ -58,7 +57,7 @@ const ConfigurePipeline: React.FunctionComponent = () => {
 
   const [selectedTransform] = useAtom(selectedTransformAtom);
 
-  console.log("selectedTransform", selectedTransform)
+  console.log("selectedTransform", selectedTransform);
 
   const navigateTo = (url: string) => {
     navigate(url);
@@ -67,10 +66,6 @@ const ConfigurePipeline: React.FunctionComponent = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
-
-
-
-  const { navigationCollapsed } = useData();
 
   const [editorSelected, setEditorSelected] = useState("form-editor");
 
@@ -226,11 +221,12 @@ const ConfigurePipeline: React.FunctionComponent = () => {
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
-              isWidthLimited={editorSelected === "form-editor"}
+              isWidthLimited={true}
               isCenterAligned
               isFilled
-              // To do: Add custom class to the pf-v6-c-page__main-body for center alignment in collapsed navigation
-              className={navigationCollapsed ? "pipeline-page-section" : ""}
+              className={
+                editorSelected === "form-editor" ? "pipeline-page-section" : ""
+              }
             >
               {editorSelected === "form-editor" ? (
                 <Card className="pipeline-card-body">
