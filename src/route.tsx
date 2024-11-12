@@ -28,6 +28,7 @@ import {
 import { Transforms } from "./pages/Transforms";
 import { Vaults } from "./pages/Vault";
 import { CreateTransforms } from "./pages/Transforms/CreateTransforms";
+import { EditTransforms } from "./pages/Transforms/EditTransforms";
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -131,6 +132,12 @@ const routes: AppRouteConfig[] = [
     label: "Transform",
     icon: <DataProcessorIcon style={{ outline: "none" }} />,
     path: "/transform",
+    navSection: "transform",
+    title: `${AppBranding} | Transform`,
+  },
+  {
+    component: EditTransforms,
+    path: "/transform/edit_transform/:transformId",
     navSection: "transform",
     title: `${AppBranding} | Transform`,
   },

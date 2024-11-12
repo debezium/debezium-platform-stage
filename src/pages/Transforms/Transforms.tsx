@@ -159,10 +159,9 @@ const Transforms: React.FunctionComponent<ITransformsProps> = () => {
     {
       title: "Edit",
       onClick: () => {
-        console.log("Edit transform", actionData.name);
+        navigateTo(`/transform/edit_transform/${actionData.id}`);
       },
     },
-
     {
       title: "Delete",
       onClick: () => onDeleteHandler(actionData.id, actionData.name),

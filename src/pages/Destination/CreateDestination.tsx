@@ -21,7 +21,6 @@ import _ from "lodash";
 import { createPost, Destination } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject } from "../../utils/helpers";
-import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/AppNotificationContext";
 import PageHeader from "@components/PageHeader";
 import SourceSinkForm from "@components/SourceSinkForm";
@@ -49,8 +48,6 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
   const navigateTo = (url: string) => {
     navigate(url);
   };
-
-  const { navigationCollapsed } = useData();
 
   const { addNotification } = useNotification();
 
@@ -192,10 +189,7 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
               isCenterAligned
               isFilled
               className={
-                (modelLoaded && editorSelected === "form-editor") ||
-                (!modelLoaded &&
-                  navigationCollapsed &&
-                  editorSelected === "form-editor")
+                editorSelected === "form-editor"
                   ? "custom-page-section create_destination-page_section"
                   : "create_destination-page_section"
               }

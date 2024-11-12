@@ -22,7 +22,6 @@ import { API_URL } from "../../utils/constants";
 import { convertMapToObject } from "../../utils/helpers";
 import sourceCatalog from "../../__mocks__/data/SourceCatalog.json";
 import _ from "lodash";
-import { useData } from "../../appLayout/AppContext";
 import { useNotification } from "../../appLayout/AppNotificationContext";
 import SourceSinkForm from "@components/SourceSinkForm";
 import PageHeader from "@components/PageHeader";
@@ -34,7 +33,7 @@ interface CreateSourceProps {
   onSelection?: (selection: Source) => void;
 }
 
-const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
+const CreateSource: React.FunctionComponent<CreateSourceProps> = ({
   modelLoaded,
   selectedId,
   selectSource,
@@ -44,15 +43,11 @@ const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
 
   const sourceIdParam = useParams<{ sourceId: string }>();
   const sourceIdModel = selectedId;
-  const sourceId = modelLoaded
-    ? sourceIdModel
-    : sourceIdParam.sourceId;
+  const sourceId = modelLoaded ? sourceIdModel : sourceIdParam.sourceId;
 
   const navigateTo = (url: string) => {
     navigate(url);
   };
-
-  const { navigationCollapsed } = useData();
 
   const { addNotification } = useNotification();
 
@@ -146,17 +141,18 @@ const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
 
   return (
     <>
-    { !modelLoaded &&  <PageHeader
+      {!modelLoaded && (
+        <PageHeader
           title="Create source"
           description="To configure and create a connector fill out the below form or use the
           smart editor to setup a new source connector. If you already have a
           configuration file, you can setup a new source connector by uploading
           it in the smart editor."
-        />}
+        />
+      )}
       <PageSection className="create_source-toolbar">
-    
         <Toolbar id="create-editor-toggle">
-          <ToolbarContent >
+          <ToolbarContent>
             <ToolbarItem>
               <ToggleGroup aria-label="Toggle between form editor and smart editor">
                 <ToggleGroupItem
@@ -193,10 +189,7 @@ const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
               isCenterAligned
               isFilled
               className={
-                (modelLoaded && editorSelected === "form-editor") ||
-                (!modelLoaded &&
-                  navigationCollapsed &&
-                  editorSelected === "form-editor")
+                editorSelected === "form-editor"
                   ? "custom-page-section create_source-page_section"
                   : "create_source-page_section"
               }
@@ -246,18 +239,20 @@ const CreateSource: React.FunctionComponent<CreateSourceProps>  = ({
                   Create source
                 </Button>
                 {modelLoaded ? (
-                  <Button variant="link" onClick={() => selectSource && selectSource("")}>
+                  <Button
+                    variant="link"
+                    onClick={() => selectSource && selectSource("")}
+                  >
                     Back
                   </Button>
                 ) : (
                   <Button
-                  variant="link"
-                  onClick={() => navigateTo("/source/catalog")}
-                >
-                  Back to catalog
-                </Button>
+                    variant="link"
+                    onClick={() => navigateTo("/source/catalog")}
+                  >
+                    Back to catalog
+                  </Button>
                 )}
-                
               </ActionGroup>
             </PageSection>
           </>

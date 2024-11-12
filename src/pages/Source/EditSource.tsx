@@ -254,10 +254,9 @@ const EditSource: React.FunctionComponent = () => {
               )}
             </PageSection>
             <PageSection className="pf-m-sticky-bottom" isFilled={false}>
-              <ActionGroup>
+              <ActionGroup className="create_destination-footer">
                 <Button
                   variant="primary"
-                  // onClick={handleCreateSource}
                   isLoading={isLoading}
                   isDisabled={isLoading}
                   type={ButtonType.submit}
@@ -271,7 +270,7 @@ const EditSource: React.FunctionComponent = () => {
                     }
                   }}
                 >
-                  Save change
+                  Save changes
                 </Button>
                 <Button variant="link" onClick={() => navigateTo("/source")}>
                   Cancel

@@ -273,7 +273,7 @@ const EditDestination: React.FunctionComponent = () => {
                     }
                   }}
                 >
-                  Save change
+                  Save changes
                 </Button>
                 <Button
                   variant="link"

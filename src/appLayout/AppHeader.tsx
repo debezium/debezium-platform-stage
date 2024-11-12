@@ -9,7 +9,7 @@ import {
   ToolbarContent,
   ToolbarGroup,
   ToolbarItem,
-  Avatar,
+  // Avatar,
   NotificationBadge,
   NotificationBadgeVariant,
   PageToggleButton,
@@ -19,7 +19,7 @@ import { BarsIcon } from "@patternfly/react-icons";
 import React from "react";
 import dbz_logo_black from "../assets/color_black_debezium.svg";
 import dbz_svg from "../assets/debezium_logo.png";
-import imgAvatar from "@patternfly/react-core/src/components/assets/avatarImg.svg";
+// import imgAvatar from "@patternfly/react-core/src/components/assets/avatarImg.svg";
 import { useNavigate } from "react-router-dom";
 import { useData } from "./AppContext";
 import { NotificationProps } from "./AppNotificationContext";
@@ -95,11 +95,14 @@ const AppHeader: React.FC<AppHeaderProps> = ({
                   ></NotificationBadge>
                 </ToolbarItem>
               </ToolbarGroup>
+
+              {/*
+              // TODO: Add user avatar when multi tenancy is implemented
               <ToolbarItem variant="separator" />
 
               <ToolbarItem>
                 <Avatar src={imgAvatar} alt="user avatar" />
-              </ToolbarItem>
+              </ToolbarItem> */}
             </ToolbarContent>
           </Toolbar>
         </MastheadContent>
