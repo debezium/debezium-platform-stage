@@ -50,6 +50,7 @@ import { useNavigate } from "react-router-dom";
 import { createPost, TransformData } from "src/apis";
 import { API_URL } from "@utils/constants";
 import { useNotification } from "@appContext/AppNotificationContext";
+import { find } from "lodash";
 
 export interface ICreateTransformsProps {
   modelLoaded?: boolean;
@@ -126,7 +127,6 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
         setIsOpen(true);
       }
     }
-
     setSelectOptions(newSelectOptions);
   }, [filterValue, isOpen]);
 
@@ -192,15 +192,12 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
 
   const handleMenuArrowKeys = (key: string) => {
     let indexToFocus = 0;
-
     if (!isOpen) {
       setIsOpen(true);
     }
-
     if (selectOptions!.every((option) => option.isDisabled)) {
       return;
     }
-
     if (key === "ArrowUp") {
       // When no index is set or at the first index, focus to the last, otherwise decrement focus index
       if (focusedItemIndex === null || focusedItemIndex === 0) {
@@ -208,7 +205,6 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
       } else {
         indexToFocus = focusedItemIndex - 1;
       }
-
       // Skip disabled options
       while (selectOptions![indexToFocus].isDisabled) {
         indexToFocus--;
@@ -217,7 +213,6 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
         }
       }
     }
-
     if (key === "ArrowDown") {
       // When no index is set or at the last index, focus to the first, otherwise increment focus index
       if (
@@ -236,14 +231,12 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
         }
       }
     }
-
     setActiveAndFocusedItem(indexToFocus);
   };
 
   const onInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const focusedItem =
       focusedItemIndex !== null ? selectOptions![focusedItemIndex] : null;
-
     switch (event.key) {
       case "Enter":
         if (
@@ -254,11 +247,9 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
         ) {
           selectOption(focusedItem.value, focusedItem.children as string);
         }
-
         if (!isOpen) {
           setIsOpen(true);
         }
-
         break;
       case "ArrowUp":
       case "ArrowDown":
@@ -305,7 +296,6 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
           isExpanded={isOpen}
           aria-controls="select-typeahead-listbox"
         />
-
         <TextInputGroupUtilities
           {...(!inputValue ? { style: { display: "none" } } : {})}
         >
@@ -335,7 +325,6 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
       name: transformName,
     };
     const response = await createPost(`${API_URL}/api/transforms`, payload);
-
     if (response.error) {
       addNotification(
         "danger",
@@ -351,6 +340,21 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
       );
       !modelLoaded && navigateTo("/transform");
     }
+  };
+
+  const dynamicFormDefaultValues = Object.entries(
+    find(transforms, { transform: selected })?.properties || {}
+  ).reduce((acc: Record<string, string>, [key, value]) => {
+    if (value.defaultValue) {
+      acc[`debezium.transforms.transform-name.${key}`] = value.defaultValue;
+    }
+    return acc;
+  }, {});
+
+  const initialValues = {
+    "transform-name": "",
+    description: "",
+    ...dynamicFormDefaultValues,
   };
 
   const handleItemClick = (
@@ -398,8 +402,7 @@ const CreateTransforms: React.FunctionComponent<ICreateTransformsProps> = ({
           </ToolbarContent>
         </Toolbar>
       </PageSection>
-
-      <FormContextProvider initialValues={{}}>
+      <FormContextProvider initialValues={initialValues}>
         {({ setValue, getValue, setError, values, errors }) => (
           <>
             <PageSection
