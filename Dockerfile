@@ -2,7 +2,8 @@
 FROM registry.access.redhat.com/ubi9/nodejs-20 AS builder
 RUN npm install -g yarn
 
-ENV VITE_BACKEND_BASE_URL=http://localhost:8080
+ARG BACKEND_URL=http://localhost:8080
+ENV VITE_BACKEND_BASE_URL=${BACKEND_URL}
 
 WORKDIR /app
 COPY package.json yarn.lock ./
