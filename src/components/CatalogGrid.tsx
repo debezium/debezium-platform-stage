@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
   Gallery,
   GalleryItem,
   PageSection,
-  Tile,
+  // Tile,
 } from "@patternfly/react-core";
-import ConnectorImage from "./ComponentImage";
+// import ConnectorImage from "./ComponentImage";
 import destinationCatalog from "../__mocks__/data/DestinationCatalog.json";
 import sourceCatalog from "../__mocks__/data/SourceCatalog.json";
-import { PlusCircleIcon } from "@patternfly/react-icons";
+// import { PlusCircleIcon } from "@patternfly/react-icons";
 import "./CatalogGrid.css";
 
 export interface ICatalogGridProps {
@@ -35,7 +39,18 @@ const CatalogGrid: React.FunctionComponent<ICatalogGridProps> = ({
       <Gallery hasGutter className="custom-gallery">
         {catalog.map((item) => (
           <GalleryItem key={item.id}>
-            <Tile
+             <Card isClickable variant={ 'default'}>
+            <CardHeader
+              selectableActions={{
+                onClickAction: () => onCardClick(item.id),
+                selectableActionAriaLabelledby: `catalog-card-id-${item.name}`
+              }}
+            >
+              <CardTitle id={`catalog-card-id-${item.name}`}>{item.name}</CardTitle>
+            </CardHeader>
+            <CardBody>{item.description}</CardBody>
+          </Card>
+            {/* <Tile
               style={{ width: "100%" }}
               title={item.name}
               icon={<ConnectorImage connectorType={item.id} />}
@@ -45,12 +60,23 @@ const CatalogGrid: React.FunctionComponent<ICatalogGridProps> = ({
               onClick={() => onCardClick(item.id)}
             >
               {item.description}
-            </Tile>
+            </Tile> */}
           </GalleryItem>
         ))}
         {isAddButtonVisible && (
           <GalleryItem>
-            <Tile
+            <Card isClickable variant={ 'default'}>
+            <CardHeader
+              selectableActions={{
+                onClickAction: () => {},
+                selectableActionAriaLabelledby: `catalog-card-id-fill-out-form`
+              }}
+            >
+              <CardTitle id={`catalog-card-id-fill-out-form`}>Request new ${catalogType}</CardTitle>
+            </CardHeader>
+            <CardBody>Fill our a form to request a new {catalogType}.</CardBody>
+          </Card>
+            {/* <Tile
               style={{ width: "100%" }}
               title={`Request new ${catalogType}`}
               icon={<PlusCircleIcon color="#0066CC" />}
@@ -59,7 +85,7 @@ const CatalogGrid: React.FunctionComponent<ICatalogGridProps> = ({
               isSelected={false}
             >
               Fill our a form to request a new {catalogType}.
-            </Tile>
+            </Tile> */}
           </GalleryItem>
         )}
       </Gallery>
