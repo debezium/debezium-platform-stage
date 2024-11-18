@@ -10,10 +10,10 @@ import {
   PageSection,
   // Tile,
 } from "@patternfly/react-core";
-// import ConnectorImage from "./ComponentImage";
+import ConnectorImage from "./ComponentImage";
 import destinationCatalog from "../__mocks__/data/DestinationCatalog.json";
 import sourceCatalog from "../__mocks__/data/SourceCatalog.json";
-// import { PlusCircleIcon } from "@patternfly/react-icons";
+import { PlusCircleIcon } from "@patternfly/react-icons";
 import "./CatalogGrid.css";
 
 export interface ICatalogGridProps {
@@ -46,46 +46,27 @@ const CatalogGrid: React.FunctionComponent<ICatalogGridProps> = ({
                 selectableActionAriaLabelledby: `catalog-card-id-${item.name}`
               }}
             >
+              <ConnectorImage connectorType={item.id} />
               <CardTitle id={`catalog-card-id-${item.name}`}>{item.name}</CardTitle>
             </CardHeader>
             <CardBody>{item.description}</CardBody>
           </Card>
-            {/* <Tile
-              style={{ width: "100%" }}
-              title={item.name}
-              icon={<ConnectorImage connectorType={item.id} />}
-              isStacked
-              isDisplayLarge
-              isSelected={false}
-              onClick={() => onCardClick(item.id)}
-            >
-              {item.description}
-            </Tile> */}
           </GalleryItem>
         ))}
         {isAddButtonVisible && (
           <GalleryItem>
-            <Card isClickable variant={ 'default'}>
+            <Card isClickable variant={ 'secondary'}>
             <CardHeader
               selectableActions={{
                 onClickAction: () => {},
                 selectableActionAriaLabelledby: `catalog-card-id-fill-out-form`
               }}
             >
-              <CardTitle id={`catalog-card-id-fill-out-form`}>Request new ${catalogType}</CardTitle>
+              <PlusCircleIcon color="#0066CC" style={{fontSize:"xxx-large", paddingBottom: "10px"}} />
+              <CardTitle id={`catalog-card-id-fill-out-form`}>Request new {catalogType}</CardTitle>
             </CardHeader>
             <CardBody>Fill our a form to request a new {catalogType}.</CardBody>
           </Card>
-            {/* <Tile
-              style={{ width: "100%" }}
-              title={`Request new ${catalogType}`}
-              icon={<PlusCircleIcon color="#0066CC" />}
-              isStacked
-              isDisplayLarge
-              isSelected={false}
-            >
-              Fill our a form to request a new {catalogType}.
-            </Tile> */}
           </GalleryItem>
         )}
       </Gallery>
