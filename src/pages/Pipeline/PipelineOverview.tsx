@@ -8,7 +8,7 @@ import {
   ChartAxis,
   ChartGroup,
   ChartBar,
-} from "@patternfly/react-charts";
+} from "@patternfly/react-charts/victory";
 import {
   Grid,
   GridItem,
@@ -133,7 +133,7 @@ const PipelineOverview: FC<PipelineOverviewProp> = ({ pipelineId }) => {
                       ariaTitle="Queue utilization"
                       constrainToVisibleArea
                       data={{ x: "GBps capacity", y: 45 }}
-                      labels={({ datum }) =>
+                      labels={({ datum }: { datum: { x: string; y: number } }) =>
                         datum.x ? `${datum.x}: ${datum.y}%` : null
                       }
                       legendData={[

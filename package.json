@@ -15,17 +15,18 @@
     "chromatic": "npx chromatic --project-token=chpt_1d6299fe0d5a2cd"
   },
   "dependencies": {
-    "@patternfly/patternfly": "^6.0.0-prerelease.13",
-    "@patternfly/react-charts": "^8.0.0-prerelease.10",
-    "@patternfly/react-code-editor": "^6.0.0-prerelease.13",
-    "@patternfly/react-core": "^6.0.0-prerelease.13",
-    "@patternfly/react-drag-drop": "6.0.0-prerelease.21",
-    "@patternfly/react-icons": "^6.0.0-prerelease.4",
-    "@patternfly/react-log-viewer": "^6.0.0-alpha.5",
-    "@patternfly/react-styles": "^6.0.0-prerelease.3",
-    "@patternfly/react-table": "^6.0.0-prerelease.13",
-    "@patternfly/react-tokens": "^6.0.0-prerelease.4",
-    "@patternfly/react-topology": "^6.0.0-alpha.3",
+    "@patternfly/patternfly": "^6.0.0",
+    "@patternfly/react-charts": "^8.0.0",
+    "@patternfly/react-code-editor": "^6.0.0",
+    "@patternfly/react-core": "^6.0.0",
+    "@patternfly/react-drag-drop": "^6.0.0",
+    "@patternfly/react-icons": "^6.0.0",
+    "@patternfly/react-log-viewer": "^6.0.0",
+    "@patternfly/react-styles": "^6.0.0",
+    "@patternfly/react-table": "^6.0.0",
+    "@patternfly/react-tokens": "^6.0.0",
+    "@patternfly/react-topology": "^6.0.1",
+    "@types/lodash": "^4.17.13",
     "axios": "^1.6.8",
     "jotai": "^2.10.1",
     "lodash": "^4.17.21",
@@ -34,7 +35,8 @@
     "react-icons": "^5.1.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.22.3",
-    "reactflow": "^11.11.4"
+    "reactflow": "^11.11.4",
+    "victory": "^37.3.2"
   },
   "resolutions": {
     "jackspeak": "2.1.1"
