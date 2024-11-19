@@ -1,9 +1,9 @@
 .pipeline-card-body {
-  max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth);
+  max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth, 55rem);
 }
 
 .pipeline-page-section .pf-v6-c-page__main-body {
-  max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth) !important;
+  max-width: var(--pf-v6-c-form--m-limit-width--MaxWidth, 55rem) !important;
 }
 
 .create_pipeline-toolbar {
