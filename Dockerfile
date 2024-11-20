@@ -1,5 +1,8 @@
 # FROM node:18-alpine AS builder
-FROM registry.access.redhat.com/ubi9/nodejs-20 AS builder
+FROM --platform=$TARGETPLATFORM registry.access.redhat.com/ubi9/nodejs-20 AS builder
+USER root
+RUN mkdir -p /app && chown 1001:1001 /app
+USER 1001
 RUN npm install -g yarn
 
 ARG BACKEND_URL=http://localhost:8080
