@@ -2,7 +2,7 @@
 
 # Create a configuration file with environment variables
 echo "window.__ENV__ = {
-  VITE_BACKEND_BASE_URL: '${VITE_BACKEND_BASE_URL}'
+  CONDUCTOR_URL: '${CONDUCTOR_URL}'
 };" > /app/dist/env-config.js
 
 # Inject the script into index.html

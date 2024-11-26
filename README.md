@@ -85,7 +85,7 @@ yarn
 
 Running UI web app targeting local dev setup 
 ```bash
-VITE_BACKEND_BASE_URL={backend_URL} && yarn dev
+CONDUCTOR_URL={backend_URL} && yarn dev
 ```
 
 Debezium UI will be available on [http://localhost:3000](http://localhost:3000)  

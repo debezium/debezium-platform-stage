@@ -5,9 +5,9 @@ import react from "@vitejs/plugin-react-swc";
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { loadEnv } from 'vite';
 
-const env = loadEnv('all', process.cwd(), 'VITE_');
+const env = loadEnv('all', process.cwd());
 const API_URL = `${env.VITE_BACKEND_API_URL ?? 'http://localhost:8080'}`;
-const PORT = `${env.VITE_PORT ?? '3000'}`;
+const PORT = +`${env.VITE_PORT ?? 3000}`;
 
 type ViteConfig = UserConfig & { test: InlineConfig };
 const config: ViteConfig = {
