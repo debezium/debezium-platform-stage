@@ -1,8 +1,9 @@
 // Add more constants here as needed
+import { getBackendUrl } from "src/config";
 
 export const AppBranding = "Stage";
 
-const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+const backendBaseUrl = getBackendUrl();
 const pipelineLogUrl = "http://localhost:8080";
 
 export const API_URL = backendBaseUrl;
