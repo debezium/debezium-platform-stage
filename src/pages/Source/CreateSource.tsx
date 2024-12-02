@@ -21,7 +21,7 @@ import { createPost, Source } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject } from "../../utils/helpers";
 import sourceCatalog from "../../__mocks__/data/SourceCatalog.json";
-import _ from "lodash";
+import { find } from "lodash";
 import { useNotification } from "../../appLayout/AppNotificationContext";
 import SourceSinkForm from "@components/SourceSinkForm";
 import PageHeader from "@components/PageHeader";
@@ -32,6 +32,8 @@ interface CreateSourceProps {
   selectSource?: (sourceId: string) => void;
   onSelection?: (selection: Source) => void;
 }
+
+type Properties = { key: string; value: string };
 
 const CreateSource: React.FunctionComponent<CreateSourceProps> = ({
   modelLoaded,
@@ -45,6 +47,8 @@ const CreateSource: React.FunctionComponent<CreateSourceProps> = ({
   const sourceIdModel = selectedId;
   const sourceId = modelLoaded ? sourceIdModel : sourceIdParam.sourceId;
 
+  const [errorWarning, setErrorWarning] = useState<string[]>([]);
+
   const navigateTo = (url: string) => {
     navigate(url);
   };
@@ -55,9 +59,9 @@ const CreateSource: React.FunctionComponent<CreateSourceProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [properties, setProperties] = useState<
-    Map<string, { key: string; value: string }>
-  >(new Map([["key0", { key: "", value: "" }]]));
+  const [properties, setProperties] = useState<Map<string, Properties>>(
+    new Map([["key0", { key: "", value: "" }]])
+  );
   const [keyCount, setKeyCount] = useState<number>(1);
 
   const handleAddProperty = () => {
@@ -97,7 +101,7 @@ const CreateSource: React.FunctionComponent<CreateSourceProps> = ({
   const createNewSource = async (values: Record<string, string>) => {
     const payload = {
       description: values["details"],
-      type: _.find(sourceCatalog, { id: sourceId })?.type || "",
+      type: find(sourceCatalog, { id: sourceId })?.type || "",
       schema: "schema321",
       vaults: [],
       config: convertMapToObject(properties),
@@ -124,6 +128,22 @@ const CreateSource: React.FunctionComponent<CreateSourceProps> = ({
 
   const handleCreateSource = async (values: Record<string, string>) => {
     setIsLoading(true);
+    const errorWarning = [] as string[];
+    properties.forEach((value: Properties, key: string) => {
+      if (value.key === "" || value.value === "") {
+        errorWarning.push(key);
+      }
+    });
+    setErrorWarning(errorWarning);
+    if (errorWarning.length > 0) {
+      addNotification(
+        "danger",
+        `Source creation failed`,
+        `Please fill both Key and Value fields for all the properties.`
+      );
+      setIsLoading(false);
+      return;
+    }
     await createNewSource(values);
     setIsLoading(false);
     !modelLoaded && navigateTo("/source");
@@ -203,6 +223,7 @@ const CreateSource: React.FunctionComponent<CreateSourceProps> = ({
                   getValue={getValue}
                   setError={setError}
                   errors={errors}
+                  errorWarning={errorWarning}
                   handleAddProperty={handleAddProperty}
                   handleDeleteProperty={handleDeleteProperty}
                   handlePropertyChange={handlePropertyChange}

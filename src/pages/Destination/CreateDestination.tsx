@@ -17,13 +17,14 @@ import destinationCatalog from "../../__mocks__/data/DestinationCatalog.json";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CreateDestination.css";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
-import _ from "lodash";
+import { find } from "lodash";
 import { createPost, Destination } from "../../apis/apis";
 import { API_URL } from "../../utils/constants";
 import { convertMapToObject } from "../../utils/helpers";
 import { useNotification } from "../../appLayout/AppNotificationContext";
 import PageHeader from "@components/PageHeader";
 import SourceSinkForm from "@components/SourceSinkForm";
+import { useState } from "react";
 
 interface CreateDestinationProps {
   modelLoaded?: boolean;
@@ -31,6 +32,8 @@ interface CreateDestinationProps {
   selectDestination?: (destinationId: string) => void;
   onSelection?: (selection: Destination) => void;
 }
+
+type Properties = { key: string; value: string };
 
 const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
   modelLoaded,
@@ -51,13 +54,15 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
 
   const { addNotification } = useNotification();
 
+  const [errorWarning, setErrorWarning] = useState<string[]>([]);
+
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const [properties, setProperties] = React.useState<
-    Map<string, { key: string; value: string }>
-  >(new Map([["key0", { key: "", value: "" }]]));
+  const [properties, setProperties] = useState<Map<string, Properties>>(
+    new Map([["key0", { key: "", value: "" }]])
+  );
   const [keyCount, setKeyCount] = React.useState<number>(1);
 
   const handleAddProperty = () => {
@@ -97,7 +102,7 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
   const createNewDestination = async (values: Record<string, string>) => {
     const payload = {
       description: values["details"],
-      type: _.find(destinationCatalog, { id: destinationId })?.type || "",
+      type: find(destinationCatalog, { id: destinationId })?.type || "",
       schema: "schema321",
       vaults: [],
       config: convertMapToObject(properties),
@@ -110,20 +115,40 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
       addNotification(
         "danger",
         `Destination creation failed`,
-        `Failed to create ${(response.data as Destination).name}: ${response.error}`
+        `Failed to create ${(response.data as Destination).name}: ${
+          response.error
+        }`
       );
     } else {
       modelLoaded && onSelection && onSelection(response.data as Destination);
       addNotification(
         "success",
         `Create successful`,
-        `Destination "${(response.data as Destination).name}" created successfully.`
+        `Destination "${
+          (response.data as Destination).name
+        }" created successfully.`
       );
     }
   };
 
   const handleCreateDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
+    const errorWarning = [] as string[];
+    properties.forEach((value: Properties, key: string) => {
+      if (value.key === "" || value.value === "") {
+        errorWarning.push(key);
+      }
+    });
+    setErrorWarning(errorWarning);
+    if (errorWarning.length > 0) {
+      addNotification(
+        "danger",
+        `Destination creation failed`,
+        `Please fill both Key and Value fields for all the properties.`
+      );
+      setIsLoading(false);
+      return;
+    }
     await createNewDestination(values);
     setIsLoading(false);
     !modelLoaded && navigateTo("/destination");
@@ -203,6 +228,7 @@ const CreateDestination: React.FunctionComponent<CreateDestinationProps> = ({
                   getValue={getValue}
                   setError={setError}
                   errors={errors}
+                  errorWarning={errorWarning}
                   handleAddProperty={handleAddProperty}
                   handleDeleteProperty={handleDeleteProperty}
                   handlePropertyChange={handlePropertyChange}

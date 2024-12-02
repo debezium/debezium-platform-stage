@@ -22,6 +22,7 @@ import ConnectorImage from "./ComponentImage";
 interface SourceSinkFormProps {
   ConnectorId: string;
   dataType?: string;
+  errorWarning: string[];
   connectorType: "source" | "destination";
   properties: Map<string, { key: string; value: string }>;
   setValue: (key: string, value: string) => void;
@@ -44,6 +45,7 @@ const SourceSinkForm = ({
   setValue,
   getValue,
   setError,
+  errorWarning,
   errors,
   handleAddProperty,
   handleDeleteProperty,
@@ -137,6 +139,7 @@ const SourceSinkForm = ({
                         isRequired
                         type="text"
                         placeholder="Key"
+                        validated={errorWarning.includes(key) ? "error" : "default"}
                         id={`${connectorType}-config-props-key-${key}`}
                         name={`${connectorType}-config-props-key-${key}`}
                         value={properties.get(key)?.key || ""}
@@ -155,6 +158,7 @@ const SourceSinkForm = ({
                         type="text"
                         id={`${connectorType}-config-props-value-${key}`}
                         placeholder="Value"
+                        validated={errorWarning.includes(key) ? "error" : "default"}
                         name={`${connectorType}-config-props-value-${key}`}
                         value={properties.get(key)?.value || ""}
                         onChange={(_e, value) =>

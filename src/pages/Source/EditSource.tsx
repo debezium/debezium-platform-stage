@@ -30,6 +30,8 @@ import { useNotification } from "../../appLayout/AppNotificationContext";
 import SourceSinkForm from "@components/SourceSinkForm";
 import PageHeader from "@components/PageHeader";
 
+type Properties = { key: string; value: string };
+
 const EditSource: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const { sourceId } = useParams<{ sourceId: string }>();
@@ -44,15 +46,17 @@ const EditSource: React.FunctionComponent = () => {
 
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
+  const [errorWarning, setErrorWarning] = useState<string[]>([]);
+
   const [source, setSource] = useState<Source>();
   const [isFetchLoading, setIsFetchLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [properties, setProperties] = useState<
-    Map<string, { key: string; value: string }>
-  >(new Map([["key0", { key: "", value: "" }]]));
+  const [properties, setProperties] = useState<Map<string, Properties>>(
+    new Map([["key0", { key: "", value: "" }]])
+  );
   const [keyCount, setKeyCount] = useState<number>(1);
 
   const setConfigProperties = (configProp: SourceConfig) => {
@@ -149,6 +153,22 @@ const EditSource: React.FunctionComponent = () => {
 
   const handleEditSource = async (values: Record<string, string>) => {
     setIsLoading(true);
+    const errorWarning = [] as string[];
+    properties.forEach((value: Properties, key: string) => {
+      if (value.key === "" || value.value === "") {
+        errorWarning.push(key);
+      }
+    });
+    setErrorWarning(errorWarning);
+    if (errorWarning.length > 0) {
+      addNotification(
+        "danger",
+        `Source edit failed`,
+        `Please fill both Key and Value fields for all the properties.`
+      );
+      setIsLoading(false);
+      return;
+    }
     await editSource(values);
     setIsLoading(false);
     navigateTo("/source");
@@ -237,6 +257,7 @@ const EditSource: React.FunctionComponent = () => {
                   getValue={getValue}
                   setError={setError}
                   errors={errors}
+                  errorWarning={errorWarning}
                   handleAddProperty={handleAddProperty}
                   handleDeleteProperty={handleDeleteProperty}
                   handlePropertyChange={handlePropertyChange}
