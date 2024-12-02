@@ -30,6 +30,8 @@ import { useNotification } from "../../appLayout/AppNotificationContext";
 import SourceSinkForm from "@components/SourceSinkForm";
 import PageHeader from "@components/PageHeader";
 
+type Properties = { key: string; value: string };
+
 const EditDestination: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const { destinationId } = useParams<{ destinationId: string }>();
@@ -44,6 +46,8 @@ const EditDestination: React.FunctionComponent = () => {
 
   const [editorSelected, setEditorSelected] = React.useState("form-editor");
 
+  const [errorWarning, setErrorWarning] = useState<string[]>([]);
+
   const [destination, setDestination] = useState<Destination>();
   const [isFetchLoading, setIsFetchLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +55,7 @@ const EditDestination: React.FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [properties, setProperties] = useState<
-    Map<string, { key: string; value: string }>
+    Map<string, Properties>
   >(new Map([["key0", { key: "", value: "" }]]));
   const [keyCount, setKeyCount] = useState<number>(1);
 
@@ -148,6 +152,22 @@ const EditDestination: React.FunctionComponent = () => {
 
   const handleEditDestination = async (values: Record<string, string>) => {
     setIsLoading(true);
+    const errorWarning = [] as string[];
+    properties.forEach((value: Properties, key: string) => {
+      if (value.key === "" || value.value === "") {
+        errorWarning.push(key);
+      }
+    });
+    setErrorWarning(errorWarning);
+    if (errorWarning.length > 0) {
+      addNotification(
+        "danger",
+        `Destination edit failed`,
+        `Please fill both Key and Value fields for all the properties.`
+      );
+      setIsLoading(false);
+      return;
+    }
     await editDestination(values);
     setIsLoading(false);
     navigateTo("/destination");
@@ -237,6 +257,7 @@ const EditDestination: React.FunctionComponent = () => {
                   getValue={getValue}
                   setError={setError}
                   errors={errors}
+                  errorWarning={errorWarning}
                   handleAddProperty={handleAddProperty}
                   handleDeleteProperty={handleDeleteProperty}
                   handlePropertyChange={handlePropertyChange}

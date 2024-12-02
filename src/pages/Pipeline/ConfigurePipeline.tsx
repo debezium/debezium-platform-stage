@@ -47,6 +47,7 @@ import { API_URL } from "../../utils/constants";
 import PageHeader from "@components/PageHeader";
 import { useAtom } from "jotai";
 import { selectedTransformAtom } from "./PipelineDesigner";
+import { useNotification } from "@appContext/AppNotificationContext";
 
 const ConfigurePipeline: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const ConfigurePipeline: React.FunctionComponent = () => {
 
   const [selectedTransform] = useAtom(selectedTransformAtom);
 
-  console.log("selectedTransform", selectedTransform);
+  const { addNotification } = useNotification();
 
   const navigateTo = (url: string) => {
     navigate(url);
@@ -117,10 +118,10 @@ const ConfigurePipeline: React.FunctionComponent = () => {
     fetchDestination();
   }, [destinationId]);
 
-  const createNewPipline = async (values: Record<string, string>) => {
+  const createNewPipeline = async (values: Record<string, string>) => {
     const payload = {
       description: values["description"],
-      logLevel: logLevel,
+      logLevel: values["log-level"],
       source: {
         name: source?.name,
         id: source?.id,
@@ -135,31 +136,41 @@ const ConfigurePipeline: React.FunctionComponent = () => {
 
     const response = await createPost(`${API_URL}/api/pipelines`, payload);
 
-    if (response.error) {
-      console.error("Failed to create source:", response.error);
-    } else {
-      console.log("Source created successfully:", response.data);
-    }
+    return response;
   };
 
-  const handleCreatePipline = async (values: Record<string, string>) => {
+  const handleCreatePipeline = async (values: Record<string, string>) => {
+    console.log("values", values);
     setIsLoading(true);
-    await createNewPipline(values);
+    if(!values["log-level"]) {
+      setLogLevelError(true);
+      setIsLoading(false);
+      return;
+    }
+    const response = await createNewPipeline(values);
+    if (response.error) {
+      addNotification(
+        "danger",
+        `Pipeline creation failed`,
+        `${response.error}`
+      );
+      setIsLoading(false);
+      return;
+    }
+    addNotification(
+      "success",
+      `Pipeline creation successful.`,
+      `Pipeline "${values["pipeline-name"]}" created successfully.`
+    );
     setIsLoading(false);
+
     navigateTo("/pipeline");
   };
 
-  const [logLevel, setLogLevel] = React.useState("");
-
-  const onChange = (
-    _event: React.FormEvent<HTMLSelectElement>,
-    value: string
-  ) => {
-    setLogLevel(value);
-  };
+  const [logLevelError, setLogLevelError] = React.useState<boolean>(false);
 
   const options = [
-    { value: "", label: "Select log level", disabled: false },
+    { value: "", label: "Select log level", disabled: true },
     { value: "OFF", label: "OFF", disabled: false },
     { value: "FATAL", label: "FATAL", disabled: false },
     { value: "ERROR", label: "ERROR", disabled: false },
@@ -342,22 +353,30 @@ const ConfigurePipeline: React.FunctionComponent = () => {
                         <FormGroup
                           label="Log level"
                           isRequired
-                          fieldId="logLevel-field"
+                          fieldId="log-level-field"
                         >
                           <FormSelect
-                            value={logLevel}
-                            onChange={onChange}
-                            aria-label="FormSelect Input"
-                            ouiaId="BasicFormSelect"
+                           value={getValue("log-level")}
+                          isRequired
+                          id={'log-level'}
+                          onChange={(_event, value) => {
+                            setValue("log-level", value);
+                            setLogLevelError(false);
+                          }}
+                          aria-label="FormSelect Input"
+                          ouiaId="BasicFormSelect"
+                          validated={
+                            logLevelError ? "error" : "default"
+                          }
                           >
-                            {options.map((option, index) => (
-                              <FormSelectOption
-                                isDisabled={option.disabled}
-                                key={index}
-                                value={option.value}
-                                label={option.label}
-                              />
-                            ))}
+                          {options.map((option, index) => (
+                            <FormSelectOption
+                            isDisabled={option.disabled}
+                            key={index}
+                            value={option.value}
+                            label={option.label}
+                            />
+                          ))}
                           </FormSelect>
                         </FormGroup>
                       </FormSection>
@@ -389,7 +408,7 @@ const ConfigurePipeline: React.FunctionComponent = () => {
                     if (!values["pipeline-name"]) {
                       setError("pipeline-name", "Pipeline name is required.");
                     } else {
-                      handleCreatePipline(values);
+                      handleCreatePipeline(values);
                     }
                   }}
                 >

@@ -175,7 +175,7 @@ const EditPipeline: React.FunctionComponent = () => {
   };
 
   const options = [
-    { value: "", label: "Select log level", disabled: false },
+    { value: "", label: "Select log level", disabled: true },
     { value: "OFF", label: "OFF", disabled: false },
     { value: "FATAL", label: "FATAL", disabled: false },
     { value: "ERROR", label: "ERROR", disabled: false },
