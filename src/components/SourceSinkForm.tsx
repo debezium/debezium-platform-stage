@@ -86,13 +86,13 @@ const SourceSinkForm = ({
           </FormGroup>
           <FormGroup
             label="Description"
-            fieldId={`${connectorType}-details-field`}
+            fieldId={`${connectorType}-description-field`}
           >
             <TextInput
-              id={`${connectorType}-details`}
-              aria-label={`${connectorLabel} details`}
-              onChange={(_event, value) => setValue("details", value)}
-              value={getValue("details")}
+              id={`${connectorType}-description`}
+              aria-label={`${connectorLabel} description`}
+              onChange={(_event, value) => setValue("description", value)}
+              value={getValue(`description`)}
             />
             <FormHelperText>
               <HelperText>

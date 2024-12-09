@@ -67,6 +67,7 @@ const EditDestination: React.FunctionComponent = () => {
       i++;
     }
     setProperties(configMap);
+    setKeyCount(configMap.size);
   };
 
   React.useEffect(() => {
@@ -125,7 +126,7 @@ const EditDestination: React.FunctionComponent = () => {
 
   const editDestination = async (values: Record<string, string>) => {
     const payload = {
-      description: values["details"],
+      description: values["description"],
       config: convertMapToObject(properties),
       name: values["destination-name"],
     };
@@ -232,7 +233,7 @@ const EditDestination: React.FunctionComponent = () => {
       <FormContextProvider
         initialValues={{
           "destination-name": destination?.name || "",
-          details: destination?.description || "",
+          description: destination?.description || "",
         }}
       >
         {({ setValue, getValue, setError, values, errors }) => (

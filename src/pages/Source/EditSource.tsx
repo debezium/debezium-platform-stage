@@ -67,6 +67,7 @@ const EditSource: React.FunctionComponent = () => {
       i++;
     }
     setProperties(configMap);
+    setKeyCount(configMap.size);
   };
 
   React.useEffect(() => {
@@ -126,7 +127,7 @@ const EditSource: React.FunctionComponent = () => {
 
   const editSource = async (values: Record<string, string>) => {
     const payload = {
-      description: values["descriptions"],
+      description: values["description"],
       config: convertMapToObject(properties),
       name: values["source-name"],
     };
@@ -232,7 +233,7 @@ const EditSource: React.FunctionComponent = () => {
       <FormContextProvider
         initialValues={{
           "source-name": source?.name || "",
-          descriptions: source?.description || "",
+          description: source?.description || "",
         }}
       >
         {({ setValue, getValue, setError, values, errors }) => (
