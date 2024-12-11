@@ -46,7 +46,7 @@ import {
 } from "@patternfly/react-table";
 import _ from "lodash";
 import { useQuery } from "react-query";
-import { API_URL, LOG_URL } from "../../utils/constants";
+import { API_URL } from "../../utils/constants";
 import { ReactNode, useCallback, useState } from "react";
 import SourceField from "../../components/SourceField";
 import DestinationField from "../../components/DestinationField";
@@ -124,7 +124,7 @@ const Pipelines: React.FunctionComponent = () => {
 
     // Fetch the file as a Blob
     const response = await fetchFile(
-      `${LOG_URL}/api/pipelines/${pipelineId}/logs`
+      `${API_URL}/api/pipelines/${pipelineId}/logs`
     );
 
     if ("error" in response) {

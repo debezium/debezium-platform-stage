@@ -4,10 +4,8 @@ import { getBackendUrl } from "src/config";
 export const AppBranding = "Stage";
 
 const backendBaseUrl = getBackendUrl();
-const pipelineLogUrl = "http://localhost:8080";
 
 export const API_URL = backendBaseUrl;
-export const LOG_URL = pipelineLogUrl;
 export const MAX_RESULTS = 10;
 export const DEFAULT_TIMEOUT = 5000;
 

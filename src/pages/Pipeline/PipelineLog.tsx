@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { DownloadIcon, ExpandIcon } from "@patternfly/react-icons";
 import { LogViewer, LogViewerSearch } from "@patternfly/react-log-viewer";
-import { LOG_URL } from "@utils/constants";
+import { API_URL } from "@utils/constants";
 import { FC, useEffect, useState } from "react";
 import "./PipelineLog.css";
 import { useNotification } from "@appContext/AppNotificationContext";
@@ -48,17 +48,14 @@ const PipelineLog: FC<PipelineLogProps> = ({
   // Set to track unique logs
   const logSet = new Set<string>();
 
-
   const [isLogLoading, setIsLogLoading] = useState<boolean>(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   // useEffect(() => {
   //   const ws = new WebSocket("ws://localhost:8080/api/pipelines/1/logs/stream");
-
   //   ws.onopen = () => {
   //     console.log("WebSocket connection opened");
   //   };
-
   //   ws.onmessage = (event) => {
   //     setLogs((prevLogs) => prevLogs + "\n" + event.data); // Append new logs
   //   };
@@ -68,7 +65,6 @@ const PipelineLog: FC<PipelineLogProps> = ({
   //   ws.onclose = () => {
   //     console.log("WebSocket connection closed");
   //   };
-
   //   return () => {
   //     if (ws.readyState === WebSocket.OPEN) {
   //       ws.close();
@@ -78,10 +74,8 @@ const PipelineLog: FC<PipelineLogProps> = ({
 
   useEffect(() => {
     let ws: WebSocket;
-
-
     // Fetch initial logs via HTTP
-    fetch("http://localhost:8080/api/pipelines/1/logs")
+    fetch(`${API_URL}/api/pipelines/${pipelineId}/logs`)
       .then((response) => response.text())
       .then((initialLogs) => {
         const initialLogLines = initialLogs.split("\n");
@@ -94,9 +88,10 @@ const PipelineLog: FC<PipelineLogProps> = ({
         });
 
         setLogs((prevLogs) => [...prevLogs, ...initialLogLines]);
-
+        
         // open WebSocket for real-time updates
-        ws = new WebSocket("ws://localhost:8080/api/pipelines/1/logs/stream");
+        const webSocketURL = API_URL.replace(/^https?/, "ws")
+        ws = new WebSocket(`${webSocketURL}/api/pipelines/${pipelineId}/logs/stream`);
 
         ws.onmessage = (event) => {
           const newLogs = event.data.split("\n");
@@ -126,16 +121,13 @@ const PipelineLog: FC<PipelineLogProps> = ({
       })
       .catch((error) => console.error("Error fetching initial logs:", error));
 
-
-    // Cleanup 
+    // Cleanup
     return () => {
       if (ws && ws.readyState === WebSocket.OPEN) {
         ws.close();
       }
     };
   }, []);
-
-
 
   const downloadLogFile = async (
     pipelineId: string | undefined,
@@ -155,7 +147,7 @@ const PipelineLog: FC<PipelineLogProps> = ({
 
     // Fetch the file as a Blob
     const response = await fetchFile(
-      `${LOG_URL}/api/pipelines/${pipelineId}/logs`
+      `${API_URL}/api/pipelines/${pipelineId}/logs`
     );
 
     if ("error" in response) {
@@ -214,6 +206,7 @@ const PipelineLog: FC<PipelineLogProps> = ({
     };
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onExpandClick = (_event: React.MouseEvent<HTMLElement>) => {
     const element = document.querySelector(
       "#pipeline-log-view"
